@@ -1,0 +1,63 @@
+import:
+  - ~/.config/alacritty/themes/gruvbox.yml
+
+window:
+  dimensions:
+    columns: 99
+    lines: 25
+  # position:
+  #   x: 0
+  #   y: 0
+  padding:
+    x: 5
+    y: 5
+  decorations: none # transparent(mac), buttonless(mac), full, none
+  # decorations: buttonless # transparent(mac), buttonless(mac), full, none
+  opacity: 1.0
+  startup_mode: Windowed # Windowed, Maximized, Fullscreen, SimpleFullscreen(mac)
+  # title: Alacritty
+  # dynamic_title: true
+  #dynamic_padding: false
+
+scrolling:
+  history: 10000
+  multiplier: 3
+
+font:
+  size: 15.0
+  use_thin_strokes: true # (macOS only)
+  normal:
+    family: FiraCode Nerd Font
+    style: Retina
+  bold:
+    family: FiraCode Nerd Font 
+    style: Bold
+  italic:
+    family: FiraCode Nerd Font 
+    style: Italic
+  bold_italic:
+    family: FiraCode Nerd Font 
+    style: Bold Italic
+  #offset:
+  #  x: 0
+  #  y: 0
+  #glyph_offset:
+  #  x: 0
+  #  y: 0
+
+draw_bold_text_with_bright_colors: false
+
+selection:
+  semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
+  save_to_clipboard: false
+
+cursor:
+  style:
+    shape: Block # Block(▇), Underline(_), Beam(|)
+    blinking: Off
+  #vi_mode_style: None
+  #blink_interval: 750
+  unfocused_hollow: true
+  #thickness: 0.15
+
+working_directory: None

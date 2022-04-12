@@ -10,9 +10,7 @@ set nohlsearch
 set noerrorbells
 set nowrap
 set noshowmode
-set signcolumn=no
-
-" Advanced:
+set guicursor=
 set nocompatible
 set tabstop=4 softtabstop=4
 set shiftwidth=4
@@ -26,12 +24,13 @@ set nobackup
 set undodir=~/.vim/undodir
 set undofile
 set incsearch
+set scrolloff=8
 
 " Plugins:
 call plug#begin('~/.vim/plugged')
 Plug 'morhetz/gruvbox'
-Plug 'vim-utils/vim-man'
-Plug 'mbbill/undotree'
+" Plug 'mbbill/undotree'
+Plug 'jiangmiao/auto-pairs'
 " Plug 'pangloss/vim-javascript'
 " Plug 'leafgarland/typescript-vim'
 " Plug 'vim-airline/vim-airline'
