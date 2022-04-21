@@ -1,8 +1,5 @@
 call plug#begin('~/.config/nvim/autoload/plugged')
 
-" Flutter
-" Plug 'dart-lang/dart-vim-plugin'
-
 " Copilot
 Plug 'github/copilot.vim'
 

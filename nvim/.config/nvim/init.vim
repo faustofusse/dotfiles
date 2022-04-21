@@ -21,7 +21,10 @@ lua << EOF
 
 require'colorizer'.setup {}
 require'hop'.setup {}
-require'nvim-treesitter.configs'.setup { highlight = { enable = true } }
+require'nvim-treesitter.configs'.setup {
+    ensure_installed = 'all',
+    highlight = { enable = true, disable = { 'vim', 'lua' } }
+}
 -- require'lualine'.setup { always_divide_middle = false, options = { disabled_filetypes = { 'NvimTree' } } }
 
 EOF

@@ -8,18 +8,24 @@ plugins=( git bundler dotenv macos rake rbenv ruby zsh-completions pyenv vi-mode
 
 # java
 # export JAVA_HOME='/Library/Java/JavaVirtualMachines/jdk-17.0.1.jdk/Contents/Home'
-# export JAVA_HOME='/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home'
-export JAVA_HOME='/Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home'
+export JAVA_HOME='/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home'
+# export JAVA_HOME='/Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home'
 export PATH="$JAVA_HOME/bin:$PATH"
 # export PATH="$PATH:/usr/local/opt/openjdk/bin"
 
 # wollok
 export PATH="$PATH:/Applications/Wollok.app/Contents/wollok-cli"
 
+# golang
+export PATH=$PATH:/usr/local/go/bin
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+
 # path
 export PATH="$PATH:/usr/local/bin"
 export PATH="$PATH:/Users/faustofusse/.local/bin"
 export PATH="$PATH:/usr/local/Cellar/openvpn/2.5.3/sbin"
+
 
 # pyenv
 eval "$(pyenv init -)" 
@@ -77,8 +83,7 @@ alias manjaro="clear && sshpass -p utnso ssh -t utn_so@127.0.0.1 -p 7999 'cd; ba
 
 alias lg="lazygit"
 alias :q="exit"
-alias vim="nvim"
-alias cdk="cd && clear"
+alias v="nvim"
 alias ccd="cd \"\$(findproject)\" && clear"
 alias cvim="cd \"\$(findproject)\" && clear && nvim"
 alias ccode="code \"\$(findproject)\" && exit"
@@ -88,6 +93,5 @@ alias get_idf='. $HOME/esp/esp-idf/export.sh'
 
 # bases=`osascript -e "tell application \"iTerm\" to tell current tab of current window to sessions" | xargs -n 1` 
 
-clear && neofetch # --source hola.png
-
-alias luamake=/Users/faustofusse/.config/nvim/lua-language-server/3rd/luamake/luamake
+# clear && neofetch # --source hola.png
+clear

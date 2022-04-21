@@ -17,10 +17,10 @@ require'nvim-tree'.setup {
     renderer = {
         indent_markers = {
             enable = true,
-            -- char = "│",
-            -- char_open = "├",
-            -- char_last = "└",
-            -- char_open_last = "└",
+            char = "│",
+            char_open = "├",
+            char_last = "└",
+            char_open_last = "└",
         },   
     },
     -- actions = {
