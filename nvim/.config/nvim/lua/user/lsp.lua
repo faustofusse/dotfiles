@@ -5,33 +5,33 @@ vim.fn.sign_define( "DiagnosticSignHint", { text = "", texthl = "LspDiagnosti
 vim.fn.sign_define( "DiagnosticSignError", { text = "", texthl = "LspDiagnosticsSignError" } )
 vim.fn.sign_define( "DiagnosticSignInfo", { text = "" , texthl = "LspDiagnosticsSignError" } )
 
-vim.lsp.protocol.CompletionItemKind = {
-  "   (Text) ",
-  "   (Method)",
-  "   (Function)",
-  "   (Constructor)",
-  " ﴲ  (Field)",
-  "[] (Variable)",
-  "   (Class)",
-  " ﰮ  (Interface)",
-  "   (Module)",
-  " 襁 (Property)",
-  "   (Unit)",
-  "   (Value)",
-  " 練 (Enum)",
-  "   (Keyword)",
-  "   (Snippet)",
-  "   (Color)",
-  "   (File)",
-  "   (Reference)",
-  "   (Folder)",
-  "   (EnumMember)",
-  " ﲀ  (Constant)",
-  " ﳤ  (Struct)",
-  "   (Event)",
-  "   (Operator)",
-  "   (TypeParameter)",
-}
+-- vim.lsp.protocol.CompletionItemKind = {
+--   "   (Text) ",
+--   "   (Method)",
+--   "   (Function)",
+--   "   (Constructor)",
+--   " ﴲ  (Field)",
+--   "[] (Variable)",
+--   "   (Class)",
+--   " ﰮ  (Interface)",
+--   "   (Module)",
+--   " 襁 (Property)",
+--   "   (Unit)",
+--   "   (Value)",
+--   " 練 (Enum)",
+--   "   (Keyword)",
+--   "   (Snippet)",
+--   "   (Color)",
+--   "   (File)",
+--   "   (Reference)",
+--   "   (Folder)",
+--   "   (EnumMember)",
+--   " ﲀ  (Constant)",
+--   " ﳤ  (Struct)",
+--   "   (Event)",
+--   "   (Operator)",
+--   "   (TypeParameter)",
+-- }
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -68,7 +68,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'pyright', 'tsserver', 'clangd', 'dartls', 'gopls' }
+local servers = { 'pyright', 'tsserver', 'clangd', 'dartls', 'gopls', 'jdtls' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,

@@ -1,11 +1,11 @@
-source $HOME/.config/nvim/config/plugins.vim
-source $HOME/.config/nvim/config/tree.lua
-source $HOME/.config/nvim/config/general.vim
-source $HOME/.config/nvim/config/telescope.lua
-source $HOME/.config/nvim/config/completion.lua
-source $HOME/.config/nvim/config/remaps.vim
+source $HOME/.config/nvim/lua/user/plugins.vim
+source $HOME/.config/nvim/lua/user/tree.lua
+source $HOME/.config/nvim/lua/user/general.vim
+source $HOME/.config/nvim/lua/user/telescope.lua
+source $HOME/.config/nvim/lua/user/completion.lua
+source $HOME/.config/nvim/lua/user/remaps.vim
 source $HOME/.config/nvim/themes/gruvbox.vim
-source $HOME/.config/nvim/config/lsp.lua
+source $HOME/.config/nvim/lua/user/lsp.lua
 
 hi EndOfBuffer guifg=bg ctermfg=NONE guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 hi StatusLine guifg=bg ctermfg=NONE guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
@@ -19,7 +19,6 @@ hi link SignifySignDeleteFirstLine SignifySignDelete
 
 lua << EOF
 
-require'colorizer'.setup {}
 require'hop'.setup {}
 require'nvim-treesitter.configs'.setup {
     ensure_installed = 'all',

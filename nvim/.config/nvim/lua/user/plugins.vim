@@ -8,7 +8,6 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'alvan/vim-closetag'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
-Plug 'norcalli/nvim-colorizer.lua'
 Plug 'mhinz/vim-signify' " otro: lewis6991/gitsigns.nvim
 Plug 'phaazon/hop.nvim'
 

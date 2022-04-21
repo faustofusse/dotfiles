@@ -7,6 +7,7 @@ autoload -U compinit && compinit
 plugins=( git bundler dotenv macos rake rbenv ruby zsh-completions pyenv vi-mode )
 
 # java
+export JDTLS_HOME='/Library/Java/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository'
 # export JAVA_HOME='/Library/Java/JavaVirtualMachines/jdk-17.0.1.jdk/Contents/Home'
 export JAVA_HOME='/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home'
 # export JAVA_HOME='/Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home'
