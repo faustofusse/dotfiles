@@ -1,6 +1,7 @@
 vim.g.nvim_tree_git_hl = 0
 vim.g.nvim_tree_special_files = {  }
 vim.g.nvim_tree_add_trailing = 0
+vim.g.nvim_tree_group_empty = 1
 
 vim.g.nvim_tree_icons = {
   default = "",
