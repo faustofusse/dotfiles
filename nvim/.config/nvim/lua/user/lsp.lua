@@ -1,4 +1,7 @@
-local nvim_lsp = require('lspconfig')
+local status_ok, nvim_lsp = pcall(require, "lspconfig")
+if not status_ok then
+    return
+end
 
 vim.fn.sign_define( "DiagnosticSignWarn", { text = "", texthl = "LspDiagnosticsSignError" } )
 vim.fn.sign_define( "DiagnosticSignHint", { text = "", texthl = "LspDiagnosticsSignError" } )
@@ -66,6 +69,11 @@ local on_attach = function(client, bufnr)
 
 end
 
+local status_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+if not status_cmp then
+    return
+end
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 local servers = { 'pyright', 'tsserver', 'clangd', 'dartls', 'gopls', 'jdtls' }
@@ -75,6 +83,6 @@ for _, lsp in ipairs(servers) do
     flags = {
       debounce_text_changes = 150,
     },
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+    capabilities = cmp_nvim_lsp.update_capabilities(vim.lsp.protocol.make_client_capabilities())
   }
 end

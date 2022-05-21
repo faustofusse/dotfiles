@@ -1,3 +1,8 @@
+local status_ok, nvim_tree = pcall(require, "nvim-tree")
+if not status_ok then
+    return
+end
+
 vim.g.nvim_tree_git_hl = 0
 vim.g.nvim_tree_special_files = {  }
 vim.g.nvim_tree_add_trailing = 0
@@ -26,7 +31,7 @@ vim.g.nvim_tree_icons = {
   },
 }
 
-require'nvim-tree'.setup {
+nvim_tree.setup {
     update_to_buf_dir = {
         enable = false,
         auto_open = false,
@@ -39,12 +44,17 @@ require'nvim-tree'.setup {
     },
     renderer = {
         indent_markers = {
-            enable = true,
-            char = "│",
-            char_open = "├",
-            char_last = "└",
-            char_open_last = "└",
-        },   
+            enable = false,
+            icons = {
+                corner = "└ ",
+                edge = "│ ",
+                none = "  ",
+            },
+        },
+        icons = {
+            webdev_colors = true,
+            git_placement = "before",
+        },
     },
     git = {
         enable = true,

@@ -1,9 +1,12 @@
-source $HOME/.config/nvim/lua/user/plugins.vim
-source $HOME/.config/nvim/lua/user/tree.lua
-source $HOME/.config/nvim/lua/user/general.vim
+source $HOME/.config/nvim/lua/user/plugins.lua
+source $HOME/.config/nvim/lua/user/nvimtree.lua
+source $HOME/.config/nvim/lua/user/options.lua
 source $HOME/.config/nvim/lua/user/telescope.lua
 source $HOME/.config/nvim/lua/user/completion.lua
-source $HOME/.config/nvim/lua/user/remaps.vim
+source $HOME/.config/nvim/lua/user/treesitter.lua
+source $HOME/.config/nvim/lua/user/hop.lua
+source $HOME/.config/nvim/lua/user/lualine.lua
+source $HOME/.config/nvim/lua/user/keymaps.lua
 source $HOME/.config/nvim/themes/gruvbox.vim
 source $HOME/.config/nvim/lua/user/lsp.lua
 
@@ -16,14 +19,3 @@ hi SigniftSignChange guifg=#99BE83 guibg=bg
 hi link SignifySignChangeDelete SignifySignChange
 hi SignifySignDelete guifg=#C5503E guibg=NONE
 hi link SignifySignDeleteFirstLine SignifySignDelete
-
-lua << EOF
-
-require'hop'.setup {}
-require'nvim-treesitter.configs'.setup {
-    ensure_installed = 'all',
-    highlight = { enable = true, disable = { 'vim', 'lua' } }
-}
--- require'lualine'.setup { always_divide_middle = false, options = { disabled_filetypes = { 'NvimTree' } } }
-
-EOF

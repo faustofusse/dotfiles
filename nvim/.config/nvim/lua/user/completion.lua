@@ -1,7 +1,10 @@
 vim.o.completeopt = 'menuone,noinsert,noselect'
 vim.g.completion_matching_strategy = { 'exact', 'substring',  'fuzzy' }
  
-local cmp = require'cmp'
+local status_ok, cmp = pcall(require, 'cmp')
+if not status_ok then
+    return
+end
 
 local kind_icons = require'user.icons'.kind
 

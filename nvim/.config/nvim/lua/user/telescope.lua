@@ -1,14 +1,26 @@
+local status_ok, telescope = pcall(require, "telescope")
+if not status_ok then
+    return
+end
+
 local pickers = require("telescope.pickers")
 local finders = require("telescope.finders")
 local previewers = require("telescope.previewers")
 local action_state = require("telescope.actions.state")
 local conf = require("telescope.config").values
 local actions = require("telescope.actions")
+local sorters = require("telescope.sorters")
 
-require("telescope").setup({
+telescope.setup({
     defaults = {
-        file_sorter = require("telescope.sorters").get_fzy_sorter,
+        file_sorter = sorters.get_fzy_sorter,
         color_devicons = true,
+        mappings = {
+            i = {
+                ["<C-j>"] = actions.move_selection_next,
+                ["<C-k>"] = actions.move_selection_previous
+            }
+        }
     },
     extensions = {
         fzy_native = {
@@ -18,4 +30,4 @@ require("telescope").setup({
     },
 })
 
-require("telescope").load_extension("fzy_native")
+telescope.load_extension("fzy_native")
