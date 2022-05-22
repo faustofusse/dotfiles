@@ -1,41 +1,23 @@
 import:
   - ~/.config/alacritty/themes/gruvbox.yml
 
-key_bindings:
-  # Create tmux window
-  - { key: T, mods: Command, chars: "\x01\x63" }
-  # Close tmux window
-  - { key: W, mods: Command, chars: "\x01\x78" }
-  # Switch between tmux tabs
-  - { key: Key1, mods: Command, chars: "\x01\x31" }
-  - { key: Key2, mods: Command, chars: "\x01\x32" }
-  - { key: Key3, mods: Command, chars: "\x01\x33" }
-  - { key: Key4, mods: Command, chars: "\x01\x34" }
-  - { key: Key5, mods: Command, chars: "\x01\x35" }
-  - { key: Key6, mods: Command, chars: "\x01\x36" }
-  - { key: Key7, mods: Command, chars: "\x01\x37" }
-  - { key: Key8, mods: Command, chars: "\x01\x38" }
-  - { key: Key9, mods: Command, chars: "\x01\x39" }
-  - { key: LBracket, mods: Command, chars: "\x01\x70" }
-  - { key: RBracket, mods: Command, chars: "\x01\x6e" }
-
 window:
   dimensions:
     columns: 99
     lines: 25
   # position:
-  #   x: 0
+  #   x: 1
   #   y: 0
   padding:
     x: 5
     y: 5
-  decorations: none # transparent(mac), buttonless(mac), full, none
+  decorations: buttonless # transparent(mac), buttonless(mac), full, none
   # decorations: buttonless # transparent(mac), buttonless(mac), full, none
   opacity: 1.0
   startup_mode: Windowed # Windowed, Maximized, Fullscreen, SimpleFullscreen(mac)
   # title: Alacritty
   # dynamic_title: true
-  #dynamic_padding: false
+  # dynamic_padding: false
 
 scrolling:
   history: 10000
@@ -45,7 +27,7 @@ font:
   size: 15.0
   use_thin_strokes: true # (macOS only)
   normal:
-    family: FiraCode Nerd Font
+    family: Fira Code Retina
     style: Retina
   bold:
     family: FiraCode Nerd Font 
@@ -63,7 +45,7 @@ font:
   #  x: 0
   #  y: 0
 
-draw_bold_text_with_bright_colors: false
+draw_bold_text_with_bright_colors: true
 
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
