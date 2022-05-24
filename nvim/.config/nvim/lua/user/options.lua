@@ -26,7 +26,8 @@ local options = {
     wrap = false,                            -- display lines as one long line
     scrolloff = 8,                           -- is one of my fav
     sidescrolloff = 8,
-    laststatus = 0
+    laststatus = 0,
+    hidden = false
 }
 
 vim.opt.shortmess:append "c"

@@ -1,6 +1,6 @@
-local opts = { noremap = true, silent = true }
+local opts = { noremap = true, silent = false }
 
-local term_opts = { silent = true }
+local term_opts = { silent = false }
 
 -- Shorten function name
 local keymap = vim.api.nvim_set_keymap
@@ -9,6 +9,10 @@ local keymap = vim.api.nvim_set_keymap
 keymap("", "<Space>", "<Nop>", opts)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+
+-- Clipboard
+keymap("v", "<leader>y", "\"*y", opts)
+keymap("v", "<leader>Y", "\"+y", opts)
 
 -- Telescope
 keymap("n", "<C-p>", ":lua require('telescope.builtin').find_files()<cr>", opts)
@@ -29,9 +33,11 @@ vim.cmd([['
     function! ToggleSignColumn()
         if !exists("b:signcolumn_on") || !b:signcolumn_on
             set signcolumn=yes
+            set laststatus=2
             let b:signcolumn_on=1
         else
             set signcolumn=no
+            set laststatus=0
             let b:signcolumn_on=0
         endif
     endfunction
