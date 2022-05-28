@@ -60,3 +60,9 @@ nvim_tree.setup {
         timeout = 400,
     },
 }
+
+local status_ok, nvim_tree_view = pcall(require, "nvim-tree.view")
+if status_ok then
+    require('nvim-tree.view').View.winopts.signcolumn = 'no'
+end
+

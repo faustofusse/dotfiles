@@ -4,13 +4,11 @@ let g:gruvbox_invert_selection='0'
 
 colorscheme gruvbox
 
-"hi SignColumn guibg=bg
-
 " Copilot
 hi CopilotSuggestion guifg=#928374 ctermfg=NONE guibg=#3c3836 ctermbg=NONE gui=NONE cterm=NONE
 
 " LSP
-"hi LspDiagnosticsSignHint guifg=#FF1A0A ctermfg=NONE guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+hi LspDiagnosticsSignHint guifg=#FF1A0A ctermfg=NONE guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 
 " TreeSitter
 hi TSTagDelimiter guifg=#5c6370 ctermfg=NONE guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
@@ -23,6 +21,7 @@ hi NvimTreeFolderName   guifg=#99BF83 ctermfg=241 guibg=NONE ctermbg=NONE gui=NO
 hi NvimTreeOpenedFolderName   guifg=#99BF83 ctermfg=241 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 hi NvimTreeIndentMarker  guifg=#4F4945 ctermfg=241 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 
+"hi SignColumn guibg=bg
 "hi EndOfBuffer guifg=bg ctermfg=NONE guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 "hi StatusLine guifg=bg ctermfg=NONE guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 "hi StatusLineNC guifg=bg ctermfg=NONE guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
