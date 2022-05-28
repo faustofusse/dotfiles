@@ -1,6 +1,6 @@
-local opts = { noremap = true, silent = false }
+local opts = { noremap = true, silent = true }
 
-local term_opts = { silent = false }
+local term_opts = { silent = true }
 
 -- Shorten function name
 local keymap = vim.api.nvim_set_keymap
@@ -9,6 +9,7 @@ local keymap = vim.api.nvim_set_keymap
 keymap("", "<Space>", "<Nop>", opts)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+vim.opt.timeoutlen = 2000
 
 -- Clipboard
 keymap("v", "<leader>y", "\"*y", opts)
@@ -28,6 +29,9 @@ keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 keymap("n", "<leader>j", ":HopChar1<cr>", opts)
 keymap("n", "<leader>w", ":HopWord<cr>", opts)
 
+-- Neoformat
+keymap("n", "<leader>n", ":Neoformat<cr>", { noremap = true, silent = false })
+
 -- SignColumn
 vim.cmd([['
     function! ToggleSignColumn()
@@ -43,3 +47,4 @@ vim.cmd([['
     endfunction
 ']])
 keymap("n", "<leader>s", ":call ToggleSignColumn()<cr>", opts)
+

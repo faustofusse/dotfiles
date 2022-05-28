@@ -1,4 +1,5 @@
 source $HOME/.config/nvim/lua/user/plugins.lua
+source $HOME/.config/nvim/lua/user/gitsigns.lua
 source $HOME/.config/nvim/lua/user/nvimtree.lua
 source $HOME/.config/nvim/lua/user/options.lua
 source $HOME/.config/nvim/lua/user/telescope.lua

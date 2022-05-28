@@ -38,8 +38,6 @@ packer.init {
   },
 }
 
-require('gitsigns').setup()
-
 -- Install plugins
 return packer.startup(function(use)
     -- Packer
@@ -53,9 +51,9 @@ return packer.startup(function(use)
     use "alvan/vim-closetag"
     use "tpope/vim-surround"
     use "tpope/vim-commentary"
-    --use "mhinz/vim-signify" -- otro: 
     use "lewis6991/gitsigns.nvim"
     use "phaazon/hop.nvim"
+    use "sbdchd/neoformat"
 
     -- Themes
     use "morhetz/gruvbox"
