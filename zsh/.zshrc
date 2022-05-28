@@ -63,8 +63,8 @@ alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 alias ffpb="python -m ffpb"
 alias stopvshield="sudo /usr/local/McAfee/AntiMalware/VSControl stopoas" 
 
-alias startvm="vboxmanage list vms | sed \"s/^\\\"//g;s/\\\".*$//g\" | fzf --layout=reverse | xargs -I{} bash -c 'NAME=\"{}\" && vboxmanage startvm \"$NAME\" --type headless'"
-alias stopvm="vboxmanage list runningvms | sed \"s/^\\\"//g;s/\\\".*$//g\" | fzf --layout=reverse | xargs -I{} bash -c 'NAME=\"{}\" && vboxmanage controlvm \"$NAME\" poweroff soft'"
+alias startvm="vboxmanage list vms | fzf --layout=reverse | xargs echo | sed 's/{.*}//g;s/.$//g' | xargs -I_ bash -c 'vboxmanage startvm \"_\" --type headless'"
+alias stopvm="vboxmanage list runningvms | fzf --layout=reverse | xargs echo | sed 's/{.*}//g;s/.$//g' | xargs -I_ bash -c 'vboxmanage controlvm \"_\" poweroff soft'"
 
 alias utnso="clear && sshpass -p utnso ssh -t utnso@127.0.0.1 -p 2222 'cd /home/utnso; bash -l; clear' && clear"
 alias ssharch="sshpass -p fausto ssh -t fausto@127.0.0.1 -p 7999 'zsh; clear'"
