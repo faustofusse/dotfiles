@@ -53,7 +53,6 @@ return packer.startup(function(use)
     use "tpope/vim-commentary"
     use "lewis6991/gitsigns.nvim"
     use "phaazon/hop.nvim"
-    use "sbdchd/neoformat"
 
     -- Themes
     use "morhetz/gruvbox"
@@ -64,10 +63,11 @@ return packer.startup(function(use)
     -- Status Bar
     use "nvim-lualine/lualine.nvim"
 
-    -- Telescope
+    -- Telescope / Harpoon
     use "nvim-lua/plenary.nvim"
     use "nvim-telescope/telescope.nvim"
     use "nvim-telescope/telescope-fzy-native.nvim"
+    use "ThePrimeagen/harpoon"
 
     -- File Explorer
     use "kyazdani42/nvim-tree.lua"

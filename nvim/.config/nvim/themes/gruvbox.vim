@@ -4,6 +4,8 @@ let g:gruvbox_invert_selection='0'
 
 colorscheme gruvbox
 
+" hi CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=#FFFFFFAA guifg=NONE
+
 " Copilot
 hi CopilotSuggestion guifg=#928374 ctermfg=NONE guibg=#3c3836 ctermbg=NONE gui=NONE cterm=NONE
 

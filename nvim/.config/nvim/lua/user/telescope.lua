@@ -22,10 +22,9 @@ telescope.setup({
             }
         }
     },
-    pickers = {
-        find_files = { theme = "ivy" },
-        live_grep = { theme = "dropdown" },
-    },
+    -- pickers = {
+    --     find_files = { theme = "ivy" },
+    -- },
     extensions = {
         fzy_native = {
             override_generic_sorter = false,

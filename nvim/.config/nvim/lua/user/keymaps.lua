@@ -17,20 +17,25 @@ keymap("v", "<leader>Y", "\"+y", opts)
 
 -- Telescope
 keymap("n", "<C-p>", ":lua require('telescope.builtin').find_files()<cr>", opts)
-keymap("n", "<leader>ff", ":lua require('telescope.builtin').find_files()<cr>", opts)
-keymap("n", "<leader>fg", ":lua require('telescope.builtin').live_grep()<cr>", opts)
+keymap("n", "<leader>ff", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy({}))<cr>", opts)
+keymap("n", "<leader>fg", ":lua require('telescope.builtin').live_grep(require('telescope.themes').get_dropdown({}))<cr>", opts)
 keymap("n", "<leader>fb", ":lua require('telescope.builtin').buffers()<cr>", opts)
 keymap("n", "<leader>fh", ":lua require('telescope.builtin').help_tags()<cr>", opts)
+
+-- Harpoon
+keymap("n", "<leader>a", ":lua require('harpoon.mark').add_file()<cr>", opts)
+keymap("n", "<leader>h", ":lua require('harpoon.ui').toggle_quick_menu()<cr>", opts)
+keymap("n", "<leader>j", ":lua require('harpoon.ui').nav_file(1)<cr>", opts)
+keymap("n", "<leader>k", ":lua require('harpoon.ui').nav_file(2)<cr>", opts)
+keymap("n", "<leader>l", ":lua require('harpoon.ui').nav_file(3)<cr>", opts)
+keymap("n", "<leader>;", ":lua require('harpoon.ui').nav_file(4)<cr>", opts)
 
 -- NvimTree
 keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 
 -- Hop
-keymap("n", "<leader>j", ":HopChar1<cr>", opts)
+keymap("n", "<leader>f", ":HopChar1<cr>", opts)
 keymap("n", "<leader>w", ":HopWord<cr>", opts)
-
--- Neoformat
-keymap("n", "<leader>n", ":Neoformat<cr>", { noremap = true, silent = false })
 
 -- SignColumn
 vim.cmd([['

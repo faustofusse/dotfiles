@@ -104,6 +104,11 @@ _G.packer_plugins = {
     path = "/home/fausto/.local/share/nvim/site/pack/packer/start/gruvbox",
     url = "https://github.com/morhetz/gruvbox"
   },
+  harpoon = {
+    loaded = true,
+    path = "/home/fausto/.local/share/nvim/site/pack/packer/start/harpoon",
+    url = "https://github.com/ThePrimeagen/harpoon"
+  },
   ["hop.nvim"] = {
     loaded = true,
     path = "/home/fausto/.local/share/nvim/site/pack/packer/start/hop.nvim",
@@ -113,11 +118,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/fausto/.local/share/nvim/site/pack/packer/start/lualine.nvim",
     url = "https://github.com/nvim-lualine/lualine.nvim"
-  },
-  neoformat = {
-    loaded = true,
-    path = "/home/fausto/.local/share/nvim/site/pack/packer/start/neoformat",
-    url = "https://github.com/sbdchd/neoformat"
   },
   ["nvim-cmp"] = {
     loaded = true,
