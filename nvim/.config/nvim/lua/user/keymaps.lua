@@ -16,7 +16,7 @@ keymap("v", "<leader>y", "\"*y", opts)
 keymap("v", "<leader>Y", "\"+y", opts)
 
 -- Telescope
-keymap("n", "<C-p>", ":lua require('telescope.builtin').find_files()<cr>", opts)
+keymap("n", "<C-p>", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy({}))<cr>", opts)
 keymap("n", "<leader>ff", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy({}))<cr>", opts)
 keymap("n", "<leader>fg", ":lua require('telescope.builtin').live_grep(require('telescope.themes').get_dropdown({}))<cr>", opts)
 keymap("n", "<leader>fb", ":lua require('telescope.builtin').buffers()<cr>", opts)
