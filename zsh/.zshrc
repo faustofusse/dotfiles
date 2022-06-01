@@ -23,8 +23,12 @@ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
 # path
 export PATH="$PATH:/usr/local/bin"
-export PATH="$PATH:/Users/faustofusse/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:/usr/local/Cellar/openvpn/2.5.3/sbin"
+
+# arch
+export ARCHFLAGS="-arch x86_64"
+export DEBUGINFOD_URLS="https://debuginfod.archlinux.org"
 
 # pyenv
 eval "$(pyenv init -)" 
@@ -40,6 +44,7 @@ export MANPATH="/usr/local/man:$MANPATH"
 export LDFLAGS="-L/usr/local/opt/zlib/lib"
 export CPPFLAGS="-I/usr/local/opt/zlib/include"
 export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
+export LANG=en_US.UTF-8
 
 # clangd
 export PATH="$PATH:/usr/local/opt/llvm/bin"

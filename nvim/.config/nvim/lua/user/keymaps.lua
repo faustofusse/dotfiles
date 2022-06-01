@@ -5,11 +5,17 @@ local term_opts = { silent = true }
 -- Shorten function name
 local keymap = vim.api.nvim_set_keymap
 
---Remap space as leader key
+-- Remap space as leader key
 keymap("", "<Space>", "<Nop>", opts)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.opt.timeoutlen = 2000
+
+-- QuickFix
+keymap("n", "<A-j>", ":cn<cr>", opts)
+keymap("n", "<A-k>", ":cp<cr>", opts)
+keymap("n", "<A-f>", ":cf<cr>", opts)
+keymap("n", "<A-l>", ":cl<cr>", opts)
 
 -- Clipboard
 keymap("v", "<leader>y", "\"*y", opts)
