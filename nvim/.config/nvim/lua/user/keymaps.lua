@@ -11,11 +11,12 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.opt.timeoutlen = 2000
 
+-- go to .h
+keymap("n", "<leader><C-^>", ":e %:p:h:h/include/%:t:r.h<cr>", opts)
+
 -- QuickFix
-keymap("n", "<A-j>", ":cn<cr>", opts)
-keymap("n", "<A-k>", ":cp<cr>", opts)
-keymap("n", "<A-f>", ":cf<cr>", opts)
-keymap("n", "<A-l>", ":cl<cr>", opts)
+keymap("n", "]q", ":cn<cr>", opts)
+keymap("n", "[q", ":cp<cr>", opts)
 
 -- Clipboard
 keymap("v", "<leader>y", "\"*y", opts)
@@ -40,7 +41,7 @@ keymap("n", "<leader>;", ":lua require('harpoon.ui').nav_file(4)<cr>", opts)
 keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 
 -- Hop
-keymap("n", "<leader>f", ":HopChar1<cr>", opts)
+keymap("n", "<leader>a", ":HopChar1<cr>", opts)
 keymap("n", "<leader>w", ":HopWord<cr>", opts)
 
 -- SignColumn
