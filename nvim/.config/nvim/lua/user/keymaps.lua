@@ -41,8 +41,8 @@ keymap("n", "<leader>;", ":lua require('harpoon.ui').nav_file(4)<cr>", opts)
 keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 
 -- Hop
-keymap("n", "<leader>a", ":HopChar1<cr>", opts)
-keymap("n", "<leader>w", ":HopWord<cr>", opts)
+-- keymap("n", "<leader>a", ":HopChar1<cr>", opts)
+-- keymap("n", "<leader>w", ":HopWord<cr>", opts)
 
 -- SignColumn
 vim.cmd([['

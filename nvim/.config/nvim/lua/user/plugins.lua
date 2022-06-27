@@ -43,8 +43,7 @@ return packer.startup(function(use)
     -- Packer
     use "wbthomason/packer.nvim"
 
-    -- Copilot
-    use "github/copilot.vim"
+    -- Copilot use "github/copilot.vim"
 
     -- General
     use "jiangmiao/auto-pairs"
@@ -56,6 +55,8 @@ return packer.startup(function(use)
 
     -- Themes
     use "morhetz/gruvbox"
+    use "sainnhe/gruvbox-material"
+    use "sainnhe/everforest"
 
     -- Icons
     use "kyazdani42/nvim-web-devicons"
@@ -85,6 +86,9 @@ return packer.startup(function(use)
     -- Treesitter
     use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" } 
     use "nvim-treesitter/playground"
+
+    -- REST
+    use { "NTBBloodbath/rest.nvim", requires = { "nvim-lua/plenary.nvim" } }
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins

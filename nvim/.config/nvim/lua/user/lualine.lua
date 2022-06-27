@@ -4,8 +4,23 @@ if not status_ok then
 end
 
 lualine.setup { 
-    always_divide_middle = false,
     options = {
-        disabled_filetypes = { 'NvimTree' }
-    }
+        theme = 'gruvbox-material',
+        -- section_separators = { left = '', right = ''},
+        -- section_separators = { left = '', right = '' },
+        section_separators = '',
+        -- component_separators = { left = '', right = ''},
+        component_separators = '|',
+        disabled_filetypes = { 'NvimTree' },
+        always_divide_middle = false
+    },
+    sections = {
+        lualine_a = {'mode'},
+        lualine_b = {'filename'},
+        lualine_c = {'diagnostics'},
+        lualine_x = {'filetype'},
+        lualine_y = {'diff', 'branch'},
+        lualine_z = {'progress'}
+    },
+    extensions = { 'quickfix' }
 }
