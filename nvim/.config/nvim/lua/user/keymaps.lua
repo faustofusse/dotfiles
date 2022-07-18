@@ -40,6 +40,10 @@ keymap("n", "<leader>;", ":lua require('harpoon.ui').nav_file(4)<cr>", opts)
 -- NvimTree
 keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 
+-- Dadbod
+keymap("n", "<leader>td", ":DBUIToggle<cr>", opts)
+keymap("n", "<leader>w", ":silent write<cr>", opts)
+
 -- Hop
 -- keymap("n", "<leader>a", ":HopChar1<cr>", opts)
 -- keymap("n", "<leader>w", ":HopWord<cr>", opts)
@@ -48,15 +52,15 @@ keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 vim.cmd([['
     function! ToggleSignColumn()
         if !exists("b:signcolumn_on") || !b:signcolumn_on
-            set signcolumn=yes
-            set laststatus=2
+            " set signcolumn=yes
+            set laststatus=3
             let b:signcolumn_on=1
         else
-            set signcolumn=no
+            " set signcolumn=no
             set laststatus=0
             let b:signcolumn_on=0
         endif
     endfunction
 ']])
-keymap("n", "<leader>s", ":call ToggleSignColumn()<cr>", opts)
+keymap("n", "<C-s>", ":call ToggleSignColumn()<cr>", opts)
 

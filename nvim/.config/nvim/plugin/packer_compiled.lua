@@ -89,10 +89,10 @@ _G.packer_plugins = {
     path = "/Users/faustofusse/.local/share/nvim/site/pack/packer/start/cmp-vsnip",
     url = "https://github.com/hrsh7th/cmp-vsnip"
   },
-  everforest = {
+  ["feline.nvim"] = {
     loaded = true,
-    path = "/Users/faustofusse/.local/share/nvim/site/pack/packer/start/everforest",
-    url = "https://github.com/sainnhe/everforest"
+    path = "/Users/faustofusse/.local/share/nvim/site/pack/packer/start/feline.nvim",
+    url = "https://github.com/feline-nvim/feline.nvim"
   },
   ["gitsigns.nvim"] = {
     loaded = true,
@@ -118,11 +118,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/faustofusse/.local/share/nvim/site/pack/packer/start/hop.nvim",
     url = "https://github.com/phaazon/hop.nvim"
-  },
-  ["lualine.nvim"] = {
-    loaded = true,
-    path = "/Users/faustofusse/.local/share/nvim/site/pack/packer/start/lualine.nvim",
-    url = "https://github.com/nvim-lualine/lualine.nvim"
   },
   ["nvim-cmp"] = {
     loaded = true,
@@ -188,6 +183,16 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/faustofusse/.local/share/nvim/site/pack/packer/start/vim-commentary",
     url = "https://github.com/tpope/vim-commentary"
+  },
+  ["vim-dadbod"] = {
+    loaded = true,
+    path = "/Users/faustofusse/.local/share/nvim/site/pack/packer/start/vim-dadbod",
+    url = "https://github.com/tpope/vim-dadbod"
+  },
+  ["vim-dadbod-ui"] = {
+    loaded = true,
+    path = "/Users/faustofusse/.local/share/nvim/site/pack/packer/start/vim-dadbod-ui",
+    url = "https://github.com/kristijanhusak/vim-dadbod-ui"
   },
   ["vim-surround"] = {
     loaded = true,

@@ -1,6 +1,6 @@
 # zsh config
 ZSH_THEME="common" # robbyrussel, lambda-gitster, typewritten, common, bunnyruni, another, logico, pi
-export ZSH="/Users/faustofusse/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 autoload -U compinit && compinit
@@ -9,8 +9,8 @@ plugins=( git bundler dotenv macos rake rbenv ruby zsh-completions pyenv vi-mode
 # java
 export JDTLS_HOME='/Library/Java/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository'
 # export JAVA_HOME='/Library/Java/JavaVirtualMachines/jdk-17.0.1.jdk/Contents/Home'
-# export JAVA_HOME='/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home'
-export JAVA_HOME='/Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home'
+export JAVA_HOME='/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home'
+# export JAVA_HOME='/Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home'
 export PATH="$JAVA_HOME/bin:$PATH"
 
 # ruby
@@ -32,6 +32,10 @@ export DEBUGINFOD_URLS="https://debuginfod.archlinux.org"
 
 # pyenv
 eval "$(pyenv init -)" 
+
+# dotnet
+export PATH="$PATH:$HOME/.dotnet/tools"
+# export DOTNET_ROOT="/usr/local/share/dotnet"
 
 # android
 export ANDROID_HOME=/Users/faustofusse/Library/Android/sdk
@@ -79,6 +83,9 @@ alias :q="exit"
 alias v="nvim"
 alias ccd="cd \"\$(findproject)\" && clear"
 alias cvim="cd \"\$(findproject)\" && clear && nvim"
+
+# esto no lo hice yo, aparecio solo
+alias luamake=/Users/faustofusse/Desktop/lua-language-server/3rd/luamake/luamake
 
 # clear && neofetch # --source hola.png
 clear

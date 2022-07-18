@@ -1,6 +1,6 @@
 vim.o.completeopt = 'menuone,noinsert,noselect'
 vim.g.completion_matching_strategy = { 'exact', 'substring',  'fuzzy' }
- 
+
 local status_ok, cmp = pcall(require, 'cmp')
 if not status_ok then
     return
@@ -30,19 +30,21 @@ cmp.setup({
     },
     window = {
         documentation = {
-            border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+            border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
         },
     },
     formatting = {
-        fields = { 'kind', 'abbr', 'menu' },
+        -- fields = { 'kind', 'abbr', 'menu' },
+        -- fields = {'abbr', 'kind', 'menu'},
+        fields = {'kind', 'abbr'},
         format = function(entry, vim_item)
             vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
             -- vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
             vim_item.menu = ({
-                -- nvim_lsp = "[LSP]", nvim_lua = "[Nvim]", luasnip = "[Snippet]", buffer = "[Buffer]", path = "[Path]", emoji = "[Emoji]",
-                nvim_lsp = "", nvim_lua = "", luasnip = "", buffer = "", path = "", emoji = "",
+                nvim_lsp = "[LSP]", nvim_lua = "[Nvim]", luasnip = "[Snippet]", buffer = "[Buffer]", path = "[Path]", emoji = "[Emoji]",
             })[entry.source.name]
             return vim_item
         end,
     }
 })
+

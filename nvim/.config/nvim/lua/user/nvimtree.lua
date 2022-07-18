@@ -1,13 +1,10 @@
 local status_ok, nvim_tree = pcall(require, "nvim-tree")
-if not status_ok then
+local icons_ok, icons = pcall(require, "user.icons")
+if not (status_ok and icons_ok) then
     return
 end
 
 nvim_tree.setup {
-    update_to_buf_dir = {
-        enable = false,
-        auto_open = false,
-    },
     filters = {
         dotfiles = false,
         -- custom = { ".git",  ".cache" },
@@ -20,7 +17,7 @@ nvim_tree.setup {
         group_empty = true,
         highlight_git = false,
         indent_markers = {
-            enable = false,
+            enable = true,
             icons = {
                 corner = "└ ",
                 edge = "│ ",
@@ -61,8 +58,8 @@ nvim_tree.setup {
     },
 }
 
-local status_ok, nvim_tree_view = pcall(require, "nvim-tree.view")
-if status_ok then
-    require('nvim-tree.view').View.winopts.signcolumn = 'no'
+local ntview_ok, nvim_tree_view = pcall(require, "nvim-tree.view")
+if ntview_ok then
+    nvim_tree_view.View.winopts.signcolumn = 'no'
 end
 

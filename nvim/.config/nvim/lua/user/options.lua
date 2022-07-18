@@ -22,12 +22,12 @@ local options = {
     number = true,                           -- set numbered lines
     relativenumber = true,                  -- set relative numbered lines
     numberwidth = 4,                         -- set number column width to 2 {default 4}
-    signcolumn = "no",                      -- always show the sign column, otherwise it would shift the text each time
     wrap = false,                            -- display lines as one long line
     scrolloff = 8,                           -- is one of my fav
     sidescrolloff = 8,
-    laststatus = 0,
-    hidden = false
+    hidden = false,
+    signcolumn = "yes",                      -- always show the sign column, otherwise it would shift the text each time
+    laststatus = 3
 }
 
 vim.opt.shortmess:append "c"

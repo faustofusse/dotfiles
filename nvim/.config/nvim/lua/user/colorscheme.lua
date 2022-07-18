@@ -1,6 +1,9 @@
-local function custom_highlights()
-    vim.cmd[[hi link TSProperty Blue]]
+local colorscheme = 'gruvbox-material'
 
+local customs = {}
+
+customs['gruvbox-material'] = function()
+    vim.cmd[[hi link TSProperty Blue]]
     return {
         Normal = { bg = "none" },
         EndOfBuffer = { bg = "none" },
@@ -16,12 +19,17 @@ local function custom_highlights()
 end
 
 local function polyfill_custom_highlights()
-    local customs = custom_highlights()
-    for key, value in pairs(customs) do
-        vim.highlight.create(key, { guifg = value.fg, guibg = value.bg }, false)
+    local values = customs[vim.g.colors_name]
+    if values ~= nil then
+        for key, value in pairs(values()) do
+            vim.highlight.create(key, { guifg = value.fg, guibg = value.bg }, false)
+        end
     end
 end
 
-vim.cmd[[colorscheme gruvbox-material]]
+local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
+if not status_ok then
+  return
+end
 
 polyfill_custom_highlights()

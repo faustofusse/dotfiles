@@ -27,17 +27,17 @@ font:
   size: 17.0
   use_thin_strokes: true # (macOS only)
   normal:
-    family: Fira Code Retina
-    style: Retina
-  bold:
-    family: FiraCode Nerd Font 
-    style: Bold
-  italic:
-    family: FiraCode Nerd Font 
-    style: Italic
-  bold_italic:
-    family: FiraCode Nerd Font 
-    style: Bold Italic
+    family: "JetBrainsMono Nerd Font Mono"
+    style: Regular # Retina
+  # bold:
+  #   family: "Fira Code"
+  #   style: Bold
+  # italic:
+  #   family: "Fira Code"
+  #   style: Italic
+  # bold_italic:
+  #   family: "Fira Code"
+  #   style: SemiBold
   #offset:
   #  x: 0
   #  y: 0

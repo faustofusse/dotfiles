@@ -56,13 +56,13 @@ return packer.startup(function(use)
     -- Themes
     use "morhetz/gruvbox"
     use "sainnhe/gruvbox-material"
-    use "sainnhe/everforest"
 
     -- Icons
     use "kyazdani42/nvim-web-devicons"
 
     -- Status Bar
-    use "nvim-lualine/lualine.nvim"
+    -- use "nvim-lualine/lualine.nvim"
+    use 'feline-nvim/feline.nvim'
 
     -- Telescope / Harpoon
     use "nvim-lua/plenary.nvim"
@@ -84,8 +84,11 @@ return packer.startup(function(use)
     use "hrsh7th/vim-vsnip"
 
     -- Treesitter
-    use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" } 
+    use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }
     use "nvim-treesitter/playground"
+
+    -- Database
+    use { "kristijanhusak/vim-dadbod-ui", requires = { "tpope/vim-dadbod" } }
 
     -- REST
     use { "NTBBloodbath/rest.nvim", requires = { "nvim-lua/plenary.nvim" } }

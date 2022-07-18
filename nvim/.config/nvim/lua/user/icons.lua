@@ -1,15 +1,15 @@
 return {
     kind = {
         Text = "",
-        -- Method = "m",
-        -- Function = "",
-        -- Constructor = "",
-        Method = "",
         Function = "",
-        Constructor = "",
+        Constructor = "",
+        Method = "",
+        -- Function = "",
+        -- Constructor = "",
+        -- Method = "m",
         Field = "",
-        -- Variable = "",
         Variable = "",
+        -- Variable = "",
         Class = "",
         Interface = "",
         -- Module = "",
@@ -85,12 +85,19 @@ return {
         Table = "",
         Calendar = "",
     },
+    -- diagnostics = {
+    --     Error = "",
+    --     Warning = "",
+    --     Information = "",
+    --     Question = "",
+    --     Hint = "",
+    -- },
     diagnostics = {
-        Error = "",
-        Warning = "",
-        Information = "",
+        Error = "",
+        Warning = "",
+        Information = "",
         Question = "",
-        Hint = "",
+        Hint = "",
     },
     misc = {
         Robot = "ﮧ",
@@ -99,3 +106,4 @@ return {
         Watch = "",
     },
 }
+
