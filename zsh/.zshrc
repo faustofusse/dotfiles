@@ -79,6 +79,7 @@ alias utnso="clear && sshpass -p utnso ssh -t utnso@127.0.0.1 -p 2222 'cd /home/
 alias ssharch="sshpass -p fausto ssh -t fausto@127.0.0.1 -p 7999 'zsh; clear'"
 
 alias lg="lazygit"
+alias ts="tmux-sessionizer"
 alias :q="exit"
 alias v="nvim"
 alias ccd="cd \"\$(findproject)\" && clear"
