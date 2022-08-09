@@ -11,6 +11,9 @@ nvim_tree.setup {
         custom = {},
         exclude = {}
     },
+    view = {
+        signcolumn = "no",
+    },
     renderer = {
         special_files = {},
         add_trailing = true,
@@ -18,15 +21,23 @@ nvim_tree.setup {
         highlight_git = false,
         indent_markers = {
             enable = true,
+            inline_arrows = true,
             icons = {
-                corner = "└ ",
-                edge = "│ ",
-                none = "  ",
+                corner = "└",
+                edge = "│",
+                item = "│",
+                none = " ",
             },
         },
         icons = {
             webdev_colors = true,
             git_placement = "before",
+            show = {
+                file = true,
+                folder = true,
+                folder_arrow = true,
+                git = true,
+            },
             glyphs = {
                 default = "",
                 symlink = "",
@@ -57,9 +68,4 @@ nvim_tree.setup {
         timeout = 400,
     },
 }
-
-local ntview_ok, nvim_tree_view = pcall(require, "nvim-tree.view")
-if ntview_ok then
-    nvim_tree_view.View.winopts.signcolumn = 'no'
-end
 

@@ -27,7 +27,7 @@ local options = {
     sidescrolloff = 8,
     hidden = false,
     signcolumn = "yes",                      -- always show the sign column, otherwise it would shift the text each time
-    laststatus = 3
+    laststatus = 0 -- 3
 }
 
 vim.opt.shortmess:append "c"
