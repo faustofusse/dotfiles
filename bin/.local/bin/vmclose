@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+vboxmanage list runningvms | fzf --layout=reverse | xargs echo | sed 's/{.*}//g;s/.$//g' | xargs -I_ bash -c 'vboxmanage controlvm \"_\" poweroff soft'
+
