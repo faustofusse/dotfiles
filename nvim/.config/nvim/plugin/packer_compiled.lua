@@ -119,6 +119,11 @@ _G.packer_plugins = {
     path = "/Users/faustofusse/.local/share/nvim/site/pack/packer/start/hop.nvim",
     url = "https://github.com/phaazon/hop.nvim"
   },
+  neoformat = {
+    loaded = true,
+    path = "/Users/faustofusse/.local/share/nvim/site/pack/packer/start/neoformat",
+    url = "https://github.com/sbdchd/neoformat"
+  },
   ["nvim-cmp"] = {
     loaded = true,
     path = "/Users/faustofusse/.local/share/nvim/site/pack/packer/start/nvim-cmp",

@@ -52,6 +52,7 @@ return packer.startup(function(use)
     use "tpope/vim-commentary"
     use "lewis6991/gitsigns.nvim"
     use "phaazon/hop.nvim"
+    use "sbdchd/neoformat"
 
     -- Themes
     use "morhetz/gruvbox"
