@@ -12,7 +12,7 @@ export PATH="$PATH:/usr/local/bin"
 export PATH="$PATH:$HOME/.local/bin"
 
 # openvpn (commented on 02/aug/2022)
-# export PATH="$PATH:/usr/local/Cellar/openvpn/2.5.3/sbin"
+export PATH="$PATH:/usr/local/Cellar/openvpn/2.5.7/sbin"
 
 # java
 export JDTLS_HOME='/Library/Java/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository'
@@ -65,13 +65,15 @@ export LANG=en_US.UTF-8
 export IDF_PATH=~/esp/ESP8266_RTOS_SDK
 export PATH="$PATH:$HOME/esp/ESP8266_RTOS_SDK/xtensa-lx106-elf/bin"
 
-# Aliases
-# alias ffpb="python -m ffpb"
+# bun completions
+[ -s "/Users/faustofusse/.bun/_bun" ] && source "/Users/faustofusse/.bun/_bun"
 
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# aliases
 alias lg="lazygit"
 alias ts="tmux-sessionizer"
 alias v="nvim"
 alias ccd="cd \"\$(findproject)\" && clear"
-
-# clear && neofetch # --source hola.png
-# clear
