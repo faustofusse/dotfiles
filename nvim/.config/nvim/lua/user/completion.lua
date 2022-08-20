@@ -43,7 +43,7 @@ cmp.setup({
             vim_item.menu = ({
                 nvim_lsp = "[LSP]", nvim_lua = "[Nvim]", luasnip = "[Snippet]", buffer = "[Buffer]", path = "[Path]", emoji = "[Emoji]",
             })[entry.source.name]
-            vim_item.abbr = string.sub(vim_item.abbr, 1, 20)
+            -- vim_item.abbr = string.sub(vim_item.abbr, 1, 20)
             return vim_item
         end,
     },

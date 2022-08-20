@@ -1,6 +1,6 @@
 local options = {
     backup = false,                          -- creates a backup file
-    clipboard = "unnamedplus",               -- allows neovim to access the system clipboard
+    -- clipboard = "unnamedplus",               -- allows neovim to access the system clipboard
     conceallevel = 0,                        -- so that `` is visible in markdown files
     fileencoding = "utf-8",                  -- the encoding written to a file
     hlsearch = false,                         -- highlight all matches on previous search pattern
