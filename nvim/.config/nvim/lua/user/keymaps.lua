@@ -44,10 +44,6 @@ keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 keymap("n", "<leader>td", ":DBUIToggle<cr>", opts)
 keymap("n", "<leader>w", ":silent write<cr>", opts)
 
--- Hop
--- keymap("n", "<leader>a", ":HopChar1<cr>", opts)
--- keymap("n", "<leader>w", ":HopWord<cr>", opts)
-
 -- SignColumn
 vim.cmd([['
     function! ToggleSignColumn()

@@ -114,11 +114,6 @@ _G.packer_plugins = {
     path = "/Users/faustofusse/.local/share/nvim/site/pack/packer/start/harpoon",
     url = "https://github.com/ThePrimeagen/harpoon"
   },
-  ["hop.nvim"] = {
-    loaded = true,
-    path = "/Users/faustofusse/.local/share/nvim/site/pack/packer/start/hop.nvim",
-    url = "https://github.com/phaazon/hop.nvim"
-  },
   neoformat = {
     loaded = true,
     path = "/Users/faustofusse/.local/share/nvim/site/pack/packer/start/neoformat",

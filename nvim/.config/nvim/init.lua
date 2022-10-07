@@ -5,7 +5,6 @@ require("user.options")
 require("user.telescope")
 require("user.completion")
 require("user.treesitter")
-require("user.hop")
 require("user.feline") -- lualine
 require("user.dadbod")
 require("user.keymaps")
