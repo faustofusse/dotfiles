@@ -1,3 +1,7 @@
+# # vim: filetype=muttrc
+
+# https://gideonwolfe.com/posts/workflow/neomutt/intro/
+
 # General
 
 source ~/.config/neomutt/settings
@@ -11,3 +15,6 @@ folder-hook $folder 'source ~/.config/neomutt/accounts/main'
 
 source ~/.config/neomutt/accounts/utn
 folder-hook $folder 'source ~/.config/neomutt/accounts/utn'
+
+source ~/.config/neomutt/accounts/mypro
+folder-hook $folder 'source ~/.config/neomutt/accounts/mypro'

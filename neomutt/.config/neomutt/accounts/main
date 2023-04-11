@@ -1,0 +1,29 @@
+# vim: filetype=muttrc
+unmailboxes *
+
+set imap_user="faustofusse@gmail.com"
+set imap_pass=`/usr/bin/security find-generic-password -w -a 'faustofusse@gmail.com' -s 'Gmail'`
+
+set imap_keepalive = 300 # Keep the IMAP connection alive by polling intermittently (time in seconds).
+unset imap_passive # Allow Mutt to open a new IMAP connection automatically.
+
+set folder=imaps://imap.gmail.com/
+set spoolfile=+INBOX
+set record="+[Gmail]/Sent Mail"
+set postponed="+[Gmail]/Drafts"
+
+set realname="Fausto Fusse"
+set from = "faustofusse@gmail.com"
+set envelope_from
+set use_from = "yes"
+set record = "+Sent"
+set trash = "+Trash"
+set postponed = "+Drafts"
+set mail_check = 6
+
+# You can use any gmail imap mailboxes
+mailboxes =INBOX =[Gmail]/Sent\ Mail =[Gmail]/Drafts =[Gmail]/Spam =[Gmail]/Trash
+
+set smtp_url="smtps://faustofusse@gmail.com@smtp.gmail.com:465/"
+set smtp_pass=`/usr/bin/security find-generic-password -w -a 'faustofusse@gmail.com' -s 'Gmail'`
+set smtp_authenticators="gssapi:login"
