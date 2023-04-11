@@ -6,7 +6,8 @@ customs['gruvbox-material'] = function()
     vim.cmd[[hi link TSProperty Blue]]
     return {
         Normal = { bg = "none" },
-        EndOfBuffer = { bg = "none" },
+        NormalFloat = { bg = "none" },
+        EndOfBuffer = { bg = "none", fg = "#5a524c" },
         CopilotSuggestion = { fg = "#928374", bg = "#3c3836" },
         TelescopeSelection = { fg = "#928374" },
         TelescopeMatching = { fg = "#d4be98" },
@@ -18,18 +19,19 @@ customs['gruvbox-material'] = function()
     }
 end
 
-local function polyfill_custom_highlights()
+local function custom_highlights()
     local values = customs[vim.g.colors_name]
     if values ~= nil then
         for key, value in pairs(values()) do
-            vim.highlight.create(key, { guifg = value.fg, guibg = value.bg }, false)
+            vim.api.nvim_set_hl(0, key, value)
         end
     end
 end
 
-local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
-if not status_ok then
-  return
+function SetColorscheme(color)
+    color = color or colorscheme
+    vim.cmd.colorscheme(color)
+    custom_highlights()
 end
 
-polyfill_custom_highlights()
+SetColorscheme()

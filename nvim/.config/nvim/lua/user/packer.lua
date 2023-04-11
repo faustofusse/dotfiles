@@ -49,9 +49,16 @@ return packer.startup(function(use)
     use "jiangmiao/auto-pairs"
     use "alvan/vim-closetag"
     use "tpope/vim-surround"
-    use "tpope/vim-commentary"
+    -- use "tpope/vim-commentary"
     use "lewis6991/gitsigns.nvim"
     use "sbdchd/neoformat"
+
+    use {
+        'numToStr/Comment.nvim',
+        config = function()
+            require('Comment').setup()
+        end
+    }
 
     -- Themes
     use "morhetz/gruvbox"
@@ -91,7 +98,7 @@ return packer.startup(function(use)
     use { "kristijanhusak/vim-dadbod-ui", requires = { "tpope/vim-dadbod" } }
 
     -- REST
-    use { "NTBBloodbath/rest.nvim", requires = { "nvim-lua/plenary.nvim" } }
+    -- use { "NTBBloodbath/rest.nvim", requires = { "nvim-lua/plenary.nvim" } }
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins

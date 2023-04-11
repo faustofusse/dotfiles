@@ -1,0 +1,13 @@
+# General
+
+source ~/.config/neomutt/settings
+source ~/.config/neomutt/colors
+source ~/.config/neomutt/mappings
+
+# Accounts
+
+source ~/.config/neomutt/accounts/main
+folder-hook $folder 'source ~/.config/neomutt/accounts/main'
+
+source ~/.config/neomutt/accounts/utn
+folder-hook $folder 'source ~/.config/neomutt/accounts/utn'

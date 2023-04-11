@@ -1,0 +1,15 @@
+-- print("Iniciando...")
+--
+-- print('version: ' .. _VERSION)
+--
+-- -- local home = os.getenv("HOME")
+-- -- package.path = package.path .. ';' .. home .. '/.luarocks/share/lua/' .. _VERSION
+-- -- package.path = package.path .. ';' .. home .. '/.luarocks/share/lua/5.1/?/init.lua'
+-- print(package.path)
+--
+-- package.cpath = package.cpath .. ";/usr/local/lib/lua/5.1/?.so"
+--
+-- print(package.cpath)
+--
+-- local IRCe = require("irce")
+-- print(IRCe._VERSION .. " running on " .. _VERSION)

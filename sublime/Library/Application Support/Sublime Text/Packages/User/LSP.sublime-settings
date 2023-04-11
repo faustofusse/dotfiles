@@ -1,0 +1,39 @@
+{
+	"clients":
+	{
+		"clangd":
+		{
+			"enabled": true,
+		},
+		"rust-analyzer":
+		{
+			"enabled": true,
+		},
+		"gopls":
+		{
+			"enabled": true,
+		},
+		"pyright":
+		{
+			"enabled": true,
+			"command": [
+				"pyright-langserver",
+				"--stdio"
+			],
+			"selector": "source.py"
+		},
+		"erlang-ls":
+		{
+			"enabled": true
+		},
+		"tsserver":
+		{
+			"enabled": true,
+			"command": [
+				"typescript-language-server",
+				"--stdio"
+			],
+			"selector": "source.js | source.ts | source.tsx | source.jsx"
+		}
+	},
+}

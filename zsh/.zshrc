@@ -2,9 +2,9 @@
 ZSH_THEME="common" # robbyrussel, lambda-gitster, typewritten, common, bunnyruni, another, logico, pi
 export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-autoload -U compinit && compinit
-plugins=( git bundler dotenv macos rake rbenv ruby zsh-completions pyenv vi-mode )
+# source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+# autoload -U compinit && compinit
+plugins=( git bundler dotenv macos rake rbenv ruby pyenv vi-mode ) # zsh-completions 
 
 # path
 # export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -12,7 +12,10 @@ export PATH="$PATH:/usr/local/bin"
 export PATH="$PATH:$HOME/.local/bin"
 
 # openvpn (commented on 02/aug/2022)
-export PATH="$PATH:/usr/local/Cellar/openvpn/2.5.7/sbin"
+export PATH="$PATH:/usr/local/Cellar/openvpn/2.5.8/sbin"
+
+# openai
+export OPENAI_API_KEY='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'
 
 # java
 export JDTLS_HOME='/Library/Java/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository'
@@ -35,6 +38,19 @@ export DEBUGINFOD_URLS="https://debuginfod.archlinux.org"
 
 # pyenv
 eval "$(pyenv init -)" 
+eval "$(pyenv virtualenv-init -)"
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+export BASE_PROMPT=$PS1
+function updatePrompt {
+    if [[ "$(pyenv version-name)" != "system" ]]; then
+        # the next line should be double quote; single quote would not work for me
+        export PS1="($(pyenv version-name)) "$BASE_PROMPT 
+    else
+        export PS1=$BASE_PROMPT
+    fi
+}
+export PROMPT_COMMAND='updatePrompt'
+precmd() { eval '$PROMPT_COMMAND' } # this line is necessary for zsh
 
 # dotnet
 export PATH="$PATH:$HOME/.dotnet/tools"
@@ -72,8 +88,20 @@ export PATH="$PATH:$HOME/esp/ESP8266_RTOS_SDK/xtensa-lx106-elf/bin"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
+# docker
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
+
+# lua
+eval "$(luarocks path)"
+
+# openssl (for lua)
+export PATH="$PATH:/usr/local/opt/openssl/bin"
+export PATH="$PATH:$(brew --prefix openssl)/bin"
+
 # aliases
 alias lg="lazygit"
 alias ts="tmux-sessionizer"
 alias v="nvim"
 alias ccd="cd \"\$(findproject)\" && clear"
+alias tsm="transmission-remote"
+alias ctb="clear && tb"

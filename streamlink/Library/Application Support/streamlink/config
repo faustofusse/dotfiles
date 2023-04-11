@@ -1,0 +1,6 @@
+# Player options
+player=mpv --cache 2048
+player-no-close
+
+# Authenticate with Twitch
+# twitch-oauth-token=mytoken

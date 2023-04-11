@@ -13,7 +13,10 @@ local sorters = require("telescope.sorters")
 
 telescope.setup({
     defaults = {
-        file_sorter = sorters.get_fzy_sorter,
+        -- file_sorter = sorters.get_fzy_sorter,
+        file_ignore_patterns = {
+            "node_modules",
+        },
         color_devicons = true,
         mappings = {
             i = {
@@ -34,4 +37,4 @@ telescope.setup({
     },
 })
 
-telescope.load_extension("fzy_native")
+-- telescope.load_extension("fzy_native")

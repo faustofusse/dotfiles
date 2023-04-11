@@ -1,48 +1,47 @@
 local opts = { noremap = true, silent = true }
-
 local term_opts = { silent = true }
 
 -- Shorten function name
-local keymap = vim.api.nvim_set_keymap
+local remap = vim.api.nvim_set_keymap
 
 -- Remap space as leader key
-keymap("", "<Space>", "<Nop>", opts)
+remap("", "<Space>", "<Nop>", opts)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.opt.timeoutlen = 2000
 
 -- go to .h
-keymap("n", "<leader><C-^>", ":e %:p:h:h/include/%:t:r.h<cr>", opts)
+remap("n", "<leader><C-^>", ":e %:p:h:h/include/%:t:r.h<cr>", opts)
 
 -- QuickFix
-keymap("n", "]q", ":cn<cr>", opts)
-keymap("n", "[q", ":cp<cr>", opts)
+remap("n", "]q", ":cn<cr>", opts)
+remap("n", "[q", ":cp<cr>", opts)
 
 -- Clipboard
-keymap("v", "<leader>y", "\"*y", opts)
-keymap("v", "<leader>Y", "\"+y", opts)
+remap("v", "<leader>y", "\"*y", opts)
+remap("v", "<leader>Y", "\"+y", opts)
 
 -- Telescope
-keymap("n", "<C-p>", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy({}))<cr>", opts)
-keymap("n", "<leader>ff", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy({}))<cr>", opts)
-keymap("n", "<leader>fg", ":lua require('telescope.builtin').live_grep(require('telescope.themes').get_dropdown({}))<cr>", opts)
-keymap("n", "<leader>fb", ":lua require('telescope.builtin').buffers()<cr>", opts)
-keymap("n", "<leader>fh", ":lua require('telescope.builtin').help_tags()<cr>", opts)
+remap("n", "<C-p>", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy({}))<cr>", opts)
+remap("n", "<leader>ff", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy({}))<cr>", opts)
+remap("n", "<leader>fg", ":lua require('telescope.builtin').live_grep(require('telescope.themes').get_dropdown({}))<cr>", opts)
+remap("n", "<leader>fb", ":lua require('telescope.builtin').buffers()<cr>", opts)
+remap("n", "<leader>fh", ":lua require('telescope.builtin').help_tags()<cr>", opts)
 
 -- Harpoon
-keymap("n", "<leader>a", ":lua require('harpoon.mark').add_file()<cr>", opts)
-keymap("n", "<leader>h", ":lua require('harpoon.ui').toggle_quick_menu()<cr>", opts)
-keymap("n", "<leader>j", ":lua require('harpoon.ui').nav_file(1)<cr>", opts)
-keymap("n", "<leader>k", ":lua require('harpoon.ui').nav_file(2)<cr>", opts)
-keymap("n", "<leader>l", ":lua require('harpoon.ui').nav_file(3)<cr>", opts)
-keymap("n", "<leader>;", ":lua require('harpoon.ui').nav_file(4)<cr>", opts)
+remap("n", "<leader>a", ":lua require('harpoon.mark').add_file()<cr>", opts)
+remap("n", "<leader>h", ":lua require('harpoon.ui').toggle_quick_menu()<cr>", opts)
+remap("n", "<leader>j", ":lua require('harpoon.ui').nav_file(1)<cr>", opts)
+remap("n", "<leader>k", ":lua require('harpoon.ui').nav_file(2)<cr>", opts)
+remap("n", "<leader>l", ":lua require('harpoon.ui').nav_file(3)<cr>", opts)
+remap("n", "<leader>;", ":lua require('harpoon.ui').nav_file(4)<cr>", opts)
 
 -- NvimTree
-keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
+remap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 
 -- Dadbod
-keymap("n", "<leader>td", ":DBUIToggle<cr>", opts)
-keymap("n", "<leader>w", ":silent write<cr>", opts)
+remap("n", "<leader>td", ":DBUIToggle<cr>", opts)
+remap("n", "<leader>w", ":silent write<cr>", opts)
 
 -- SignColumn
 vim.cmd([['
@@ -58,5 +57,5 @@ vim.cmd([['
         endif
     endfunction
 ']])
-keymap("n", "<C-s>", ":call ToggleSignColumn()<cr>", opts)
+remap("n", "<C-s>", ":call ToggleSignColumn()<cr>", opts)
 

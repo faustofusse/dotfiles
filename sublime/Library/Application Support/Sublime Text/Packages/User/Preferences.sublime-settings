@@ -1,0 +1,12 @@
+{
+	"font_size": 18,
+	"file_tab_style": "square", // rounded, square
+	"hide_new_tab_button": true,
+	"hot_exit": "disabled",
+	"create_window_at_startup": false,
+	"ignored_packages": [
+	],
+	"remember_layout": false,
+	"color_scheme": "Mariana.sublime-color-scheme",
+	"auto_complete": true,
+}

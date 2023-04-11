@@ -56,21 +56,7 @@ end
 nvim_lsp.clangd.setup {
     on_attach = on_attach,
     cmd = { "clangd", "--header-insertion=never" },
-    capabilities = cmp_nvim_lsp.update_capabilities(vim.lsp.protocol.make_client_capabilities())
-}
-
--- sumneko
-nvim_lsp.sumneko_lua.setup {
-    on_attach = on_attach,
-    settings = {
-        Lua = {
-            runtime = { version = 'LuaJIT' },
-            diagnostics = { globals = {'vim'} },
-            workspace = { library = vim.api.nvim_get_runtime_file("", true) },
-            telemetry = { enable = false },
-        },
-    },
-    capabilities = cmp_nvim_lsp.update_capabilities(vim.lsp.protocol.make_client_capabilities())
+    capabilities = cmp_nvim_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
 }
 
 -- -- C# (Unity) -> Funciona muy mal
@@ -79,16 +65,16 @@ nvim_lsp.sumneko_lua.setup {
 -- nvim_lsp.omnisharp.setup {
 --     on_attach = on_attach,
 --     cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid) },
---     capabilities = cmp_nvim_lsp.update_capabilities(vim.lsp.protocol.make_client_capabilities())
+--     capabilities = cmp_nvim_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
 -- }
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'pyright', 'tsserver', 'gopls', 'rust_analyzer', 'dartls', 'julials' }
+local servers = { 'pyright', 'tsserver', 'gopls', 'rust_analyzer', 'dartls', 'julials', 'lua_ls' }
 for _, lsp in ipairs(servers) do
     nvim_lsp[lsp].setup {
         on_attach = on_attach,
         flags = { },
-        capabilities = cmp_nvim_lsp.update_capabilities(vim.lsp.protocol.make_client_capabilities())
+        capabilities = cmp_nvim_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
     }
 end
