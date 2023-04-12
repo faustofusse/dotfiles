@@ -62,3 +62,4 @@ zoom
 enjoyable
 stremio
 firefox-developer-edition
+elmedia-player
