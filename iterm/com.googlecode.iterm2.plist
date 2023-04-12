@@ -2179,11 +2179,11 @@
 			<key>Name</key>
 			<string>afterglow</string>
 			<key>Non Ascii Font</key>
-			<string>MesloLGMDZForPowerline-Regular 15</string>
+			<string>Menlo-Regular 11</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>JetBrainsMonoNerdFontCompleteM-Regular 18</string>
+			<string>JetBrainsMono-Regular 18</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Open Toolbelt</key>
@@ -2267,7 +2267,7 @@
 			<key>Window Type</key>
 			<integer>0</integer>
 			<key>Working Directory</key>
-			<string>/Users/faustofusse</string>
+			<string>/Users/fausto</string>
 		</dict>
 		<dict>
 			<key>ASCII Anti Aliased</key>
@@ -3007,7 +3007,7 @@
 			<key>Window Type</key>
 			<integer>0</integer>
 			<key>Working Directory</key>
-			<string>/Users/faustofusse</string>
+			<string>/Users/fausto</string>
 		</dict>
 		<dict>
 			<key>ASCII Anti Aliased</key>
@@ -3763,7 +3763,7 @@
 			<key>Window Type</key>
 			<integer>0</integer>
 			<key>Working Directory</key>
-			<string>/Users/faustofusse</string>
+			<string>/Users/fausto</string>
 		</dict>
 		<dict>
 			<key>ASCII Anti Aliased</key>
@@ -4505,7 +4505,7 @@
 			<key>Window Type</key>
 			<integer>0</integer>
 			<key>Working Directory</key>
-			<string>/Users/faustofusse</string>
+			<string>/Users/fausto</string>
 		</dict>
 		<dict>
 			<key>ASCII Anti Aliased</key>
@@ -5261,7 +5261,7 @@
 			<key>Window Type</key>
 			<integer>0</integer>
 			<key>Working Directory</key>
-			<string>/Users/faustofusse</string>
+			<string>/Users/fausto</string>
 		</dict>
 	</array>
 	<key>OnlyWhenMoreTabs</key>
@@ -6062,7 +6062,7 @@
 											<key>Window Type</key>
 											<integer>0</integer>
 											<key>Working Directory</key>
-											<string>/Users/faustofusse</string>
+											<string>/Users/fausto</string>
 										</dict>
 										<key>Columns</key>
 										<integer>89</integer>
@@ -6070,14 +6070,14 @@
 										<array/>
 										<key>Directories</key>
 										<array>
-											<string>/Users/faustofusse</string>
-											<string>/Users/faustofusse</string>
-											<string>/Users/faustofusse</string>
+											<string>/Users/fausto</string>
+											<string>/Users/fausto</string>
+											<string>/Users/fasuto</string>
 										</array>
 										<key>Environment</key>
 										<dict>
 											<key>PWD</key>
-											<string>/Users/faustofusse</string>
+											<string>/Users/fausto</string>
 										</dict>
 										<key>Hostname to Shell</key>
 										<dict/>
@@ -6097,7 +6097,7 @@
 										<key>Program</key>
 										<dict>
 											<key>Command</key>
-											<string>login -fqp "faustofusse"</string>
+											<string>login -fqp "fausto"</string>
 											<key>Type</key>
 											<string>Command</string>
 										</dict>
@@ -6117,7 +6117,7 @@
 											<string>$$</string>
 										</dict>
 										<key>Working Directory</key>
-										<string>/Users/faustofusse</string>
+										<string>/Users/fausto</string>
 										<key>Working Directory Poller Disabled</key>
 										<false/>
 									</dict>
