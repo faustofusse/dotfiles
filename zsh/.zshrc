@@ -14,9 +14,6 @@ export PATH="$PATH:$HOME/.local/bin"
 # openvpn (commented on 02/aug/2022)
 export PATH="$PATH:/usr/local/Cellar/openvpn/2.5.8/sbin"
 
-# openai
-export OPENAI_API_KEY='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'
-
 # java
 export JDTLS_HOME='/Library/Java/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository'
 # export JAVA_HOME='/Library/Java/JavaVirtualMachines/jdk-17.0.1.jdk/Contents/Home'
