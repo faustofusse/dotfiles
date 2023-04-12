@@ -3,7 +3,7 @@ if not status_ok then
   return
 end
 
-local languages = { 'help', 'go', 'rust', 'python', 'html', 'json', 'javascript', 'typescript', 'julia', 'c', 'css', 'dot', 'dockerfile', 'gomod', 'http', 'kotlin', 'java', 'markdown', 'sql', 'tsx', 'lua', 'vim', 'yaml', 'bash', 'make' }
+local languages = { 'go', 'rust', 'python', 'html', 'json', 'javascript', 'typescript', 'julia', 'c', 'css', 'dot', 'dockerfile', 'gomod', 'http', 'kotlin', 'java', 'markdown', 'sql', 'tsx', 'lua', 'vim', 'yaml', 'bash', 'make' }
 
 configs.setup {
     ensure_installed = languages, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
