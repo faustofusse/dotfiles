@@ -1,3 +1,5 @@
 ./nvim/.config/nvim/autoload
 ./nvim/.config/nvim/plugin
+./mpv/.config/mpv/scripts/*.txt
 .DS_Store
+password.txt
