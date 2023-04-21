@@ -2,11 +2,14 @@
 
 cmatrix
 cpulimit
+cocoapods
 docker
 ffmpeg
 fzf
 go
+gopls
 htop
+java
 jq
 lazygit
 lf
@@ -20,11 +23,19 @@ neovim
 node
 pyenv
 pyenv-virtualenv
+pyright
+ripgrep
+rust
+rust-analyzer
+scrcpy
+spotifyd
+spotify-tui
 stow
 streamlink
 tmux
 transmission-cli
 tree
+typescript-language-server
 
 # casks
 
@@ -63,3 +74,4 @@ enjoyable
 stremio
 firefox-developer-edition
 elmedia-player
+epic-games
