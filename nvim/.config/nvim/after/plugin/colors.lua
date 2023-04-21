@@ -1,13 +1,15 @@
 local colorscheme = 'gruvbox-material'
+-- catppuccin, tokyonight, nightfox, ...
 
 local customs = {}
 
 customs['gruvbox-material'] = function()
-    vim.cmd[[hi link TSProperty Blue]]
+    vim.cmd[[highlight Normal ctermbg=NONE guibg=NONE]]
+    vim.cmd[[highlight NormalNC ctermbg=NONE guibg=NONE]]
+    vim.cmd[[highlight NormalFloat ctermbg=NONE guibg=NONE]]
+    vim.cmd[[highlight EndOfBuffer ctermbg=NONE guibg=NONE]]
+    vim.cmd[[highlight! link TSProperty Blue]]
     return {
-        Normal = { bg = "none" },
-        NormalFloat = { bg = "none" },
-        EndOfBuffer = { bg = "none", fg = "#5a524c" },
         CopilotSuggestion = { fg = "#928374", bg = "#3c3836" },
         TelescopeSelection = { fg = "#928374" },
         TelescopeMatching = { fg = "#d4be98" },
@@ -19,6 +21,7 @@ customs['gruvbox-material'] = function()
     }
 end
 
+         -- EndOfBuffer = { bg = "none", fg = "#5a524c" },
 local function custom_highlights()
     local values = customs[vim.g.colors_name]
     if values ~= nil then
