@@ -14,11 +14,17 @@ export PATH="$PATH:$HOME/.local/bin"
 # openvpn (commented on 02/aug/2022)
 export PATH="$PATH:/usr/local/Cellar/openvpn/2.5.8/sbin"
 
+# rust
+source "$HOME/.cargo/env"
+
 # java
-export JDTLS_HOME='/Library/Java/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository'
+# export JDTLS_HOME='/Library/Java/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository'
 # export JAVA_HOME='/Library/Java/JavaVirtualMachines/jdk-17.0.1.jdk/Contents/Home'
-export JAVA_HOME='/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home'
+# export JAVA_HOME='/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home'
 # export JAVA_HOME='/Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home'
+# export JAVA_HOME='/Library/Java/JavaVirtualMachines/openjdk.jdk/Contents/Home'
+export JAVA_HOME='/Library/Java/JavaVirtualMachines/openjdk-11.jdk/Contents/Home'
+# export JAVA_HOME='/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home'
 export PATH="$PATH:$JAVA_HOME/bin"
 
 # ruby
@@ -102,3 +108,4 @@ alias v="nvim"
 alias ccd="cd \"\$(findproject)\" && clear"
 alias tsm="transmission-remote"
 alias ctb="clear && tb"
+alias ffpb="python3 -m ffpb"
