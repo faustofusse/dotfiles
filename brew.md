@@ -4,6 +4,7 @@ cmatrix
 cpulimit
 cocoapods
 docker
+fd
 ffmpeg
 fzf
 go
