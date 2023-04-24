@@ -1,5 +1,5 @@
 local colorscheme = 'gruvbox-material'
--- catppuccin, tokyonight, nightfox, ...
+-- gruvbox-material, catppuccin, tokyonight, nightfox, ...
 
 local customs = {}
 

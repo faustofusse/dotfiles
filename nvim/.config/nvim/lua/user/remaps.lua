@@ -10,9 +10,6 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.opt.timeoutlen = 2000
 
--- go to .h
-remap("n", "<leader><C-^>", ":e %:p:h:h/include/%:t:r.h<cr>", opts)
-
 -- QuickFix
 remap("n", "]q", ":cn<cr>", opts)
 remap("n", "[q", ":cp<cr>", opts)
@@ -38,24 +35,4 @@ remap("n", "<leader>;", ":lua require('harpoon.ui').nav_file(4)<cr>", opts)
 
 -- NvimTree
 remap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
-
--- Dadbod
-remap("n", "<leader>td", ":DBUIToggle<cr>", opts)
-remap("n", "<leader>w", ":silent write<cr>", opts)
-
--- SignColumn
-vim.cmd([['
-    function! ToggleSignColumn()
-        if !exists("b:signcolumn_on") || !b:signcolumn_on
-            " set signcolumn=yes
-            set laststatus=3
-            let b:signcolumn_on=1
-        else
-            " set signcolumn=no
-            set laststatus=0
-            let b:signcolumn_on=0
-        endif
-    endfunction
-']])
-remap("n", "<C-s>", ":call ToggleSignColumn()<cr>", opts)
 
