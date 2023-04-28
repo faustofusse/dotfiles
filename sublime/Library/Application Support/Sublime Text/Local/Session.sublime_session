@@ -12,9 +12,9 @@
 		"/Users/fausto/Documents/Importante/recovery"
 	],
 	"last_version": 4143,
-	"last_window_id": 17,
+	"last_window_id": 23,
 	"log_indexing": false,
-	"next_update_check": 1681833826,
+	"next_update_check": 1682693081,
 	"settings":
 	{
 		"new_window_full_screen": false,
@@ -22,7 +22,7 @@
 		"new_window_maximized": false,
 		"new_window_position":
 		[
-			1688.0,
+			2084.0,
 			-989.0
 		],
 		"new_window_settings":
@@ -47,6 +47,10 @@
 				"last_filter": "",
 				"selected_items":
 				[
+					[
+						"formatej",
+						"Formatter: Beautify With JS Beautifier"
+					],
 					[
 						":w",
 						":w - Save"
@@ -106,7 +110,6 @@
 				"case_sensitive": false,
 				"find_history":
 				[
-					"import"
 				],
 				"highlight": true,
 				"in_selection": false,
@@ -191,7 +194,7 @@
 			{
 			}
 		},
-		"new_window_width": 788.0
+		"new_window_width": 1188.0
 	},
 	"windows":
 	[
