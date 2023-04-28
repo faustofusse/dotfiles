@@ -1,13 +1,8 @@
-local colorscheme = 'gruvbox-material'
--- gruvbox-material, catppuccin, tokyonight, nightfox, ...
+local colorscheme = 'catppuccin'
 
 local customs = {}
 
 customs['gruvbox-material'] = function()
-    vim.cmd[[highlight Normal ctermbg=NONE guibg=NONE]]
-    vim.cmd[[highlight NormalNC ctermbg=NONE guibg=NONE]]
-    vim.cmd[[highlight NormalFloat ctermbg=NONE guibg=NONE]]
-    vim.cmd[[highlight EndOfBuffer ctermbg=NONE guibg=NONE]]
     vim.cmd[[highlight! link TSProperty Blue]]
     return {
         CopilotSuggestion = { fg = "#928374", bg = "#3c3836" },
@@ -21,8 +16,12 @@ customs['gruvbox-material'] = function()
     }
 end
 
-         -- EndOfBuffer = { bg = "none", fg = "#5a524c" },
 local function custom_highlights()
+    vim.cmd[[highlight Normal ctermbg=NONE guibg=NONE]]
+    vim.cmd[[highlight NormalNC ctermbg=NONE guibg=NONE]]
+    vim.cmd[[highlight NormalFloat ctermbg=NONE guibg=NONE]]
+    vim.cmd[[highlight EndOfBuffer ctermbg=NONE guibg=NONE]]
+
     local values = customs[vim.g.colors_name]
     if values ~= nil then
         for key, value in pairs(values()) do

@@ -1,7 +1,8 @@
 local icons = require('user.icons')
 return {
     'kyazdani42/nvim-tree.lua',
-    config = {
+    cmd = { 'NvimTreeOpen', 'NvimTreeToggle' },
+    opts = {
         filters = {
             dotfiles = false,
             -- custom = { ".git",  ".cache" },

@@ -2,12 +2,12 @@
 ZSH_THEME="common" # robbyrussel, lambda-gitster, typewritten, common, bunnyruni, another, logico, pi
 export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
-# source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-# autoload -U compinit && compinit
-plugins=( git bundler dotenv macos rake rbenv ruby pyenv vi-mode ) # zsh-completions 
+plugins=( git bundler dotenv macos rake rbenv ruby pyenv vi-mode )
+
+# iterm
+export DISABLE_AUTO_TITLE="true"
 
 # path
-# export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 export PATH="$PATH:/usr/local/bin"
 export PATH="$PATH:$HOME/.local/bin"
 
@@ -18,13 +18,7 @@ export PATH="$PATH:/usr/local/Cellar/openvpn/2.5.8/sbin"
 source "$HOME/.cargo/env"
 
 # java
-# export JDTLS_HOME='/Library/Java/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository'
-# export JAVA_HOME='/Library/Java/JavaVirtualMachines/jdk-17.0.1.jdk/Contents/Home'
-# export JAVA_HOME='/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home'
-# export JAVA_HOME='/Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home'
-# export JAVA_HOME='/Library/Java/JavaVirtualMachines/openjdk.jdk/Contents/Home'
 export JAVA_HOME='/Library/Java/JavaVirtualMachines/openjdk-11.jdk/Contents/Home'
-# export JAVA_HOME='/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home'
 export PATH="$PATH:$JAVA_HOME/bin"
 
 # ruby
@@ -55,15 +49,7 @@ function updatePrompt {
 export PROMPT_COMMAND='updatePrompt'
 precmd() { eval '$PROMPT_COMMAND' } # this line is necessary for zsh
 
-# dotnet
-export PATH="$PATH:$HOME/.dotnet/tools"
-# export DOTNET_ROOT="/usr/local/share/dotnet"
-
 # android
-# export ANDROID_HOME=/Users/faustofusse/Library/Android/sdk
-# export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
-# export ANDROID_SDK=$HOME/Library/Android/sdk
-# export PATH=$PATH:$ANDROID_SDK/emulator
 export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
 export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
@@ -84,12 +70,10 @@ export LANG=en_US.UTF-8
 export IDF_PATH=~/esp/ESP8266_RTOS_SDK
 export PATH="$PATH:$HOME/esp/ESP8266_RTOS_SDK/xtensa-lx106-elf/bin"
 
-# bun completions
-[ -s "/Users/faustofusse/.bun/_bun" ] && source "/Users/faustofusse/.bun/_bun"
-
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+[ -s "/Users/faustofusse/.bun/_bun" ] && source "/Users/faustofusse/.bun/_bun"
 
 # docker
 export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
@@ -107,5 +91,6 @@ alias ts="tmux-sessionizer"
 alias v="nvim"
 alias ccd="cd \"\$(findproject)\" && clear"
 alias tsm="transmission-remote"
-alias ctb="clear && tb"
 alias ffpb="python3 -m ffpb"
+alias ctb="clear && tb"
+alias ttb="tb -l"
