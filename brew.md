@@ -6,10 +6,12 @@ cocoapods
 docker
 fd
 ffmpeg
+flutter
 fzf
 go
 gopls
 htop
+httpie
 java
 jq
 lazygit
@@ -29,6 +31,7 @@ ripgrep
 rust
 rust-analyzer
 scrcpy
+slides
 spotifyd
 spotify-tui
 stow
