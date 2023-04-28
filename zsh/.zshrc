@@ -4,9 +4,6 @@ export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 plugins=( git bundler dotenv macos rake rbenv ruby pyenv vi-mode )
 
-# iterm
-export DISABLE_AUTO_TITLE="true"
-
 # path
 export PATH="$PATH:/usr/local/bin"
 export PATH="$PATH:$HOME/.local/bin"
