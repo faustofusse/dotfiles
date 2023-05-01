@@ -13,5 +13,7 @@
 	],
 	"in_process_packages":
 	[
+		"LSP",
+		"Tabnine",
 	],
 }
