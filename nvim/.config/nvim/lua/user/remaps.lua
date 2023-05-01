@@ -21,6 +21,7 @@ remap("v", "<leader>Y", "\"+y", opts)
 -- Telescope
 remap("n", "<C-p>", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy({}))<cr>", opts)
 remap("n", "<leader>ff", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy({}))<cr>", opts)
+remap("n", "<leader>fd", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy({ cwd = '~/.dotfiles', hidden = true }))<cr>", opts)
 remap("n", "<leader>fg", ":lua require('telescope.builtin').live_grep(require('telescope.themes').get_dropdown({}))<cr>", opts)
 remap("n", "<leader>fb", ":lua require('telescope.builtin').buffers()<cr>", opts)
 remap("n", "<leader>fh", ":lua require('telescope.builtin').help_tags()<cr>", opts)
@@ -40,3 +41,17 @@ remap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 remap("n", "<leader>rrn", ":lua require('rest-nvim').run(false)<cr>", opts)
 remap("n", "<leader>rrl", ":lua require('rest-nvim').last<cr>", opts)
 remap("n", "<leader>rrp", ":lua require('rest-nvim').run(true)<cr>", opts)
+
+-- Toggle Status
+vim.cmd([['
+    function! ToggleStatusBar()
+        if !exists("b:statusbar_on") || !b:statusbar_on
+            set laststatus=3
+            let b:statusbar_on=1
+        else
+            set laststatus=0
+            let b:statusbar_on=0
+        endif
+    endfunction
+']])
+remap("n", "<C-s>", ":call ToggleStatusBar()<cr>", opts)
