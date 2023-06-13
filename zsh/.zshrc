@@ -15,7 +15,7 @@ export PATH="$PATH:/usr/local/Cellar/openvpn/2.5.8/sbin"
 source "$HOME/.cargo/env"
 
 # java
-export JAVA_HOME='/Library/Java/JavaVirtualMachines/openjdk-11.jdk/Contents/Home'
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-11.jdk/Contents/Home"
 export PATH="$PATH:$JAVA_HOME/bin"
 
 # ruby
@@ -33,7 +33,7 @@ export DEBUGINFOD_URLS="https://debuginfod.archlinux.org"
 # pyenv
 eval "$(pyenv init -)" 
 eval "$(pyenv virtualenv-init -)"
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+export PYENV_VIRTUALENV_DISABLE_PROMPT=2
 export BASE_PROMPT=$PS1
 function updatePrompt {
     if [[ "$(pyenv version-name)" != "system" ]]; then
@@ -70,7 +70,7 @@ export PATH="$PATH:$HOME/esp/ESP8266_RTOS_SDK/xtensa-lx106-elf/bin"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-[ -s "/Users/faustofusse/.bun/_bun" ] && source "/Users/faustofusse/.bun/_bun"
+[ -s "/Users/fausto/.bun/_bun" ] && source "/Users/fausto/.bun/_bun"
 
 # docker
 export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
