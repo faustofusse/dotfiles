@@ -1,4 +1,5 @@
 return {
+    { 'lukas-reineke/indent-blankline.nvim', opts = { show_current_context = true }, ft = { 'dart' } },
     { 'sbdchd/neoformat', cmd = 'Neoformat' },
     { 'kyazdani42/nvim-web-devicons', lazy = true },
     { 'ThePrimeagen/harpoon', lazy = true },
