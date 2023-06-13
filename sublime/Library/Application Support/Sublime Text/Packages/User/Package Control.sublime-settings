@@ -8,12 +8,9 @@
 		"LSP",
 		"MarkdownPreview",
 		"Package Control",
-		"Tabnine",
 		"Terminus",
 	],
 	"in_process_packages":
 	[
-		"LSP",
-		"Tabnine",
 	],
 }

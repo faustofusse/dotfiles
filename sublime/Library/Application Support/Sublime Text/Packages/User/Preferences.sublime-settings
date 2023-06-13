@@ -5,8 +5,6 @@
 	"hot_exit": "disabled",
 	"create_window_at_startup": false,
 	"ignored_packages": [
-		"LSP",
-		"Tabnine",
 	],
 	"remember_layout": false,
 	"color_scheme": "Mariana.sublime-color-scheme",
