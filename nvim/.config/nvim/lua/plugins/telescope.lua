@@ -4,7 +4,8 @@ return {
     tag = '0.1.1',
     dependencies = {
         'nvim-lua/plenary.nvim',
-        'nvim-telescope/telescope-fzy-native.nvim'
+        'nvim-telescope/telescope-fzy-native.nvim',
+        'nvim-telescope/telescope-ui-select.nvim'
     },
     config = function ()
         local telescope = require('telescope')
@@ -34,8 +35,12 @@ return {
                     override_generic_sorter = false,
                     override_file_sorter = true,
                 },
+                ["ui-select"] = {
+                    require("telescope.themes").get_dropdown { }
+                }
             },
         })
         telescope.load_extension("fzy_native")
+        telescope.load_extension("ui-select")
     end
 }

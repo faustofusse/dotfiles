@@ -29,7 +29,7 @@ local options = {
     signcolumn = "yes",                      -- always show the sign column, otherwise it would shift the text each time
     laststatus = 0, -- 3
     mouse = "a",
-    mousemodel = "extend"
+    mousemodel = "extend",
 }
 
 vim.opt.shortmess:append "c"
@@ -40,3 +40,6 @@ end
 
 vim.cmd "set whichwrap+=<,>,[,],h,l"
 vim.cmd [[set iskeyword+=-]]
+
+vim.g.netrw_banner = 0
+vim.g.netrw_altv = 1
