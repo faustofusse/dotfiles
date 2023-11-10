@@ -6382,6 +6382,8 @@
 	<true/>
 	<key>ShowPaneTitles</key>
 	<false/>
+	<key>SmartPlacement</key>
+	<false/>
 	<key>Snippets</key>
 	<array>
 		<dict>
