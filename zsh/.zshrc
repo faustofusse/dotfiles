@@ -2,7 +2,12 @@
 ZSH_THEME="common" # robbyrussel, lambda-gitster, typewritten, common, bunnyruni, another, logico, pi
 export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
-plugins=( git bundler dotenv macos rake rbenv ruby pyenv vi-mode )
+plugins=( git bundler macos rake rbenv ruby pyenv vi-mode )
+
+# aliases
+alias lg="lazygit"
+alias v="nvim"
+alias ccd="cd \"\$(findproject)\" && clear"
 
 # path
 export PATH="$PATH:/usr/local/bin"
@@ -19,6 +24,7 @@ export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-11.jdk/Contents/Home
 export PATH="$PATH:$JAVA_HOME/bin"
 
 # ruby
+eval "$(rbenv init - zsh)"
 export PATH="$PATH:$HOME/.rvm/bin"
 
 # golang
@@ -81,13 +87,3 @@ eval "$(luarocks path)"
 # openssl (for lua)
 export PATH="$PATH:/usr/local/opt/openssl/bin"
 export PATH="$PATH:$(brew --prefix openssl)/bin"
-
-# aliases
-alias lg="lazygit"
-alias ts="tmux-sessionizer"
-alias v="nvim"
-alias ccd="cd \"\$(findproject)\" && clear"
-alias tsm="transmission-remote"
-alias ffpb="python3 -m ffpb"
-alias ctb="clear && tb"
-alias ttb="tb -l"
