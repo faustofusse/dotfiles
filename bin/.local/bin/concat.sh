@@ -1,4 +1,4 @@
-ffmpeg -f concat -safe 0 -i $1 -c copy $2
+python3 -m ffpb -f concat -safe 0 -i $1 -c copy $2
 
 # example file:
 # file '/Users/faustofusse/Desktop/1.mp4'
