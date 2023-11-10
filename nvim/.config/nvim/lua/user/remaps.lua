@@ -10,6 +10,10 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.opt.timeoutlen = 2000
 
+-- tmux flutter
+-- remap("n", "<leader>fr", "!tmux list-windows | grep dart | awk -F: '{printf(\"tmux send-keys -t %d \"r\"\n\", $1)}' | xargs -I {} sh -c {}", opts)
+-- remap("n", "<leader>fR", "!tmux list-windows | grep dart | awk -F: '{printf(\"tmux send-keys -t %d \"R\"\n\", $1)}' | xargs -I {} sh -c {}", opts)
+
 -- QuickFix
 remap("n", "]q", ":cn<cr>", opts)
 remap("n", "[q", ":cp<cr>", opts)
@@ -34,8 +38,9 @@ remap("n", "<leader>k", ":lua require('harpoon.ui').nav_file(2)<cr>", opts)
 remap("n", "<leader>l", ":lua require('harpoon.ui').nav_file(3)<cr>", opts)
 remap("n", "<leader>;", ":lua require('harpoon.ui').nav_file(4)<cr>", opts)
 
--- NvimTree
+-- File explorers (NvimTree, Netrw)
 remap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
+remap("n", "<leader>pv", ":Ex<cr>", opts)
 
 -- Rest
 remap("n", "<leader>rrn", ":lua require('rest-nvim').run(false)<cr>", opts)
