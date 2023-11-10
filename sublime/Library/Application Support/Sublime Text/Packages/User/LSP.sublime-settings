@@ -12,6 +12,10 @@
 		"gopls":
 		{
 			"enabled": true,
+			"command": [
+				"gopls"
+			],
+			"selector": "source.go | source.mod"
 		},
 		"pyright":
 		{
