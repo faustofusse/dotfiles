@@ -1,13 +1,18 @@
+# CodeWhisperer pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh"
+
 # zsh config
-ZSH_THEME="common" # robbyrussel, lambda-gitster, typewritten, common, bunnyruni, another, logico, pi
+ZSH_THEME="lambda-gitster" # robbyrussel, lambda-gitster, typewritten, common, logico, pi
 export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 plugins=( git bundler macos rake rbenv ruby pyenv vi-mode )
 
 # aliases
+alias nchat="TERM=xterm-256color nchat"
 alias lg="lazygit"
 alias v="nvim"
 alias ccd="cd \"\$(findproject)\" && clear"
+alias wpp="TERM=xterm-256color nchat"
 
 # path
 export PATH="$PATH:/usr/local/bin"
@@ -15,6 +20,9 @@ export PATH="$PATH:$HOME/.local/bin"
 
 # openvpn (commented on 02/aug/2022)
 export PATH="$PATH:/usr/local/Cellar/openvpn/2.5.8/sbin"
+
+# dart
+export PATH="$PATH":"$HOME/.pub-cache/bin"
 
 # rust
 source "$HOME/.cargo/env"
@@ -87,3 +95,10 @@ eval "$(luarocks path)"
 # openssl (for lua)
 export PATH="$PATH:/usr/local/opt/openssl/bin"
 export PATH="$PATH:$(brew --prefix openssl)/bin"
+
+# gcloud
+if [ -f '/Users/fausto/Google/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/fausto/Google/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f '/Users/fausto/Google/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/fausto/Google/google-cloud-sdk/completion.zsh.inc'; fi
+
+# CodeWhisperer post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh"
