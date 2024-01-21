@@ -50,14 +50,29 @@ return {
 
         -- clangd
         nvim_lsp.clangd.setup {
-            on_attach = on_attach,
             cmd = { "clangd", "--header-insertion=never" },
+            on_attach = on_attach,
             capabilities = cmp_nvim_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
         }
 
+        -- html
+        nvim_lsp.html.setup({
+            filetypes = { "html", "templ" },
+            on_attach = on_attach,
+            capabilities = cmp_nvim_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
+        })
+
+        -- tales of the wind
+        nvim_lsp.tailwindcss.setup({
+            filetypes = { "html", "templ", "astro", "javascript", "typescript", "react" },
+            init_options = { userLanguages = { templ = "html" } },
+            on_attach = on_attach,
+            capabilities = cmp_nvim_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
+        })
+
         -- Use a loop to conveniently call 'setup' on multiple servers and
         -- map buffer local keybindings when the language server attaches
-        local servers = { 'pyright', 'tsserver', 'gopls', 'rust_analyzer', 'dartls', 'julials', 'lua_ls', 'html', 'cssls' }
+        local servers = { 'pyright', 'tsserver', 'gopls', 'rust_analyzer', 'dartls', 'julials', 'lua_ls', 'cssls', 'templ' }
         for _, lsp in ipairs(servers) do
             nvim_lsp[lsp].setup {
                 on_attach = on_attach,
