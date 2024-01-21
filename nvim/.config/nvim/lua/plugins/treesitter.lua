@@ -7,8 +7,6 @@ return {
     {
         'nvim-treesitter/nvim-treesitter',
         -- dependencies = { { 'nvim-treesitter/playground', cmd = { 'TSPlaygroundToggle', 'TSHighlightCapturesUnderCursor', 'TSNodeUnderCursor' } } },
-        -- TODO: sacando esto del commit rompe los archivos .http, probar de nuevo. issues: https://github.com/rest-nvim/tree-sitter-http/issues/11 https://github.com/rest-nvim/rest.nvim/issues/191
-        commit = "eedc5198a1b4bb1b08ae6d4f64f3d76e376957aa",
         build = ':TSUpdate',
         config = function ()
             local configs = require('nvim-treesitter.configs')
