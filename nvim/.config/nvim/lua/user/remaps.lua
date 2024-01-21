@@ -18,17 +18,22 @@ vim.opt.timeoutlen = 2000
 remap("n", "]q", ":cn<cr>", opts)
 remap("n", "[q", ":cp<cr>", opts)
 
+-- Gitsigns
+remap("n", "]g", ":Gitsigns next_hunk<cr>", opts)
+remap("n", "[g", ":Gitsigns prev_hunk<cr>", opts)
+
 -- Clipboard
 remap("v", "<leader>y", "\"*y", opts)
 remap("v", "<leader>Y", "\"+y", opts)
 
 -- Telescope
 remap("n", "<C-p>", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy({}))<cr>", opts)
-remap("n", "<leader>ff", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy({}))<cr>", opts)
+remap("n", "<leader>ff", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy({ hidden = true }))<cr>", opts)
 remap("n", "<leader>fd", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy({ cwd = '~/.dotfiles', hidden = true }))<cr>", opts)
 remap("n", "<leader>fg", ":lua require('telescope.builtin').live_grep(require('telescope.themes').get_dropdown({}))<cr>", opts)
 remap("n", "<leader>fb", ":lua require('telescope.builtin').buffers()<cr>", opts)
 remap("n", "<leader>fh", ":lua require('telescope.builtin').help_tags()<cr>", opts)
+remap("n", "<leader>fs", ":lua require('telescope.builtin').lsp_dynamic_workspace_symbols(require('telescope.themes').get_dropdown({}))<cr>", opts)
 
 -- Harpoon
 remap("n", "<leader>a", ":lua require('harpoon.mark').add_file()<cr>", opts)
