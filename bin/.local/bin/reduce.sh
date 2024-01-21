@@ -1,3 +1,4 @@
-python3 -m ffpb -threads 1 -i $1 -c:v libx265 -c:a copy -crf 28 -vtag hvc1 $2
+python3 -m ffpb -i $1 -c:v libx265 -c:a aac -crf 25 -tag:v hvc1 $2
+# -reset_timestamps 1
+# -threads 1
 # -filter:v fps=60
-

@@ -1,3 +1,2 @@
 #!/usr/bin/env bash
 find ~/dev -type d -maxdepth 4 -name .git -print | sed -e 's/\/.git//g' | fzf --reverse
-
