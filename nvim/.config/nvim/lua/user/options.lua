@@ -31,6 +31,8 @@ local options = {
     mousemodel = "extend",
 }
 
+vim.filetype.add({ extension = { templ = "templ" } })
+
 vim.opt.shortmess:append "c"
 
 for k, v in pairs(options) do
