@@ -12,6 +12,8 @@
 	<integer>10</integer>
 	<key>Command</key>
 	<string></string>
+	<key>Control</key>
+	<integer>7</integer>
 	<key>CopySelection</key>
 	<false/>
 	<key>Custom Color Presets</key>
@@ -4162,8 +4164,18 @@
 	<false/>
 	<key>HideScrollbar</key>
 	<true/>
+	<key>Hotkey</key>
+	<true/>
+	<key>HotkeyChar</key>
+	<integer>9</integer>
+	<key>HotkeyCode</key>
+	<integer>48</integer>
 	<key>HotkeyMigratedFromSingleToMulti</key>
 	<true/>
+	<key>HotkeyModifiers</key>
+	<integer>262401</integer>
+	<key>LeftCommand</key>
+	<integer>1</integer>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
