@@ -12,7 +12,7 @@ return {
             local configs = require('nvim-treesitter.configs')
             local languages = {
                 'go', 'rust', 'python', 'html', 'http', 'json', 'javascript', 'typescript', 'c', 'css', 'dot',
-                'dockerfile', 'gomod', 'markdown', 'sql', 'tsx', 'lua', 'vim', 'yaml', 'bash', 'make'
+                'dockerfile', 'gomod', 'markdown', 'sql', 'tsx', 'lua', 'vim', 'yaml', 'bash', 'make', 'dart',
             }
             configs.setup {
                 ensure_installed = languages, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
@@ -22,10 +22,10 @@ return {
                 autopairs = { enable = true },
                 highlight = {
                     enable = true, -- false will disable the whole extension
-                    disable = { "" }, -- list of language that will be disabled
+                    disable = {}, -- list of language that will be disabled
                     additional_vim_regex_highlighting = false, -- estaba en true
                 },
-                indent = { enable = true, disable = { "yaml" } },
+                indent = { enable = true, disable = { "yaml", "dart" } },
                 context_commentstring = {
                     enable = true,
                     enable_autocmd = false,

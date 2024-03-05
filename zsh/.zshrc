@@ -1,20 +1,59 @@
-# CodeWhisperer pre block. Keep at the top of this file.
-[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh"
+# history
+setopt extended_history
+setopt hist_expire_dups_first
+setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt hist_verify
+setopt inc_append_history
+setopt share_history
+export HISTFILE="$HOME/.zsh_history"
+export HISTSIZE=1000
+export HISTORY_IGNORE="(mv*|cp*|mkdir*|ls*|cd*|clear|exit)"
 
-# zsh config
-ZSH_THEME="lambda-gitster" # robbyrussel, lambda-gitster, typewritten, common, logico, pi
-export ZSH="$HOME/.oh-my-zsh"
-source $ZSH/oh-my-zsh.sh
-plugins=( git bundler macos rake rbenv ruby pyenv vi-mode )
+# plugins
+source ~/.config/zsh/history.zsh
+
+# keymaps
+bindkey '^[[A' history-substring-search-up # or '\eOA'
+bindkey '^[[B' history-substring-search-down # or '\eOB'
+
+# # CodeWhisperer pre block. Keep at the top of this file.
+# [[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh"
+
+function __git_ps1 {
+    git branch --show-current 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+
+function show_branch {
+    git branch --show-current 2> /dev/null
+}
+
+function hola {
+    b=git branch --show-current 2> /dev/null
+    trimmed=${b%\n.*}
+    echo $trimmed
+}
+
+# prefix
+export PS1=" %1~ %# "
 
 # aliases
-alias nchat="TERM=xterm-256color nchat"
-alias lg="lazygit"
+alias l="ls -l"
+alias ll="ls -l"
+alias la="ls -la"
 alias v="nvim"
+alias lg="lazygit"
 alias ccd="cd \"\$(findproject)\" && clear"
-alias wpp="TERM=xterm-256color nchat"
+alias nchat="TERM=xterm-256color nchat"
 
-# path
+# user configuration
+export MANPATH="$PATH:/usr/local/man"
+export LDFLAGS="-L/usr/local/opt/zlib/lib"
+export CPPFLAGS="-I/usr/local/opt/zlib/include"
+export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
+export LANG=en_US.UTF-8
+
+# bin
 export PATH="$PATH:/usr/local/bin"
 export PATH="$PATH:$HOME/.local/bin"
 
@@ -40,65 +79,54 @@ export PATH=$PATH:/usr/local/go/bin
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
-# arch
-export ARCHFLAGS="-arch x86_64"
-export DEBUGINFOD_URLS="https://debuginfod.archlinux.org"
-
-# pyenv
-eval "$(pyenv init -)" 
-eval "$(pyenv virtualenv-init -)"
-export PYENV_VIRTUALENV_DISABLE_PROMPT=2
-export BASE_PROMPT=$PS1
-function updatePrompt {
-    if [[ "$(pyenv version-name)" != "system" ]]; then
-        # the next line should be double quote; single quote would not work for me
-        export PS1="($(pyenv version-name)) "$BASE_PROMPT 
-    else
-        export PS1=$BASE_PROMPT
-    fi
-}
-export PROMPT_COMMAND='updatePrompt'
-precmd() { eval '$PROMPT_COMMAND' } # this line is necessary for zsh
-
 # android
 export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
 export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
 
-# User configuration
-export MANPATH="$PATH:/usr/local/man"
-export LDFLAGS="-L/usr/local/opt/zlib/lib"
-export CPPFLAGS="-I/usr/local/opt/zlib/include"
-export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
-export LANG=en_US.UTF-8
+# docker
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
 
-# clangd (si lo descomento rompe los 'pod install')
+# # gcloud
+# if [ -f '/Users/fausto/Google/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/fausto/Google/google-cloud-sdk/path.zsh.inc'; fi
+# if [ -f '/Users/fausto/Google/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/fausto/Google/google-cloud-sdk/completion.zsh.inc'; fi
+
+# # clangd (si lo descomento rompe los 'pod install')
 # export PATH="$PATH:/usr/local/opt/llvm/bin"
 # export LDFLAGS="-L/usr/local/opt/llvm/lib"
 # export CPPFLAGS="-I/usr/local/opt/llvm/include"
 
-# ESP8266
-export IDF_PATH=~/esp/ESP8266_RTOS_SDK
-export PATH="$PATH:$HOME/esp/ESP8266_RTOS_SDK/xtensa-lx106-elf/bin"
+# # lua
+# eval "$(luarocks path)"
 
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-[ -s "/Users/fausto/.bun/_bun" ] && source "/Users/fausto/.bun/_bun"
+# # openssl (for lua)
+# export PATH="$PATH:/usr/local/opt/openssl/bin"
+# export PATH="$PATH:$(brew --prefix openssl)/bin"
 
-# docker
-export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
+# # ESP8266
+# export IDF_PATH=~/esp/ESP8266_RTOS_SDK
+# export PATH="$PATH:$HOME/esp/ESP8266_RTOS_SDK/xtensa-lx106-elf/bin"
 
-# lua
-eval "$(luarocks path)"
+# # bun
+# export BUN_INSTALL="$HOME/.bun"
+# export PATH="$BUN_INSTALL/bin:$PATH"
+# [ -s "/Users/fausto/.bun/_bun" ] && source "/Users/fausto/.bun/_bun"
 
-# openssl (for lua)
-export PATH="$PATH:/usr/local/opt/openssl/bin"
-export PATH="$PATH:$(brew --prefix openssl)/bin"
+# # pyenv
+# eval "$(pyenv init -)" 
+# eval "$(pyenv virtualenv-init -)"
+# export PYENV_VIRTUALENV_DISABLE_PROMPT=2
+# export BASE_PROMPT=$PS1
+# function updatePrompt {
+#     if [[ "$(pyenv version-name)" != "system" ]]; then
+#         # the next line should be double quote; single quote would not work for me
+#         export PS1="($(pyenv version-name)) "$BASE_PROMPT 
+#     else
+#         export PS1=$BASE_PROMPT
+#     fi
+# }
+# export PROMPT_COMMAND='updatePrompt'
+# precmd() { eval '$PROMPT_COMMAND' } # this line is necessary for zsh
 
-# gcloud
-if [ -f '/Users/fausto/Google/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/fausto/Google/google-cloud-sdk/path.zsh.inc'; fi
-if [ -f '/Users/fausto/Google/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/fausto/Google/google-cloud-sdk/completion.zsh.inc'; fi
-
-# CodeWhisperer post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh"
+# # CodeWhisperer post block. Keep at the bottom of this file.
+# [[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh"

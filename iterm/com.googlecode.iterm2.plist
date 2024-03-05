@@ -13,7 +13,7 @@
 	<key>Command</key>
 	<string></string>
 	<key>Control</key>
-	<integer>7</integer>
+	<integer>1</integer>
 	<key>CopySelection</key>
 	<false/>
 	<key>Custom Color Presets</key>
@@ -4165,7 +4165,7 @@
 	<key>HideScrollbar</key>
 	<true/>
 	<key>Hotkey</key>
-	<true/>
+	<false/>
 	<key>HotkeyChar</key>
 	<integer>9</integer>
 	<key>HotkeyCode</key>
@@ -4175,7 +4175,7 @@
 	<key>HotkeyModifiers</key>
 	<integer>262401</integer>
 	<key>LeftCommand</key>
-	<integer>1</integer>
+	<integer>7</integer>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -6391,7 +6391,7 @@
 	<key>SeparateStatusBarsPerPane</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
-	<true/>
+	<false/>
 	<key>ShowPaneTitles</key>
 	<false/>
 	<key>SmartPlacement</key>
