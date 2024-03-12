@@ -8,4 +8,4 @@ setopt inc_append_history
 setopt share_history
 export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=1000
-export HISTORY_IGNORE="(mv*|cp*|mkdir*|ls*|cd*|clear|exit)"
+export HISTORY_IGNORE="(mv*|cp*|mkdir*|ls*|cd*|clear|exit|rm*|v*|mpv*)"
