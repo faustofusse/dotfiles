@@ -22,7 +22,18 @@ remap("n", "[q", ":cp<cr>", opts)
 remap("n", "]g", ":Gitsigns next_hunk<cr>", opts)
 remap("n", "[g", ":Gitsigns prev_hunk<cr>", opts)
 remap("n", "<leader>gs", ":Git<cr>", opts)
-remap("n", "<leader>gp", ":Git push<cr>", opts)
+vim.api.nvim_create_autocmd('BufWinEnter', {
+    group = vim.api.nvim_create_augroup('UserFugitiveConfig', {}),
+    pattern = "*",
+    callback = function(ev)
+        if vim.bo.ft ~= "fugitive" then
+            return
+        end
+        local o = { buffer = ev.buf, remap = false }
+        vim.keymap.set("n", "<leader>p", ":Git pull<cr>", o)
+        vim.keymap.set("n", "<leader>P", ":Git push<cr>", o)
+    end
+})
 
 -- Clipboard
 remap("v", "<leader>y", "\"*y", opts)
@@ -60,29 +71,29 @@ remap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
 remap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
 remap('n', '<leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-  callback = function(ev)
-    -- Enable completion triggered by <c-x><c-o>
-    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
-    -- Buffer local mappings.
-    -- See `:help vim.lsp.*` for documentation on any of the below functions
-    local opts = { buffer = ev.buf }
-    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
-    vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, opts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-    vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, opts)
-    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
-    -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-    -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-    -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-    -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-    -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  end,
+    group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+    callback = function(ev)
+        -- Enable completion triggered by <c-x><c-o>
+        vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+        -- Buffer local mappings.
+        -- See `:help vim.lsp.*` for documentation on any of the below functions
+        local o = { buffer = ev.buf }
+        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, o)
+        vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, o)
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover, o)
+        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, o)
+        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, o)
+        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, o)
+        vim.keymap.set('n', 'gr', vim.lsp.buf.references, o)
+        vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, o)
+        vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, o)
+        vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, o)
+        -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+        -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+        -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+        -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+        -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+    end,
 })
 
 -- Toggle Status
