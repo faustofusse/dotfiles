@@ -18,9 +18,11 @@ vim.opt.timeoutlen = 2000
 remap("n", "]q", ":cn<cr>", opts)
 remap("n", "[q", ":cp<cr>", opts)
 
--- Gitsigns
+-- Git
 remap("n", "]g", ":Gitsigns next_hunk<cr>", opts)
 remap("n", "[g", ":Gitsigns prev_hunk<cr>", opts)
+remap("n", "<leader>gs", ":Git<cr>", opts)
+remap("n", "<leader>gp", ":Git push<cr>", opts)
 
 -- Clipboard
 remap("v", "<leader>y", "\"*y", opts)

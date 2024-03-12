@@ -5,7 +5,6 @@ return {
     { 'folke/trouble.nvim', cmd = "Trouble", opts = { } },
     { "j-hui/fidget.nvim", opts = { notification = { window = { winblend = 0 } } } },
     { 'ThePrimeagen/harpoon', lazy = true },
-    { 'lewis6991/gitsigns.nvim', opts = {} },
     { 'numToStr/Comment.nvim', opts = {}, keys = { { 'gc', mode = { 'n', 'v' } } } },
     { 'windwp/nvim-autopairs', opts = {}, keys = { { '{', mode = 'i' }, { '[', mode = 'i' }, { '<', mode = 'i' }, { '(', mode = 'i' }, { '\'', mode = 'i' }, { '"', mode = 'i' } } },
     { 'catppuccin/nvim', name = 'catppuccin', lazy = true },
