@@ -44,8 +44,8 @@ remap("n", "<leader>l", ":lua require('harpoon.ui').nav_file(3)<cr>", opts)
 remap("n", "<leader>;", ":lua require('harpoon.ui').nav_file(4)<cr>", opts)
 
 -- File explorers (NvimTree, Netrw)
-remap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
-remap("n", "<leader>pv", ":Ex<cr>", opts)
+-- remap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
+remap("n", "<leader>e", ":Ex<cr>", opts)
 
 -- Rest
 remap("n", "<leader>rrn", ":lua require('rest-nvim').run(false)<cr>", opts)
