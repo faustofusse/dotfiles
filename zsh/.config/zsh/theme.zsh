@@ -1,16 +1,18 @@
-function __git_ps1 {
-    git branch --show-current 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+# TODO: hacer algo con %2 en vez de %1 para los que no son git
+
+# Find and set branch name var if in git repository.
+function git_branch_name() {
+  branch=$(git symbolic-ref HEAD 2> /dev/null | awk 'BEGIN{FS="/"} {print $NF}')
+  if [[ $branch == "" ]];
+  then
+    :
+  else
+    echo ' ('$branch')'
+  fi
 }
 
-function show_branch {
-    git branch --show-current 2> /dev/null
-}
+# Enable substitution in the prompt.
+setopt prompt_subst
 
-function hola {
-    b=git branch --show-current 2> /dev/null
-    trimmed=${b%\n.*}
-    echo $trimmed
-}
-
-# prefix
-export PS1=" %1~ %# "
+# Config for prompt. PS1 synonym.
+prompt=' %1~$(git_branch_name) %# '
