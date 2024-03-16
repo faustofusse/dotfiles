@@ -3,6 +3,7 @@ return {
     'kyazdani42/nvim-tree.lua',
     cmd = { 'NvimTreeOpen', 'NvimTreeToggle' },
     opts = {
+        hijack_netrw = false,
         filters = {
             dotfiles = false,
             -- custom = { ".git",  ".cache" },
