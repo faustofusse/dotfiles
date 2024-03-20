@@ -1,8 +1,11 @@
 return {
     "neovim/nvim-lspconfig",
     dependencies = {
-        "williamboman/mason.nvim",
-        "williamboman/mason-lspconfig.nvim",
+        { "folke/neodev.nvim", opts = {} },
+        { "folke/trouble.nvim", opts = { }, cmd = "Trouble" },
+        { "j-hui/fidget.nvim", opts = { notification = { window = { winblend = 0 } } } },
+        { "williamboman/mason.nvim" },
+        { "williamboman/mason-lspconfig.nvim" },
     },
     config = function ()
         local icons = require("user.icons")
