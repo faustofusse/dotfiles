@@ -6347,6 +6347,8 @@
 	<false/>
 	<key>PMPrintingExpandedStateForPrint2</key>
 	<false/>
+	<key>PMPrintingPanelSize</key>
+	<string>{776, 568}</string>
 	<key>PerPaneBackgroundImage</key>
 	<true/>
 	<key>PointerActions</key>
