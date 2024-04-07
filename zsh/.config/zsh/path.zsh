@@ -21,6 +21,9 @@ export PATH="$PATH":"$HOME/.pub-cache/bin"
 # rust
 source "$HOME/.cargo/env"
 
+# solana
+export PATH="/Users/fausto/.local/share/solana/install/active_release/bin:$PATH"
+
 # java
 export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-11.jdk/Contents/Home"
 export PATH="$PATH:$JAVA_HOME/bin"
