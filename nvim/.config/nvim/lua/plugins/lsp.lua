@@ -3,7 +3,8 @@ return {
     dependencies = {
         { "folke/neodev.nvim", opts = {} },
         { "folke/trouble.nvim", opts = { }, cmd = "Trouble" },
-        { "j-hui/fidget.nvim", opts = { notification = { window = { winblend = 0 } } } },
+        { "j-hui/fidget.nvim", opts = { notification = { override_vim_notify = 1, window = { winblend = 0 } } } },
+        -- { "folke/noice.nvim", opts = { cmdline = { view = "cmdline" } }, dependencies = { "MunifTanjim/nui.nvim" } },
         { "williamboman/mason.nvim" },
         { "williamboman/mason-lspconfig.nvim" },
     },

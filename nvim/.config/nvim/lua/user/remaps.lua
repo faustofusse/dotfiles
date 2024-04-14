@@ -60,6 +60,9 @@ remap("n", "<leader>;", ":lua require('harpoon.ui').nav_file(4)<cr>", opts)
 remap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 remap("n", "<leader>pv", ":Ex<cr>", opts)
 
+-- Dadbod
+remap("n", "<leader>s", ":DBUIToggle<cr>", opts)
+
 -- Rest
 remap("n", "<leader>rrn", ":lua require('rest-nvim').run(false)<cr>", opts)
 remap("n", "<leader>rrl", ":lua require('rest-nvim').last<cr>", opts)
