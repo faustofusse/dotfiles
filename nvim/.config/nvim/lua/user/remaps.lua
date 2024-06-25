@@ -56,10 +56,6 @@ remap("n", "<leader>k", ":lua require('harpoon.ui').nav_file(2)<cr>", opts)
 remap("n", "<leader>l", ":lua require('harpoon.ui').nav_file(3)<cr>", opts)
 remap("n", "<leader>;", ":lua require('harpoon.ui').nav_file(4)<cr>", opts)
 
--- File explorers (NvimTree, Netrw)
-remap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
-remap("n", "<leader>pv", ":Ex<cr>", opts)
-
 -- Dadbod
 remap("n", "<leader>s", ":DBUIToggle<cr>", opts)
 

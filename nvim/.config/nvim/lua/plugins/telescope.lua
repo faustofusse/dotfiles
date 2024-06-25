@@ -17,6 +17,7 @@ return {
                 file_sorter = sorters.get_fzy_sorter,
                 file_ignore_patterns = {
                     "node_modules",
+                    "%_templ.go",
                 },
                 color_devicons = true,
                 mappings = {
