@@ -13,6 +13,7 @@ return {
             local languages = {
                 'go', 'rust', 'python', 'html', 'http', 'json', 'javascript', 'typescript', 'c', 'css', 'dot',
                 'dockerfile', 'gomod', 'markdown', 'sql', 'tsx', 'lua', 'vim', 'yaml', 'bash', 'make', 'dart',
+                'templ',
             }
             configs.setup {
                 ensure_installed = languages, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
