@@ -1,16 +1,28 @@
-{ config, pkgs, ... }:
+{ config, pkgs, ... } @ inputs :
 
 {
   imports =
     [
       ./hardware-configuration.nix
+      inputs.xremap-flake.nixosModules.default
     ];
+
+  services.xremap = {
+    withX11 = true;
+    config = {
+      modmap = [
+        { remap = { "ALT_L" = "CTRL_L"; }; }
+        { remap = { "SUPER_L" = "ALT_L"; }; }
+        { remap = { "CTRL_L" = "SUPER_L"; }; }
+      ];
+    };
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "fausto-nixos"; # Define your hostname.
+  networking.hostName = "fausto-hp"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Enable networking
@@ -35,16 +47,40 @@
   };
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-
-  # Configure keymap in X11
   services.xserver = {
+    enable = true;
+
+    # Enable the GNOME Desktop Environment.
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
+
+    # dwm
+    windowManager.dwm.enable = true;
+    windowManager.dwm.package = pkgs.dwm.overrideAttrs {
+      src = /home/fausto/.dotfiles/dwm;
+    };
+
+    # keyboard
+    # xkb.extraLayouts = {
+    #   mxkeys = {
+    #     description  = "logitech mx keys xkb layout";
+    #     languages    = [ "eng" ];
+    #     symbolsFile  = /etc/nixos/symbols/mxkeys-sym;
+    #     keycodesFile = /etc/nixos/symbols/mxkeys-key;
+    #   };
+    # };
+    # displayManager.sessionCommands = "setxkbmap -keycodes mxkeys";
+
+    # Configure keymap in X11
     xkb.layout = "us";
     xkb.variant = "";
+  };
+
+  # Enable touchpad support (enabled default in most desktopManager).
+  services.libinput = {
+    enable = true;
+    mouse.naturalScrolling = true;
+    touchpad.naturalScrolling = true;
   };
 
   # Enable CUPS to print documents.
@@ -65,9 +101,6 @@
     # no need to redefine it in your config for now)
     #media-session.enable = true;
   };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.fausto = {
@@ -92,11 +125,21 @@
   # permito esto para sublime4
   nixpkgs.config.permittedInsecurePackages = [ "openssl-1.1.1w" ];
 
+  # permito esto para minecraft
+  nixpkgs.config.allowBroken = true;
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+     dmenu
+
+     turso-cli
+     brave
+     flyctl
+     kitty
      android-tools
      curl
+     feh
      ffmpeg
      fzf
      gcc
@@ -108,6 +151,7 @@
      lf
      libreoffice
      mpv
+     ncdu
      neovim
      nodejs
      ripgrep
@@ -119,7 +163,7 @@
      vim
      wget
      xournalpp
-     zed-editor
+     minecraft
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
