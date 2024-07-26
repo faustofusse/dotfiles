@@ -7,7 +7,9 @@
       inputs.xremap-flake.nixosModules.default
     ];
 
+  # remaps ('journalctl -u xremap' para ver los logs)
   services.xremap = {
+    watch = true;
     withX11 = true;
     config = {
       modmap = [
@@ -57,19 +59,8 @@
     # dwm
     windowManager.dwm.enable = true;
     windowManager.dwm.package = pkgs.dwm.overrideAttrs {
-      src = /home/fausto/.dotfiles/dwm;
+      src = /home/fausto/dwm;
     };
-
-    # keyboard
-    # xkb.extraLayouts = {
-    #   mxkeys = {
-    #     description  = "logitech mx keys xkb layout";
-    #     languages    = [ "eng" ];
-    #     symbolsFile  = /etc/nixos/symbols/mxkeys-sym;
-    #     keycodesFile = /etc/nixos/symbols/mxkeys-key;
-    #   };
-    # };
-    # displayManager.sessionCommands = "setxkbmap -keycodes mxkeys";
 
     # Configure keymap in X11
     xkb.layout = "us";
@@ -131,8 +122,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-     dmenu
-
+     rofi
      turso-cli
      brave
      flyctl
