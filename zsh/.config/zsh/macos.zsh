@@ -45,10 +45,6 @@ export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
 # docker
 export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
 
-# # gcloud
-# if [ -f '/Users/fausto/Google/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/fausto/Google/google-cloud-sdk/path.zsh.inc'; fi
-# if [ -f '/Users/fausto/Google/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/fausto/Google/google-cloud-sdk/completion.zsh.inc'; fi
-
 # # clangd (si lo descomento rompe los 'pod install')
 # export PATH="$PATH:/usr/local/opt/llvm/bin"
 # export LDFLAGS="-L/usr/local/opt/llvm/lib"
