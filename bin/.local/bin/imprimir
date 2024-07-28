@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-lp -o portrait -o fit-to-page -o media=A4 # -P 1,2,3,4
-
