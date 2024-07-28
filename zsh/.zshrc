@@ -6,4 +6,6 @@ source ~/.config/zsh/aliases.zsh
 
 if [[ $(uname) == "Darwin" ]]; then
     source ~/.config/zsh/macos.zsh
+else
+    source ~/.config/zsh/linux.zsh
 fi
