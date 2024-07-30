@@ -7,7 +7,7 @@
       inputs.xremap-flake.nixosModules.default
     ];
 
-  # remaps ('journalctl -u xremap' para ver los logs)
+  # remaps
   services.xremap = {
     watch = true;
     withX11 = true;
@@ -48,6 +48,9 @@
     LC_TIME = "es_AR.UTF-8";
   };
 
+  # use gnome keyring
+  security.pam.services.gdm.enableGnomeKeyring = true;
+
   # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
@@ -57,14 +60,21 @@
     desktopManager.gnome.enable = true;
 
     # dwm
-    windowManager.dwm.enable = true;
-    windowManager.dwm.package = pkgs.dwm.overrideAttrs {
-      src = /home/fausto/dwm;
+    windowManager.dwm = {
+      enable = true;
+      package = pkgs.dwm.overrideAttrs { src = ../dwm; };
     };
 
     # Configure keymap in X11
     xkb.layout = "us";
     xkb.variant = "";
+  };
+
+  # compositor
+  services.picom = {
+    enable = true;
+    # no anda creo
+    fadeExclude = [ "window_type *= 'menu'" ];
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -98,63 +108,9 @@
     isNormalUser = true;
     description = "Fausto Fusse";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
-    packages = with pkgs; [
-    #  thunderbird
-    ];
+    shell = pkgs.zsh;
+    packages = with pkgs; [];
   };
-
-  # Install firefox.
-  programs.firefox.enable = true;
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  virtualisation.docker.enable = true;
-
-  # permito esto para sublime4
-  nixpkgs.config.permittedInsecurePackages = [ "openssl-1.1.1w" ];
-
-  # permito esto para minecraft
-  nixpkgs.config.allowBroken = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-     rofi
-     turso-cli
-     brave
-     flyctl
-     kitty
-     android-tools
-     curl
-     feh
-     ffmpeg
-     fzf
-     gcc
-     gh
-     git
-     gnumake
-     go
-     jetbrains-toolbox
-     lf
-     libreoffice
-     mpv
-     ncdu
-     neovim
-     nodejs
-     ripgrep
-     spotify
-     stow
-     stremio
-     sublime4
-     tmux
-     vim
-     wget
-     xournalpp
-     minecraft
-  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -175,12 +131,80 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.05"; # Did you read the comment?
+  # programs
+  programs.firefox.enable = true;
+  programs.zsh.enable = true;
+  programs.direnv.enable = true;
 
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+
+  # flakes
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  # docker
+  virtualisation.docker.enable = true;
+
+  # permito esto para sublime4
+  nixpkgs.config.permittedInsecurePackages = [ "openssl-1.1.1w" ];
+
+  # permito esto para minecraft
+  nixpkgs.config.allowBroken = true;
+
+  # List packages installed in system profile
+  environment.systemPackages = with pkgs; [
+     # desktop
+     brave
+     discord
+     kitty
+     libreoffice
+     rofi
+     # boludeo
+     minecraft
+     spotify
+     stremio
+     xournalpp
+     # software
+     sqlc # mover a flakes
+     templ # mover a flakes
+     goose # mover a flakes
+     android-tools
+     cargo
+     flutter
+     flyctl
+     gcc
+     gh
+     git
+     gnumake
+     go
+     jetbrains-toolbox
+     nodejs
+     neovim
+     sqlite
+     sublime4
+     turso-cli
+     # utils
+     curl
+     dig
+     feh
+     ffmpeg
+     fzf
+     gimp
+     lf
+     maim
+     mpv
+     ncdu
+     ripgrep
+     stow
+     tmux
+     unzip
+     vim
+     wget
+     xsel
+     zathura
+     zip
+  ];
+
+  # version - dejar asi
+  system.stateVersion = "24.05";
 }
