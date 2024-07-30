@@ -48,9 +48,6 @@
     LC_TIME = "es_AR.UTF-8";
   };
 
-  # use gnome keyring
-  security.pam.services.gdm.enableGnomeKeyring = true;
-
   # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
@@ -62,7 +59,7 @@
     # dwm
     windowManager.dwm = {
       enable = true;
-      package = pkgs.dwm.overrideAttrs { src = ../dwm; };
+      package = pkgs.dwm.overrideAttrs { src = ./dwm; };
     };
 
     # Configure keymap in X11
@@ -95,19 +92,15 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
+    media-session.enable = true;
+    jack.enable = true; # estaba desactivado
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.fausto = {
     isNormalUser = true;
     description = "Fausto Fusse";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "kvm" "adbusers" ];
     shell = pkgs.zsh;
     packages = with pkgs; [];
   };
@@ -120,8 +113,6 @@
   #   enableSSHSupport = true;
   # };
 
-  # List services that you want to enable:
-
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
@@ -131,25 +122,24 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
-  # programs
-  programs.firefox.enable = true;
-  programs.zsh.enable = true;
-  programs.direnv.enable = true;
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
   # flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  # packages
+  nixpkgs.config = {
+    allowUnfree = true;
+    permittedInsecurePackages = [ "openssl-1.1.1w" ]; # sublime4
+    allowBroken = true; # minecraft
+  };
+
+  # programs
+  programs.adb.enable = true;
+  programs.direnv.enable = true;
+  programs.firefox.enable = true;
+  programs.zsh.enable = true;
+
   # docker
   virtualisation.docker.enable = true;
-
-  # permito esto para sublime4
-  nixpkgs.config.permittedInsecurePackages = [ "openssl-1.1.1w" ];
-
-  # permito esto para minecraft
-  nixpkgs.config.allowBroken = true;
 
   # List packages installed in system profile
   environment.systemPackages = with pkgs; [
@@ -168,9 +158,8 @@
      sqlc # mover a flakes
      templ # mover a flakes
      goose # mover a flakes
-     android-tools
      cargo
-     flutter
+     flutter # mover a flakes
      flyctl
      gcc
      gh
@@ -205,6 +194,5 @@
      zip
   ];
 
-  # version - dejar asi
-  system.stateVersion = "24.05";
+  system.stateVersion = "24.05"; # dejar asi aunque suba version
 }
