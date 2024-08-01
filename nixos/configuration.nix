@@ -7,35 +7,18 @@
       inputs.xremap-flake.nixosModules.default
     ];
 
-  # remaps
-  services.xremap = {
-    watch = true;
-    withX11 = true;
-    config = {
-      modmap = [
-        { remap = { "ALT_L" = "CTRL_L"; }; }
-        { remap = { "SUPER_L" = "ALT_L"; }; }
-        { remap = { "CTRL_L" = "SUPER_L"; }; }
-      ];
-    };
-  };
-
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "fausto-hp"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
   # Enable networking
   networking.networkmanager.enable = true;
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.hostName = "fausto-hp"; # Define your hostname.
 
-  # Set your time zone.
+  # Set your time zone and internationalisation properties
   time.timeZone = "America/Argentina/Buenos_Aires";
-
-  # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "es_AR.UTF-8";
     LC_IDENTIFICATION = "es_AR.UTF-8";
@@ -51,17 +34,14 @@
   # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
-
     # Enable the GNOME Desktop Environment.
     displayManager.gdm.enable = true;
     desktopManager.gnome.enable = true;
-
     # dwm
     windowManager.dwm = {
       enable = true;
       package = pkgs.dwm.overrideAttrs { src = ./dwm; };
     };
-
     # Configure keymap in X11
     xkb.layout = "us";
     xkb.variant = "";
@@ -92,7 +72,6 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    media-session.enable = true;
     jack.enable = true; # estaba desactivado
   };
 
@@ -122,26 +101,39 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
-  # flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # packages
+  services.xremap = {
+    watch = true;
+    withX11 = true;
+    config = {
+      modmap = [
+        { remap = { "ALT_L" = "CTRL_L"; }; }
+        { remap = { "SUPER_L" = "ALT_L"; }; }
+        { remap = { "CTRL_L" = "SUPER_L"; }; }
+      ];
+    };
+  };
+
+  fonts.packages = [
+    (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+  ];
+
   nixpkgs.config = {
     allowUnfree = true;
     permittedInsecurePackages = [ "openssl-1.1.1w" ]; # sublime4
     allowBroken = true; # minecraft
   };
 
-  # programs
-  programs.adb.enable = true;
-  programs.direnv.enable = true;
-  programs.firefox.enable = true;
-  programs.zsh.enable = true;
+  programs = {
+    # adb.enable = true;
+    direnv.enable = true;
+    firefox.enable = true;
+    zsh.enable = true;
+  };
 
-  # docker
   virtualisation.docker.enable = true;
 
-  # List packages installed in system profile
   environment.systemPackages = with pkgs; [
      # desktop
      brave
@@ -155,11 +147,7 @@
      stremio
      xournalpp
      # software
-     sqlc # mover a flakes
-     templ # mover a flakes
-     goose # mover a flakes
      cargo
-     flutter # mover a flakes
      flyctl
      gcc
      gh
