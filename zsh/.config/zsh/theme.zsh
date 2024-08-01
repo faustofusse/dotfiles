@@ -18,7 +18,7 @@ function icon() {
     then
         echo '%#'
     else
-        echo '#'
+        echo ''
     fi
 }
 
