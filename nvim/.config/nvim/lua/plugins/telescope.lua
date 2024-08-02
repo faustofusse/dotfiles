@@ -18,6 +18,7 @@ return {
                 file_ignore_patterns = {
                     "node_modules",
                     "%_templ.go",
+                    "%.g.dart",
                 },
                 color_devicons = true,
                 mappings = {
