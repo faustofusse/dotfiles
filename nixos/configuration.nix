@@ -156,10 +156,7 @@
      go
      jetbrains-toolbox
      nodejs
-     neovim
      sqlite
-     sublime4
-     turso-cli
      # utils
      curl
      dig
@@ -171,6 +168,7 @@
      maim
      mpv
      ncdu
+     neovim
      ripgrep
      stow
      tmux
