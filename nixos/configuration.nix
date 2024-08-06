@@ -168,6 +168,7 @@
      mpv
      ncdu
      neovim
+     openssl
      ripgrep
      stow
      tmux
