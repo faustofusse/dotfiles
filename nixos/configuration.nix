@@ -163,6 +163,7 @@
      ffmpeg
      fzf
      gimp
+     jq
      lf
      maim
      mpv
