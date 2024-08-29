@@ -146,6 +146,7 @@
      stremio
      xournalpp
      # software
+     awscli2
      cargo
      flyctl
      gcc
