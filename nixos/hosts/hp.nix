@@ -3,8 +3,6 @@
 {
   imports = [
     ../hardware/hp.nix
-    inputs.xremap-flake.nixosModules.default
-    inputs.nixos-hardware.nixosModules.apple-t2
   ];
 
   # Enable networking
