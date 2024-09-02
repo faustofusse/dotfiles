@@ -12,5 +12,5 @@
   networking.hostName = "faumbp"; # Define your hostname.
 
   hardware.apple-t2.enableAppleSetOsLoader = true;
-  # boot.kernelParams = [ "hid_apple.swap_opt_cmd=1" ];
+  boot.kernelParams = [ "hid_apple.swap_opt_cmd=1" ];
 }
