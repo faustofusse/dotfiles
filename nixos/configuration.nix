@@ -1,20 +1,13 @@
 { config, pkgs, ... } @ inputs :
 
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      inputs.xremap-flake.nixosModules.default
-    ];
+  imports = [
+    inputs.xremap-flake.nixosModules.default
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  # Enable networking
-  networking.networkmanager.enable = true;
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.hostName = "fausto-hp"; # Define your hostname.
 
   # Set your time zone and internationalisation properties
   time.timeZone = "America/Argentina/Buenos_Aires";
@@ -31,28 +24,24 @@
     LC_TIME = "es_AR.UTF-8";
   };
 
-  # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
     # Enable the GNOME Desktop Environment.
     displayManager.gdm.enable = true;
     desktopManager.gnome.enable = true;
-    # dwm
-    windowManager.dwm = {
-      enable = true;
-      package = pkgs.dwm.overrideAttrs { src = ./dwm; };
-    };
-    # Configure keymap in X11
-    xkb.layout = "us";
-    xkb.variant = "";
   };
 
-  # compositor
-  services.picom = {
-    enable = true;
-    # no anda creo
-    fadeExclude = [ "window_type *= 'menu'" ];
-  };
+  programs.river.enable = true;
+
+  # disable gnome shit
+  environment.gnome.excludePackages = (with pkgs.gnome; [
+    baobab cheese eog epiphany simple-scan totem yelp evince file-roller geary seahorse    
+    gnome-calculator gnome-calendar gnome-characters gnome-clocks gnome-contacts
+    gnome-font-viewer gnome-logs gnome-maps gnome-music gnome-screenshot
+    gnome-system-monitor gnome-weather gnome-disk-utility
+  ]) ++ (with pkgs; [
+    gedit gnome-photos gnome-connections
+  ]);
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput = {
@@ -72,7 +61,7 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    jack.enable = true; # estaba desactivado
+    jack.enable = true;
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -84,27 +73,14 @@
     packages = with pkgs; [];
   };
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
   # Open ports in the firewall.
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [ 8080 7700 4983 ];
   networking.firewall.allowedUDPPorts = [];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
   services.xremap = {
     watch = true;
-    withX11 = true;
+    withWlroots = true;
     config = {
       modmap = [
         { remap = { "ALT_L" = "CTRL_L"; }; }
@@ -117,6 +93,8 @@
   fonts.packages = [
     (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
   ];
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   nixpkgs.config = {
     allowUnfree = true;
@@ -139,7 +117,13 @@
      discord
      kitty
      libreoffice
-     rofi
+     # wayland
+     eww
+     grim
+     rofi-wayland
+     slurp
+     wlr-randr
+     wl-clipboard
      # boludeo
      minecraft
      spotify
@@ -164,9 +148,9 @@
      ffmpeg
      fzf
      gimp
+     htop
      jq
      lf
-     maim
      mpv
      ncdu
      neovim
@@ -177,10 +161,20 @@
      unzip
      vim
      wget
-     xsel
      zathura
      zip
   ];
+
+  # Some programs need SUID wrappers, can be configured further or are
+  # started in user sessions.
+  # programs.mtr.enable = true;
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  # };
+
+  # Enable the OpenSSH daemon.
+  # services.openssh.enable = true;
 
   system.stateVersion = "24.05"; # dejar asi aunque suba version
 }
