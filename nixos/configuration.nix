@@ -1,7 +1,9 @@
 { config, pkgs, ... } @ inputs :
 
 {
-  imports = [ ];
+  imports = [
+    inputs.xremap-flake.nixosModules.default
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -20,6 +22,17 @@
     LC_PAPER = "es_AR.UTF-8";
     LC_TELEPHONE = "es_AR.UTF-8";
     LC_TIME = "es_AR.UTF-8";
+  };
+
+  services.xremap = {
+    watch = true;
+    withWlroots = true;
+    config = {
+      modmap = [
+        { remap = { "ALT_L" = "CTRL_L"; }; }
+        { remap = { "CTRL_L" = "ALT_L"; }; }
+      ];
+    };
   };
 
   services.xserver = {
