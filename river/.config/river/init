@@ -17,7 +17,8 @@ riverctl input pointer-1739-1367-Apple_SPI_Touchpad disable-while-typing enabled
 riverctl input pointer-1133-16392-Logitech_M185 natural-scroll enabled
 riverctl focus-follows-cursor normal
 
-# keyboards
+# screenshot
+riverctl map normal Super S spawn 'grim -t png -g "$(slurp)" ~/Downloads/$(date +%s).png'
 
 # Super+Shift+Return to start an instance of the terminal
 riverctl map normal Super+Shift Return spawn kitty
