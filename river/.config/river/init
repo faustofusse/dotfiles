@@ -1,19 +1,23 @@
 #!/bin/sh
 
+# Set background and border color
+riverctl background-color 0x000000 # 0x002b36
+riverctl border-color-focused 0x93a1a1
+riverctl border-color-unfocused 0x586e75
+
 # launcher
 riverctl map normal Super P spawn 'rofi -show drun -modes "drun,window,run"'
 
 # statusbar
 # riverctl spawn 'levee pulse backlight battery'
 
-# scale macbook pro screen
-wlr-randr --output eDP-1 --scale 2
-
 # mouse and touchpad
 riverctl input pointer-1739-1367-Apple_SPI_Touchpad tap enabled
 riverctl input pointer-1739-1367-Apple_SPI_Touchpad disable-while-typing enabled
 riverctl input pointer-1133-16392-Logitech_M185 natural-scroll enabled
 riverctl focus-follows-cursor normal
+
+# keyboards
 
 # Super+Shift+Return to start an instance of the terminal
 riverctl map normal Super+Shift Return spawn kitty
@@ -147,11 +151,6 @@ do
     riverctl map $mode None XF86MonBrightnessDown spawn 'brightnessctl set 5%-'
 done
 
-# Set background and border color
-riverctl background-color 0x000000 # 0x002b36
-riverctl border-color-focused 0x93a1a1
-riverctl border-color-unfocused 0x586e75
-
 # Set keyboard repeat rate
 riverctl set-repeat 50 300
 
@@ -160,6 +159,9 @@ riverctl rule-add -app-id 'float*' -title 'foo' float
 
 # Make all views with app-id "bar" and any title use client-side decorations
 riverctl rule-add -app-id "bar" csd
+
+# scale macbook pro screen
+wlr-randr --output eDP-1 --scale 2
 
 # Set the default layout generator to be rivertile and start it.
 # River will send the process group of the init executable SIGTERM on exit.
