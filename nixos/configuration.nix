@@ -1,9 +1,7 @@
 { config, pkgs, ... } @ inputs :
 
 {
-  imports = [
-    inputs.xremap-flake.nixosModules.default
-  ];
+  imports = [ ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -78,18 +76,6 @@
   networking.firewall.allowedTCPPorts = [ 8080 7700 4983 ];
   networking.firewall.allowedUDPPorts = [];
 
-  services.xremap = {
-    watch = true;
-    withWlroots = true;
-    config = {
-      modmap = [
-        { remap = { "ALT_L" = "CTRL_L"; }; }
-        { remap = { "SUPER_L" = "ALT_L"; }; }
-        { remap = { "CTRL_L" = "SUPER_L"; }; }
-      ];
-    };
-  };
-
   fonts.packages = [
     (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
   ];
@@ -153,6 +139,7 @@
      lf
      mpv
      ncdu
+     neofetch
      neovim
      openssl
      ripgrep
