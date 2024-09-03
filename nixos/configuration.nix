@@ -35,6 +35,20 @@
     };
   };
 
+  services.vsftpd = {
+    enable = true;
+    localUsers = true;
+    writeEnable = false;
+    extraConfig = "pasv_enable=Yes\npasv_min_port=56250\npasv_max_port=56260";
+  };
+
+  networking.firewall = {
+    enable = true;
+    allowedUDPPorts = [];
+    allowedTCPPorts = [ 8080 7700 21 4983 ];
+    allowedTCPPortRanges = [ { from = 56250; to = 56260; } ];
+  };
+
   services.xserver = {
     enable = true;
     # Enable the GNOME Desktop Environment.
@@ -84,11 +98,6 @@
     packages = with pkgs; [];
   };
 
-  # Open ports in the firewall.
-  networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [ 8080 7700 4983 ];
-  networking.firewall.allowedUDPPorts = [];
-
   fonts.packages = [
     (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
   ];
@@ -116,6 +125,7 @@
      discord
      kitty
      libreoffice
+     pcmanfm
      # wayland
      eww
      grim
