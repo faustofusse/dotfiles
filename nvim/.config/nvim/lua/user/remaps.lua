@@ -36,8 +36,8 @@ vim.api.nvim_create_autocmd('BufWinEnter', {
 })
 
 -- Clipboard
-remap("v", "<leader>y", "\"*y", opts)
-remap("v", "<leader>Y", "\"+y", opts)
+remap("v", "<leader>y", "\"+y", opts)
+remap("v", "<leader>Y", "\"*y", opts)
 
 -- Telescope
 remap("n", "<C-p>", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy({}))<cr>", opts)
