@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-vboxmanage list vms | fzf --layout=reverse | xargs echo | sed 's/{.*}//g;s/.$//g' | xargs -I_ bash -c 'vboxmanage startvm _ --type headless'
-

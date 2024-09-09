@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-vboxmanage list vms -l | grep 'Name:\|guest port = 22'
-

@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+cd $(find ~/sw -maxdepth 4 -type d -name .git -print | sed -e 's/\/.git//g' | fzf --reverse)

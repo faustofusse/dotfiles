@@ -3,7 +3,7 @@
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$(findproject)
+    selected=$(find ~/sw -maxdepth 4 -type d -name .git -print | sed -e 's/\/.git//g' | fzf --reverse)
 fi
 
 if [[ -z $selected ]]; then
