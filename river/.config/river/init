@@ -18,7 +18,7 @@ riverctl input pointer-1133-16392-Logitech_M185 natural-scroll enabled
 riverctl focus-follows-cursor normal
 
 # screenshot
-riverctl map normal Super S spawn 'grim -t png -g "$(slurp)" ~/Downloads/$(date +%s).png'
+riverctl map normal Super S spawn 'grim -t png -g "$(slurp -d)" ~/Downloads/$(date +%s).png'
 
 # Super+Shift+Return to start an instance of the terminal
 riverctl map normal Super+Shift Return spawn kitty
@@ -163,6 +163,7 @@ riverctl rule-add -app-id "bar" csd
 
 # scale macbook pro screen
 wlr-randr --output eDP-1 --scale 2
+wlr-randr --output DP-2 --pos 1280,0
 
 # Set the default layout generator to be rivertile and start it.
 # River will send the process group of the init executable SIGTERM on exit.
