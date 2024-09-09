@@ -45,7 +45,7 @@
   networking.firewall = {
     enable = true;
     allowedUDPPorts = [];
-    allowedTCPPorts = [ 8080 7700 21 4983 ];
+    allowedTCPPorts = [ 8080 7700 21 4983 11470 12470 ];
     allowedTCPPortRanges = [ { from = 56250; to = 56260; } ];
   };
 
@@ -130,6 +130,7 @@
      eww
      grim
      rofi-wayland
+     rofi-bluetooth
      slurp
      wlr-randr
      wl-clipboard
@@ -165,12 +166,14 @@
      neofetch
      neovim
      openssl
+     libqalculate
      ripgrep
      stow
      tmux
      unzip
      vim
      wget
+     yazi
      zathura
      zip
   ];
