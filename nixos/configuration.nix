@@ -35,6 +35,18 @@
     };
   };
 
+  # storage optimization
+  nix = {
+    optimise.automatic = true;
+    optimise.dates = [ "03:45" ];
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+  };
+
+  # ftp server
   services.vsftpd = {
     enable = true;
     localUsers = true;
@@ -42,6 +54,7 @@
     extraConfig = "pasv_enable=Yes\npasv_min_port=56250\npasv_max_port=56260";
   };
 
+  # firewall
   networking.firewall = {
     enable = true;
     allowedUDPPorts = [];
@@ -56,7 +69,10 @@
     desktopManager.gnome.enable = true;
   };
 
-  programs.river.enable = true;
+  programs.river = {
+    enable = true;
+    extraPackages = [];
+  };
 
   # disable gnome shit
   environment.gnome.excludePackages = (with pkgs.gnome; [
@@ -95,7 +111,7 @@
     description = "Fausto Fusse";
     extraGroups = [ "networkmanager" "wheel" "docker" "kvm" "adbusers" ];
     shell = pkgs.zsh;
-    packages = with pkgs; [];
+    packages = [];
   };
 
   fonts.packages = [
