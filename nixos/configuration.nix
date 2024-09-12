@@ -9,6 +9,13 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  boot.extraModprobeConfig = ''
+    options kvm_intel nested=1
+    options kvm_intel emulate_invalid_guest_state=0
+    options kvm ignore_msrs=1
+  '';
+  virtualisation.libvirtd.enable = true;
+
   # Set your time zone and internationalisation properties
   time.timeZone = "America/Argentina/Buenos_Aires";
   i18n.defaultLocale = "en_US.UTF-8";
@@ -109,13 +116,13 @@
   users.users.fausto = {
     isNormalUser = true;
     description = "Fausto Fusse";
-    extraGroups = [ "networkmanager" "wheel" "docker" "kvm" "adbusers" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "kvm" "adbusers" "libvirtd" ];
     shell = pkgs.zsh;
     packages = [];
   };
 
   fonts.packages = [
-    (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+    (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" "CascadiaCode" ]; })
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
