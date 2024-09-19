@@ -1,15 +1,15 @@
 #!/bin/sh
 
-# Set background and border color
+# set background and border color
 riverctl background-color 0x000000 # 0x002b36
 riverctl border-color-focused 0x93a1a1
 riverctl border-color-unfocused 0x586e75
 
+# set cursor theme (https://github.com/ful1e5/apple_cursor)
+riverctl xcursor-theme macOS 20
+
 # launcher
 riverctl map normal Super P spawn 'rofi -show drun -modes "drun,window,run"'
-
-# statusbar
-# riverctl spawn 'levee pulse backlight battery'
 
 # mouse and touchpad
 riverctl input pointer-1739-1367-Apple_SPI_Touchpad tap enabled
