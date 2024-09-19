@@ -2,20 +2,6 @@ local colorscheme = 'catppuccin'
 
 local customs = {}
 
-customs['gruvbox-material'] = function()
-    vim.cmd[[highlight! link TSProperty Blue]]
-    return {
-        CopilotSuggestion = { fg = "#928374", bg = "#3c3836" },
-        TelescopeSelection = { fg = "#928374" },
-        TelescopeMatching = { fg = "#d4be98" },
-        TelescopePromptPrefix = { fg = "#d4be98" },
-        NvimTreeFolderIcon = { fg = "#708085" },
-        NvimTreeFolderName = { fg = "#BEAD8F" },
-        NvimTreeOpenedFolderName = { fg = "#BEAD8F" },
-        NvimTreeIndentMarker = { fg = "#4F4945" }
-    }
-end
-
 local function custom_highlights()
     vim.cmd[[highlight Normal ctermbg=NONE guibg=NONE]]
     vim.cmd[[highlight NormalNC ctermbg=NONE guibg=NONE]]
