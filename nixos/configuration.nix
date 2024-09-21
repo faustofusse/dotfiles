@@ -152,6 +152,7 @@
      # wayland
      eww
      grim
+     peaclock
      rofi-wayland
      rofi-bluetooth
      slurp
