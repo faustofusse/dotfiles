@@ -29,7 +29,7 @@ return {
 
         require("mason").setup()
         require("mason-lspconfig").setup {
-            ensure_installed = { 'html-lsp', 'ts_ls', 'gopls', 'rust_analyzer', 'lua_ls', 'templ' },
+            ensure_installed = { 'html', 'ts_ls', 'gopls', 'rust_analyzer', 'lua_ls', 'templ' },
             handlers = {
                 function (server_name)
                     lspconfig[server_name].setup {
