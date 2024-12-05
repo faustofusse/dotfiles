@@ -2,15 +2,18 @@
 # [[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh"
 
 # user configuration
-export MANPATH="$PATH:/usr/local/man"
-export LDFLAGS="-L/usr/local/opt/zlib/lib"
-export CPPFLAGS="-I/usr/local/opt/zlib/include"
-export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
+# export MANPATH="$PATH:/usr/local/man"
+# export LDFLAGS="-L/usr/local/opt/zlib/lib"
+# export CPPFLAGS="-I/usr/local/opt/zlib/include"
+# export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
 export LANG=en_US.UTF-8
 
 # bin
 export PATH="$PATH:/usr/local/bin"
 export PATH="$PATH:$HOME/.local/bin"
+
+# homebrew
+export PATH="/opt/homebrew/bin:$PATH"
 
 # openvpn (commented on 02/aug/2022)
 export PATH="$PATH:/usr/local/Cellar/openvpn/2.5.8/sbin"
@@ -19,28 +22,29 @@ export PATH="$PATH:/usr/local/Cellar/openvpn/2.5.8/sbin"
 export PATH="$PATH":"$HOME/.pub-cache/bin"
 
 # rust
-source "$HOME/.cargo/env"
+# source "$HOME/.cargo/env"
+export PATH="$PATH:$HOME/.cargo/bin"
 
 # solana
 export PATH="/Users/fausto/.local/share/solana/install/active_release/bin:$PATH"
 
 # java
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-11.jdk/Contents/Home"
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home"
 export PATH="$PATH:$JAVA_HOME/bin"
-
-# ruby
-eval "$(rbenv init - zsh)"
-export PATH="$PATH:$HOME/.rvm/bin"
-
-# golang
-export PATH=$PATH:/usr/local/go/bin
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
 # android
 export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
 export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
+
+# ruby
+eval "$(rbenv init - zsh)"
+# export PATH="$PATH:$HOME/.rvm/bin"
+
+# golang
+export PATH=$PATH:/usr/local/go/bin
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
 # docker
 export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
