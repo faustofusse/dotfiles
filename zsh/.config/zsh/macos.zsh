@@ -29,7 +29,7 @@ export PATH="$PATH:$HOME/.cargo/bin"
 export PATH="/Users/fausto/.local/share/solana/install/active_release/bin:$PATH"
 
 # java
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home"
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-21.jdk/Contents/Home"
 export PATH="$PATH:$JAVA_HOME/bin"
 
 # android
