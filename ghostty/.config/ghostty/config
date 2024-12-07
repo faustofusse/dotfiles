@@ -1,2 +1,6 @@
 theme = Github Dark
 font-size = 19
+clipboard-read = allow
+title =
+macos-titlebar-proxy-icon = hidden
+quit-after-last-window-closed = true
