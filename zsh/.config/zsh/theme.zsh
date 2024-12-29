@@ -13,13 +13,14 @@ function git_branch_name() {
 
 # nix direnv
 function icon() {
-    direnv_file=$DIRENV_FILE
-    if [[ $direnv_file == "" ]];
-    then
-        echo '%#'
-    else
-        echo ''
-    fi
+    # direnv_file=$DIRENV_FILE
+    # if [[ $direnv_file == "" ]];
+    # then
+    #     echo '%#'
+    # else
+    #     echo ''
+    # fi
+    echo '%#'
 }
 
 # Enable substitution in the prompt.

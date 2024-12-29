@@ -1,4 +1,4 @@
-# # CodeWhisperer pre block. Keep at the top of this file.
+# # CodeWhisperer pre block. Keep at the top of this file.macos
 # [[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh"
 
 # user configuration
@@ -48,6 +48,9 @@ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
 # docker
 export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
+
+# direnv
+eval "$(direnv hook zsh)"
 
 # # clangd (si lo descomento rompe los 'pod install')
 # export PATH="$PATH:/usr/local/opt/llvm/bin"
