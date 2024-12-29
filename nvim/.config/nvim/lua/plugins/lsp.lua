@@ -7,6 +7,7 @@ return {
         -- { "folke/noice.nvim", opts = { cmdline = { view = "cmdline" } }, dependencies = { "MunifTanjim/nui.nvim" } },
         { "williamboman/mason.nvim" },
         { "williamboman/mason-lspconfig.nvim" },
+        { "saghen/blink.cmp" },
     },
     config = function ()
         local icons = require("user.icons")
@@ -20,15 +21,16 @@ return {
             vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
         end
 
+        local capabilities = require('blink.cmp').get_lsp_capabilities()
+
         local lspconfig = require("lspconfig")
-        local cmp_nvim_lsp = require("cmp_nvim_lsp")
-        local capabilities = cmp_nvim_lsp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
         -- dartls is not in mason
         lspconfig.dartls.setup { capabilities = capabilities }
 
         require("mason").setup()
         require("mason-lspconfig").setup {
+            automatic_installation = false,
             ensure_installed = { 'html', 'ts_ls', 'gopls', 'rust_analyzer', 'lua_ls', 'templ' },
             handlers = {
                 function (server_name)

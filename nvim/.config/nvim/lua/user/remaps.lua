@@ -45,8 +45,9 @@ remap("n", "<leader>ff", ":lua require('telescope.builtin').find_files(require('
 remap("n", "<leader>fd", ":lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy({ cwd = '~/.dotfiles', hidden = true }))<cr>", opts)
 remap("n", "<leader>fg", ":lua require('telescope.builtin').live_grep(require('telescope.themes').get_dropdown({}))<cr>", opts)
 remap("n", "<leader>fb", ":lua require('telescope.builtin').buffers()<cr>", opts)
-remap("n", "<leader>fh", ":lua require('telescope.builtin').help_tags()<cr>", opts)
+remap("n", "<leader>fh", ":lua require('telescope.builtin').help_tags(require('telescope.themes').get_dropdown({}))<cr>", opts)
 remap("n", "<leader>fs", ":lua require('telescope.builtin').lsp_dynamic_workspace_symbols(require('telescope.themes').get_dropdown({}))<cr>", opts)
+remap("n", "<leader>fr", ":lua require('telescope.builtin').lsp_references(require('telescope.themes').get_dropdown({}))<cr>", opts)
 
 -- Harpoon
 remap("n", "<leader>a", ":lua require('harpoon.mark').add_file()<cr>", opts)
