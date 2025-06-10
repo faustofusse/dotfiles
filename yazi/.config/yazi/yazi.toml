@@ -7,6 +7,8 @@ edit  = [ { run = 'nvim "$@"', block = true, for = "unix" } ]
 play  = [ { run = 'mpv "$@"', orphan = true, for = "unix" } ]
 pdf   = [ { run = 'zathura "$@"', orphan = true, for = "unix" } ]
 image = [ { run = 'feh "$@"', orphan = true, for = "unix" } ]
+rar   = [ { run = 'unrar x "$@"', orphan = true, for = "unix" } ]
+zip   = [ { run = 'unzip -o "$@"', orphan = true, for = "unix" } ]
 
 [open]
 rules = [
@@ -14,4 +16,6 @@ rules = [
 	{ mime = "text/*", use = "edit" },
 	{ mime = "video/*", use = "play" },
 	{ mime = "application/pdf", use = "pdf" },
+	{ name = "*.rar", use = "rar" },
+	{ name = "*.zip", use = "zip" },
 ]
