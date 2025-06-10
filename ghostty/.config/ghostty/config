@@ -1,6 +1,7 @@
 theme = Github Dark
 font-size = 15
 clipboard-read = allow
-title =
+macos-icon = blueprint
 macos-titlebar-proxy-icon = hidden
+mouse-hide-while-typing = true
 quit-after-last-window-closed = true
