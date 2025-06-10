@@ -5,8 +5,8 @@ return {
         { "folke/trouble.nvim", opts = { }, cmd = "Trouble" },
         { "j-hui/fidget.nvim", opts = { notification = { override_vim_notify = 1, window = { winblend = 0 } } } },
         -- { "folke/noice.nvim", opts = { cmdline = { view = "cmdline" } }, dependencies = { "MunifTanjim/nui.nvim" } },
-        { "williamboman/mason.nvim" },
-        { "williamboman/mason-lspconfig.nvim" },
+        { "mason-org/mason.nvim" },
+        { "mason-org/mason-lspconfig.nvim" },
         { "saghen/blink.cmp" },
     },
     config = function ()
@@ -50,9 +50,15 @@ return {
                         capabilities = capabilities
                     }
                 end,
+                ["htmx"] = function ()
+                    lspconfig.html.setup {
+                        filetypes = { "html", "templ" },
+                        capabilities = capabilities
+                    }
+                end,
                 ["tailwindcss"] = function ()
                     lspconfig.tailwindcss.setup {
-                        filetypes = { "html", "templ", "astro", "javascript", "typescript", "react" },
+                        filetypes = { "html", "templ", "astro", "javascript", "typescript", "tsx", "react" },
                         init_options = { userLanguages = { templ = "html" } },
                         capabilities = capabilities
                     }

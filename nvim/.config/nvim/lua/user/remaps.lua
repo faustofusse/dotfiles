@@ -21,7 +21,7 @@ remap("n", "[q", ":cp<cr>", opts)
 -- Git
 remap("n", "]g", ":Gitsigns next_hunk<cr>", opts)
 remap("n", "[g", ":Gitsigns prev_hunk<cr>", opts)
-remap("n", "<leader>gs", ":Git<cr>", opts)
+remap("n", "<leader>g", ":Git<cr>", opts)
 vim.api.nvim_create_autocmd('BufWinEnter', {
     group = vim.api.nvim_create_augroup('UserFugitiveConfig', {}),
     pattern = "*",

@@ -1,31 +1,28 @@
 return {
     'saghen/blink.cmp',
 
-    dependencies = { "echasnovski/mini.icons" }, --  'rafamadriz/friendly-snippets'
-
     version = '*',
 
     opts = {
         keymap = { preset = 'default' },
 
-        appearance = {
-            use_nvim_cmp_as_default = false,
-            nerd_font_variant = 'mono'
-        },
+        sources = { default = { 'lsp', 'path', 'snippets' } },
 
-        sources = {
-            default = { 'lsp', 'path', 'snippets' },
-        },
+        signature = { enabled = true },
 
         completion = {
             menu = {
-                auto_show = function(ctx)
-                    return ctx.mode ~= 'cmdline' and vim.bo.buftype ~= "prompt"
-                end,
-            }
+                -- auto_show = function(ctx) return ctx.mode ~= 'cmdline' and vim.bo.buftype ~= "prompt" end,
+                auto_show = false,
+                draw = { treesitter = { "lsp" } },
+            },
+
+            ghost_text = { enabled = true },
+
+            documentation = { auto_show = true, auto_show_delay_ms = 500 },
         },
 
-        signature = { enabled = true },
+        appearance = { nerd_font_variant = 'mono' },
     },
 
     opts_extend = { "sources.default" }
