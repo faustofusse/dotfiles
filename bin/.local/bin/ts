@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
+# nu -c "ls ~/sw/*/.git | get name | str replace '/.git' '' | input list --fuzzy | tmux new-session -c \$in -ds (\$in | path basename)"
+
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$(find ~/sw -maxdepth 4 -type d -name .git -print | sed -e 's/\/.git//g' | fzf --reverse)
+    selected=$(find ~/sw ~/dex -maxdepth 4 -type d -name .git -print | sed -e 's/\/.git//g' | fzf --reverse)
 fi
 
 if [[ -z $selected ]]; then
