@@ -142,11 +142,10 @@
 
   virtualisation.docker.enable = true;
 
+  # otros: discord, kitty, minecraft, stremio, nodejs, lf
   environment.systemPackages = with pkgs; [
      # desktop
      brave
-     discord
-     kitty
      libreoffice
      pcmanfm
      # wayland
@@ -159,21 +158,16 @@
      wlr-randr
      wl-clipboard
      # boludeo
-     minecraft
      spotify
-     stremio
-     xournalpp
      # software
      awscli2
      cargo
-     flyctl
      gcc
      gh
      git
      gnumake
      go
      jetbrains-toolbox
-     nodejs
      sqlite
      # utils
      curl
@@ -184,7 +178,6 @@
      gimp
      htop
      jq
-     lf
      mpv
      ncdu
      neofetch
