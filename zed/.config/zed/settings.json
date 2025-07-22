@@ -16,12 +16,17 @@
   },
   "format_on_save": "off",
   "agent": {
+    "always_allow_tool_actions": true,
+    "inline_assistant_model": {
+      "provider": "google",
+      "model": "gemini-2.5-flash"
+    },
+    "default_profile": "ask",
     "play_sound_when_agent_done": true,
     "default_model": {
-      "provider": "google",
-      "model": "gemini-2.0-flash"
-    },
-    "version": "2"
+      "provider": "openrouter",
+      "model": "moonshotai/kimi-dev-72b:free"
+    }
   },
   "telemetry": {
     "diagnostics": false,
@@ -36,10 +41,7 @@
     "dark": "Catppuccin Mocha"
   },
   "scrollbar": {
-    "axes": {
-      "horizontal": false,
-      "vertical": false
-    }
+    "show": "never"
   },
   "git": {
     "inline_blame": {
@@ -49,7 +51,7 @@
   "languages": {
     "TypeScript": {
       "tab_size": 2,
-      "format_on_save": "on",
+      "format_on_save": "off",
       "formatter": {
         "external": {
           "command": "npx",
@@ -59,7 +61,7 @@
     },
     "Vue.js": {
       "tab_size": 2,
-      "format_on_save": "on",
+      "format_on_save": "off",
       "formatter": {
         "external": {
           "command": "npx",
