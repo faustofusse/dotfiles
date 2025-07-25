@@ -82,13 +82,12 @@
   };
 
   # disable gnome shit
-  environment.gnome.excludePackages = (with pkgs.gnome; [
-    baobab cheese eog epiphany simple-scan totem yelp evince file-roller geary seahorse    
+  environment.gnome.excludePackages = (with pkgs; [
     gnome-calculator gnome-calendar gnome-characters gnome-clocks gnome-contacts
     gnome-font-viewer gnome-logs gnome-maps gnome-music gnome-screenshot
     gnome-system-monitor gnome-weather gnome-disk-utility
-  ]) ++ (with pkgs; [
-    gedit gnome-photos gnome-connections
+    simple-scan totem yelp evince file-roller geary seahorse eog
+    epiphany cheese baobab gedit gnome-photos gnome-connections
   ]);
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -102,7 +101,6 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -121,9 +119,7 @@
     packages = [];
   };
 
-  fonts.packages = [
-    (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" "CascadiaCode" ]; })
-  ];
+  fonts.packages = (with pkgs; [ cascadia-code nerd-fonts.jetbrains-mono ]);
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -164,11 +160,13 @@
      cargo
      gcc
      gh
+     ghostty
      git
      gnumake
      go
      jetbrains-toolbox
      sqlite
+     zed-editor
      # utils
      curl
      dig

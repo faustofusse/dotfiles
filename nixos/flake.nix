@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     xremap-flake.url = "github:xremap/nix-flake";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
@@ -15,6 +15,11 @@
       system = "x86_64-linux";
       specialArgs = inputs;
       modules = [ ./hosts/mbp.nix ./configuration.nix ];
+    };
+    nixosConfigurations."faulenovo" = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = inputs;
+      modules = [ ./hosts/lenovo.nix ./configuration.nix ];
     };
   };
 }
