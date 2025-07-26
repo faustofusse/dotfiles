@@ -1,4 +1,4 @@
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on = [ "d" ]
 run = ["remove --permanently"]
 desc = "Delete files permanently"
