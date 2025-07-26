@@ -69,25 +69,26 @@
     allowedTCPPortRanges = [ { from = 56250; to = 56260; } ];
   };
 
-  services.xserver = {
-    enable = true;
-    # Enable the GNOME Desktop Environment.
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
-  };
-
   programs.river = {
     enable = true;
     extraPackages = [];
   };
 
+  # services.displayManager.gdm.enable = true;
+  services.displayManager.ly.enable = true;
+  services.displayManager.ly.settings = {
+      hide_borders = "true";
+  };
+  services.desktopManager.gnome.enable = true;
+
   # disable gnome shit
   environment.gnome.excludePackages = (with pkgs; [
-    gnome-calculator gnome-calendar gnome-characters gnome-clocks gnome-contacts
-    gnome-font-viewer gnome-logs gnome-maps gnome-music gnome-screenshot
-    gnome-system-monitor gnome-weather gnome-disk-utility
-    simple-scan totem yelp evince file-roller geary seahorse eog
-    epiphany cheese baobab gedit gnome-photos gnome-connections
+    gnome-calculator gnome-calendar gnome-characters gnome-clocks gnome-tour
+    gnome-font-viewer gnome-logs gnome-maps gnome-music gnome-screenshot gnome-text-editor
+    gnome-system-monitor gnome-weather gnome-disk-utility gnome-contacts
+    gnome-photos gnome-connections gnome-color-manager gnome-console
+    simple-scan totem yelp evince file-roller geary seahorse
+    epiphany cheese baobab gedit decibels loupe snapshot eog
   ]);
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -96,9 +97,6 @@
     mouse.naturalScrolling = true;
     touchpad.naturalScrolling = true;
   };
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
 
   # Enable sound with pipewire.
   security.rtkit.enable = true;
@@ -125,12 +123,12 @@
 
   nixpkgs.config = {
     allowUnfree = true;
-    permittedInsecurePackages = [ "openssl-1.1.1w" ]; # sublime4
     allowBroken = true; # minecraft
+    permittedInsecurePackages = [ "openssl-1.1.1w" ]; # sublime4
   };
 
   programs = {
-    # adb.enable = true;
+    adb.enable = true;
     direnv.enable = true;
     firefox.enable = true;
     zsh.enable = true;
@@ -142,7 +140,6 @@
   environment.systemPackages = with pkgs; [
      # desktop
      brave
-     libreoffice
      pcmanfm
      # wayland
      eww
@@ -164,7 +161,6 @@
      git
      gnumake
      go
-     jetbrains-toolbox
      sqlite
      zed-editor
      # utils
@@ -200,6 +196,9 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+
+  # Enable CUPS to print documents.
+  # services.printing.enable = true;
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
