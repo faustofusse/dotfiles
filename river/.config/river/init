@@ -9,19 +9,21 @@ riverctl border-color-unfocused 0x586e75
 riverctl xcursor-theme macOS 20
 
 # launcher
-riverctl map normal Super P spawn 'rofi -show drun -modes "drun,window,run"'
+riverctl map normal Super Space spawn 'rofi -show drun -modes "drun,window,run"'
 
 # mouse and touchpad
 riverctl input pointer-1739-1367-Apple_SPI_Touchpad tap enabled
 riverctl input pointer-1739-1367-Apple_SPI_Touchpad disable-while-typing enabled
 riverctl input pointer-1133-16392-Logitech_M185 natural-scroll enabled
+riverctl input pointer-1133-45111-MX_Anywhere_3S_Mouse natural-scroll enabled
+riverctl input pointer-4660-22136-xremap natural-scroll enabled
 riverctl focus-follows-cursor normal
 
 # screenshot
 riverctl map normal Super S spawn 'grim -t png -g "$(slurp -d)" ~/Downloads/$(date +%s).png'
 
 # Super+Shift+Return to start an instance of the terminal
-riverctl map normal Super+Shift Return spawn kitty
+riverctl map normal Super+Shift Return spawn ghostty
 
 # Super+Q to close the focused view
 riverctl map normal Super Q close
@@ -108,10 +110,10 @@ riverctl map normal Super 0 set-focused-tags $all_tags
 riverctl map normal Super+Shift 0 set-view-tags $all_tags
 
 # Super+Space to toggle float
-riverctl map normal Super Space toggle-float
+riverctl map normal Super F toggle-float
 
 # Super+F to toggle fullscreen
-riverctl map normal Super F toggle-fullscreen
+# riverctl map normal Super F toggle-fullscreen
 
 # Super+{Up,Right,Down,Left} to change layout orientation
 riverctl map normal Super Up    send-layout-cmd rivertile "main-location top"
@@ -162,8 +164,8 @@ riverctl rule-add -app-id 'float*' -title 'foo' float
 riverctl rule-add -app-id "bar" csd
 
 # scale macbook pro screen
-wlr-randr --output eDP-1 --scale 2
-wlr-randr --output DP-2 --pos 1280,0
+wlr-randr --output eDP-1 --scale 1.2
+# wlr-randr --output DP-2 --pos 1280,0
 
 # Set the default layout generator to be rivertile and start it.
 # River will send the process group of the init executable SIGTERM on exit.
