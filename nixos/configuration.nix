@@ -69,25 +69,24 @@
     allowedTCPPortRanges = [ { from = 56250; to = 56260; } ];
   };
 
-  # window manager
-  programs.niri.enable = true;
-
-  # services.displayManager.gdm.enable = true;
-  services.displayManager.ly.enable = true;
-  services.displayManager.ly.settings = {
-      hide_borders = "true";
+  # display manager
+  services.displayManager.ly = {
+      enable = true;
+      settings = {
+          clock = "%Y-%m-%d %H:%M:%S";
+          blank_box = false;
+          hide_borders = true;
+          bg = "0x00000000";
+          fg = "0x00FFFFFF";
+          box_title = "null";
+          default_input = "password";
+          initial_info_text = "hola";
+      };
   };
-  services.desktopManager.gnome.enable = true;
 
-  # disable gnome shit
-  environment.gnome.excludePackages = (with pkgs; [
-    gnome-calculator gnome-calendar gnome-characters gnome-clocks gnome-tour
-    gnome-font-viewer gnome-logs gnome-maps gnome-music gnome-screenshot gnome-text-editor
-    gnome-system-monitor gnome-weather gnome-disk-utility gnome-contacts
-    gnome-photos gnome-connections gnome-color-manager gnome-console
-    simple-scan totem yelp evince file-roller geary seahorse
-    epiphany cheese baobab gedit decibels loupe snapshot eog
-  ]);
+  # window managers
+  programs.niri.enable = true;
+  services.desktopManager.gnome.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput = {
@@ -185,6 +184,16 @@
      zathura
      zip
   ];
+
+  # disable gnome shit
+  environment.gnome.excludePackages = (with pkgs; [
+    gnome-calculator gnome-calendar gnome-characters gnome-clocks gnome-tour
+    gnome-font-viewer gnome-logs gnome-maps gnome-music gnome-screenshot gnome-text-editor
+    gnome-system-monitor gnome-weather gnome-disk-utility gnome-contacts
+    gnome-photos gnome-connections gnome-color-manager gnome-console
+    simple-scan totem yelp evince file-roller geary seahorse
+    epiphany cheese baobab gedit decibels loupe snapshot eog
+  ]);
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
