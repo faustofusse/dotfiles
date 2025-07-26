@@ -4,4 +4,6 @@ clipboard-read = allow
 macos-icon = blueprint
 macos-titlebar-proxy-icon = hidden
 mouse-hide-while-typing = true
+gtk-adwaita = false
+gtk-titlebar = false
 quit-after-last-window-closed = true
