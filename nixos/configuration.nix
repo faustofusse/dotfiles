@@ -144,6 +144,7 @@
      peaclock
      slurp
      tofi
+     wf-recorder
      wlr-randr
      wl-clipboard
      # boludeo
