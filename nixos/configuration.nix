@@ -69,10 +69,8 @@
     allowedTCPPortRanges = [ { from = 56250; to = 56260; } ];
   };
 
-  programs.river = {
-    enable = true;
-    extraPackages = [];
-  };
+  # window manager
+  programs.niri.enable = true;
 
   # services.displayManager.gdm.enable = true;
   services.displayManager.ly.enable = true;
@@ -145,9 +143,8 @@
      eww
      grim
      peaclock
-     rofi-wayland
-     rofi-bluetooth
      slurp
+     tofi
      wlr-randr
      wl-clipboard
      # boludeo
