@@ -15,6 +15,9 @@
     "edit_prediction_provider": "zed"
   },
   "format_on_save": "off",
+  "title_bar": {
+    "show_branch_icon": true
+  },
   "agent": {
     "always_allow_tool_actions": true,
     "inline_assistant_model": {
