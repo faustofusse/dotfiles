@@ -69,24 +69,19 @@
     allowedTCPPortRanges = [ { from = 56250; to = 56260; } ];
   };
 
-  # display manager
-  services.displayManager.ly = {
-      enable = true;
-      settings = {
-          clock = "%Y-%m-%d %H:%M:%S";
-          blank_box = false;
-          hide_borders = true;
-          bg = "0x00000000";
-          fg = "0x00FFFFFF";
-          box_title = "null";
-          default_input = "password";
-          initial_info_text = "hola";
-      };
-  };
-
   # window managers
   programs.niri.enable = true;
   services.desktopManager.gnome.enable = true;
+
+  # display manager
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd niri --remember --theme 'action=darkgray;border=black;container=black;prompt=gray;input=white'";
+      };
+    };
+  };
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput = {
@@ -130,6 +125,8 @@
     firefox.enable = true;
     zsh.enable = true;
   };
+
+  qt.enable = true;
 
   virtualisation.docker.enable = true;
 
@@ -178,6 +175,7 @@
      ripgrep
      stow
      tmux
+     unrar
      unzip
      vim
      wget
@@ -186,11 +184,13 @@
      zip
   ];
 
+  # services.dbus.packages = [ pkgs.gnome-settings-daemon ];
+
   # disable gnome shit
   environment.gnome.excludePackages = (with pkgs; [
     gnome-calculator gnome-calendar gnome-characters gnome-clocks gnome-tour
     gnome-font-viewer gnome-logs gnome-maps gnome-music gnome-screenshot gnome-text-editor
-    gnome-system-monitor gnome-weather gnome-disk-utility gnome-contacts
+    gnome-system-monitor gnome-weather gnome-disk-utility gnome-contacts gnome-extension-manager
     gnome-photos gnome-connections gnome-color-manager gnome-console
     simple-scan totem yelp evince file-roller geary seahorse
     epiphany cheese baobab gedit decibels loupe snapshot eog
