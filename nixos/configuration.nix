@@ -160,11 +160,11 @@
      # utils
      curl
      dig
-     feh
      ffmpeg
      fzf
      gimp
      htop
+     imv
      jq
      mpv
      ncdu
