@@ -6,7 +6,7 @@ mouse_events = ['click', 'scroll', 'touch', 'move', 'drag']
 edit  = [ { run = 'nvim "$@"', block = true, for = "unix" } ]
 play  = [ { run = 'mpv "$@"', orphan = true, for = "unix" } ]
 pdf   = [ { run = 'zathura "$@"', orphan = true, for = "unix" } ]
-image = [ { run = 'feh "$@"', orphan = true, for = "unix" } ]
+image = [ { run = 'imv "$@"', orphan = true, for = "unix" } ]
 rar   = [ { run = 'unrar x "$@"', orphan = true, for = "unix" } ]
 zip   = [ { run = 'unzip -o "$@"', orphan = true, for = "unix" } ]
 
