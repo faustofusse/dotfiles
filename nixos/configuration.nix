@@ -78,7 +78,7 @@
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd niri --remember --theme 'action=darkgray;border=black;container=black;prompt=gray;input=white'";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd niri-session --remember --theme 'action=darkgray;border=black;container=black;prompt=gray;input=white'";
       };
     };
   };
