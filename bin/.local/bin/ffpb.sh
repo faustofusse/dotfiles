@@ -40,14 +40,15 @@ if [ -z "$duration_secs" ]; then
     exit $?
 fi
 
-# Create a temporary file for progress logs
+# Create temporary files for progress and logs
 PROGRESS_FILE=$(mktemp)
+LOG_FILE=$(mktemp)
 
-# Cleanup the temporary file on exit
-trap 'rm -f "$PROGRESS_FILE"' EXIT
+# Cleanup the temporary files on exit
+trap 'rm -f "$PROGRESS_FILE" "$LOG_FILE"' EXIT
 
-# Run ffmpeg in the background, redirecting progress to the temp file
-ffmpeg -progress "$PROGRESS_FILE" "$@" &
+# Run ffmpeg in the background, redirecting progress and output
+ffmpeg -progress "$PROGRESS_FILE" "$@" >"$LOG_FILE" 2>&1 &
 FFMPEG_PID=$!
 
 echo "Starting ffmpeg (PID: $FFMPEG_PID)..."
@@ -78,6 +79,9 @@ if [ $EXIT_CODE -eq 0 ]; then
     printf "Progress: [100%%]\nDone.\n"
 else
     printf "\nffmpeg failed with exit code %d.\n" "$EXIT_CODE"
+    echo "--- FFMPEG LOG ---"
+    cat "$LOG_FILE"
+    echo "------------------"
 fi
 
 exit $EXIT_CODE
