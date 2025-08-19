@@ -8,3 +8,4 @@ alias ccd="cd \$(find ~/sw -maxdepth 4 -type d -name .git -print | sed -e 's/\/.
 alias tsm="transmission-remote"
 alias nchat="TERM=xterm-256color nchat"
 alias nix="NIXPKGS_ALLOW_UNFREE=1 nix"
+alias oc="opencode"

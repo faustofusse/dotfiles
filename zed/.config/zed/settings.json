@@ -22,13 +22,13 @@
     "always_allow_tool_actions": true,
     "inline_assistant_model": {
       "provider": "google",
-      "model": "gemini-2.5-flash"
+      "model": "gemini-2.5-pro"
     },
-    "default_profile": "ask",
+    "default_profile": "write",
     "play_sound_when_agent_done": true,
     "default_model": {
-      "provider": "openrouter",
-      "model": "moonshotai/kimi-dev-72b:free"
+      "provider": "vercel",
+      "model": "v0-1.5-md"
     }
   },
   "telemetry": {

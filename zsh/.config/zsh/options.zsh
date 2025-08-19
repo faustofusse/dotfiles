@@ -9,3 +9,4 @@ setopt share_history
 export HISTFILE="$HOME/.history"
 export HISTSIZE=2000
 export HISTORY_IGNORE="(mv*|cp*|mkdir*|ls*|lf*|cd*|clear|exit|rm*|v*|mpv*)"
+export EDITOR="nvim"
