@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # ffpb.sh - A ffmpeg wrapper to show progress percentage.
 

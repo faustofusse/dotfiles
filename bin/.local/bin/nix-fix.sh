@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # si se desmountea, hacer lo siguiente
 #

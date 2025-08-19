@@ -1,4 +1,4 @@
-ffmpeg -f concat -safe 0 -i $1 -c copy $2
+#!/usr/bin/env bash
 
 # example file:
 # file '/Users/faustofusse/Desktop/1.mp4'
@@ -10,3 +10,5 @@ ffmpeg -f concat -safe 0 -i $1 -c copy $2
 # ar son los Hz del audio (ffprobe)
 # -c:v copy -video_track_timescale 30k -c:a aac -ac 6 -ar 44100 -shortest
 # -c:v copy -video_track_timescale 24k -c:a aac -ac 6 -ar 48000 -shortest
+
+ffmpeg -f concat -safe 0 -i $1 -c copy $2
