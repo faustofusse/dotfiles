@@ -2,3 +2,9 @@
 on = [ "d" ]
 run = ["remove --permanently"]
 desc = "Delete files permanently"
+
+[[mgr.prepend_keymap]]
+on   = "!"
+for  = "unix"
+run  = 'shell "$SHELL" --block'
+desc = "Open $SHELL here"
