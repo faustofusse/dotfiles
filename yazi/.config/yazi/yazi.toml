@@ -18,4 +18,5 @@ rules = [
 	{ mime = "application/pdf", use = "pdf" },
 	{ name = "*.rar", use = "rar" },
 	{ name = "*.zip", use = "zip" },
+	{ name = "*", use = "edit" },
 ]
