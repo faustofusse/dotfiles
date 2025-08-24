@@ -13,16 +13,20 @@ def main [] {
         { title: "capture", command: { || capture } },
         { title: "time", command: { || dunstify (date now | format date "%R") } },
         { title: "battery", command: { || dunstify (open /sys/class/power_supply/BAT0/capacity) } },
-        { title: "lock", command: { || swaylock -c "#000000" } },
+        { title: "lock", command: { || lock } },
         { title: "shutdown", command: { || shutdown now } },
         { title: "reboot", command: { || reboot } },
     ]
 }
 
+def lock [] {
+    grim -t jpeg -q 30 ~/.cache/swaylock.jpeg
+    swaylock --image ~/.cache/swaylock.jpeg --effect-blur 5x3
+}
+
 def screenshot [] {
     let name = date now | format date "%s"
-    let geometry = slurp -d
-    grim -t png -g $geometry ~/Downloads/($name).png
+    grim -t png -g (slurp -d) ~/Downloads/($name).png
 }
 
 def capture [] {
