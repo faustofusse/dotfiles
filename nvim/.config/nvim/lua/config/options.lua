@@ -6,10 +6,19 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
-vim.keymap.set("", "<Space>", "<Nop>", { noremap = true, silent = true })
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
-vim.o.timeoutlen = 2000
+vim.o.timeoutlen = 200
+
+vim.keymap.set("", "<Space>", "<Nop>", { noremap = true, silent = true })
+
+local opts = { noremap = true, silent = true }
+
+vim.keymap.set("n", "]q", ":cn<cr>", opts)
+vim.keymap.set("n", "[q", ":cp<cr>", opts)
+
+vim.keymap.set("v", "<leader>y", "\"+y", opts)
+vim.keymap.set("v", "<leader>Y", "\"*y", opts)
 
 vim.cmd "set whichwrap+=<,>,[,],h,l"
 vim.cmd [[set iskeyword+=-]]
