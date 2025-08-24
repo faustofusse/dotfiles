@@ -103,10 +103,10 @@ return {
         Table = "",
         Calendar = "",
     },
-    diagnostics = {
+    diagnostic = {
         Error = "", --  
-        Warning = "", --  
-        Information = "", --  
+        Warn = "", --  
+        Info = "", --  
         Question = "", --  
         Hint = "",
     },

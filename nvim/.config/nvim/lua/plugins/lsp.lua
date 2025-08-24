@@ -11,27 +11,29 @@ return {
     },
     config = function ()
         local icons = require("user.icons")
-        local signs = {
-            { name = "DiagnosticSignError", text = icons.diagnostics.Error },
-            { name = "DiagnosticSignWarn", text = icons.diagnostics.Warning },
-            { name = "DiagnosticSignHint", text = icons.diagnostics.Hint },
-            { name = "DiagnosticSignInfo", text = icons.diagnostics.Information },
+        vim.diagnostic.config {
+            signs = {
+                text = {
+                    [vim.diagnostic.severity.ERROR] = icons.diagnostic.Error,
+                    [vim.diagnostic.severity.WARN] = icons.diagnostic.Warn,
+                    [vim.diagnostic.severity.HINT] = icons.diagnostic.Hint,
+                    [vim.diagnostic.severity.INFO] = icons.diagnostic.Info,
+                }
+            }
         }
-        for _, sign in ipairs(signs) do
-            vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
-        end
 
         local capabilities = require('blink.cmp').get_lsp_capabilities()
 
         local lspconfig = require("lspconfig")
 
-        -- dartls is not in mason
         lspconfig.dartls.setup { capabilities = capabilities }
+
+        lspconfig["ts_ls"].setup { capabilities = capabilities }
 
         require("mason").setup()
         require("mason-lspconfig").setup {
             automatic_installation = false,
-            ensure_installed = { 'html', 'ts_ls', 'gopls', 'lua_ls' },
+            ensure_installed = {},
             handlers = {
                 function (server_name)
                     lspconfig[server_name].setup {
@@ -63,21 +65,22 @@ return {
                         capabilities = capabilities
                     }
                 end,
-                ["ts_ls"] = function ()
-                    lspconfig["ts_ls"].setup {
-                        filetypes = { "vue", "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
-                        capabilities = capabilities,
-                        init_options = {
-                            -- plugins = {
-                            --     {
-                            --         name = "@vue/typescript-plugin",
-                            --         location = vim.fn.stdpath "data" .. "/mason/packages/vue-language-server/node_modules/@vue/language-server",
-                            --         languages = { "vue" },
-                            --     },
-                            -- },
-                        },
-                    }
-                end
+                -- ["ts_ls"] = function ()
+                --     lspconfig["ts_ls"].setup {
+                --         cmd = { "typescript-language-server", "--stdio" },
+                --         filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+                --         capabilities = capabilities,
+                --         init_options = {
+                --             -- plugins = {
+                --             --     {
+                --             --         name = "@vue/typescript-plugin",
+                --             --         location = vim.fn.stdpath "data" .. "/mason/packages/vue-language-server/node_modules/@vue/language-server",
+                --             --         languages = { "vue" },
+                --             --     },
+                --             -- },
+                --         },
+                --     }
+                -- end
             }
         }
     end
