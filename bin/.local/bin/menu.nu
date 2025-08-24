@@ -13,7 +13,7 @@ def main [] {
         { title: "capture", command: { || capture } },
         { title: "time", command: { || dunstify (date now | format date "%R") } },
         { title: "battery", command: { || dunstify (open /sys/class/power_supply/BAT0/capacity) } },
-        { title: "lock", command: { || swaylock } },
+        { title: "lock", command: { || swaylock -c "#000000" } },
         { title: "shutdown", command: { || shutdown now } },
         { title: "reboot", command: { || reboot } },
     ]
