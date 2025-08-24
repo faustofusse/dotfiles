@@ -1,4 +1,4 @@
-require('user.options')
-require('user.remaps')
-require('user.plugins')
-require('user.colors')
+require('config.options')
+require('config.remaps')
+require('config.plugins')
+require('config.colors')

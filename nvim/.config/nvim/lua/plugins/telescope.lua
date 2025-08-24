@@ -1,16 +1,20 @@
 return {
-    'nvim-telescope/telescope.nvim',
-    cmd = { 'Telescope' },
-    -- tag = '0.1.4',
+    "nvim-telescope/telescope.nvim",
+
+    event = 'VimEnter',
+
     dependencies = {
-        'nvim-lua/plenary.nvim',
-        'nvim-telescope/telescope-fzy-native.nvim',
-        'nvim-telescope/telescope-ui-select.nvim'
+        "nvim-lua/plenary.nvim",
+        "nvim-telescope/telescope-fzy-native.nvim",
+        "nvim-telescope/telescope-ui-select.nvim"
     },
+
     config = function ()
-        local telescope = require('telescope')
+        local telescope = require("telescope")
         local actions = require("telescope.actions")
         local sorters = require("telescope.sorters")
+        local builtin = require("telescope.builtin")
+        local themes = require("telescope.themes")
 
         telescope.setup({
             defaults = {
@@ -38,11 +42,23 @@ return {
                     override_file_sorter = true,
                 },
                 ["ui-select"] = {
-                    require("telescope.themes").get_dropdown { }
+                    themes.get_dropdown({})
                 }
             },
         })
+
         telescope.load_extension("fzy_native")
         telescope.load_extension("ui-select")
+
+        local opts = { noremap = true, silent = true }
+        local dropdown = themes.get_dropdown({})
+        vim.keymap.set("n", "<C-p>",      function() builtin.find_files(themes.get_ivy({})) end, opts)
+        vim.keymap.set("n", "<leader>ff", function() builtin.find_files(themes.get_ivy({ hidden = true })) end, opts)
+        vim.keymap.set("n", "<leader>fd", function() builtin.find_files(themes.get_ivy({ cwd = '~/.dotfiles', hidden = true })) end, opts)
+        vim.keymap.set("n", "<leader>fg", function() builtin.live_grep(dropdown) end, opts)
+        vim.keymap.set("n", "<leader>fb", function() builtin.buffers(dropdown) end, opts)
+        vim.keymap.set("n", "<leader>fh", function() builtin.help_tags(dropdown) end, opts)
+        vim.keymap.set("n", "<leader>fs", function() builtin.lsp_dynamic_workspace_symbols(dropdown) end, opts)
+        vim.keymap.set("n", "<leader>fr", function() builtin.lsp_references(dropdown) end, opts)
     end
 }
