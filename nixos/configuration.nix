@@ -121,7 +121,6 @@
   nixpkgs.config = {
     allowUnfree = true;
     allowBroken = true; # minecraft
-    permittedInsecurePackages = [ "openssl-1.1.1w" ]; # sublime4
   };
 
   programs = {
@@ -142,6 +141,7 @@
      pcmanfm
      # wayland
      eww
+     dunst
      grim
      peaclock
      slurp
