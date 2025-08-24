@@ -145,7 +145,7 @@
      grim
      peaclock
      slurp
-     swaylock
+     swaylock-effects
      tofi
      wf-recorder
      wlr-randr
