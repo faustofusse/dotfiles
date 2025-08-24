@@ -19,7 +19,6 @@ return {
                 ensure_installed = languages, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
                 sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
                 auto_install = false,
-                -- ignore_install = { "d", "haskell" }, -- List of parsers to ignore installing
                 autopairs = { enable = true },
                 highlight = {
                     enable = true, -- false will disable the whole extension
@@ -31,6 +30,8 @@ return {
                     enable = true,
                     enable_autocmd = false,
                 },
+                modules = {},
+                ignore_install = { "d", "haskell" }, -- List of parsers to ignore installing
             }
         end
     }

@@ -31,7 +31,7 @@ return {
         require("mason").setup()
         require("mason-lspconfig").setup {
             automatic_installation = false,
-            ensure_installed = { 'html', 'ts_ls', 'gopls', 'rust_analyzer', 'lua_ls', 'templ' },
+            ensure_installed = { 'html', 'ts_ls', 'gopls', 'lua_ls' },
             handlers = {
                 function (server_name)
                     lspconfig[server_name].setup {
@@ -46,7 +46,7 @@ return {
                 end,
                 ["html"] = function ()
                     lspconfig.html.setup {
-                        filetypes = { "html", "templ" },
+                        filetypes = { "html", "templ", "vue" },
                         capabilities = capabilities
                     }
                 end,
@@ -58,11 +58,26 @@ return {
                 end,
                 ["tailwindcss"] = function ()
                     lspconfig.tailwindcss.setup {
-                        filetypes = { "html", "templ", "astro", "javascript", "typescript", "tsx", "react" },
+                        filetypes = { "html", "templ", "tsx", "react", "svelte", "vue" },
                         init_options = { userLanguages = { templ = "html" } },
                         capabilities = capabilities
                     }
                 end,
+                ["ts_ls"] = function ()
+                    lspconfig["ts_ls"].setup {
+                        filetypes = { "vue", "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+                        capabilities = capabilities,
+                        init_options = {
+                            -- plugins = {
+                            --     {
+                            --         name = "@vue/typescript-plugin",
+                            --         location = vim.fn.stdpath "data" .. "/mason/packages/vue-language-server/node_modules/@vue/language-server",
+                            --         languages = { "vue" },
+                            --     },
+                            -- },
+                        },
+                    }
+                end
             }
         }
     end
