@@ -144,6 +144,7 @@
      dunst
      grim
      peaclock
+     satty
      slurp
      swaylock-effects
      tofi
