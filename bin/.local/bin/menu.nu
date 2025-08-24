@@ -24,14 +24,25 @@ def lock [] {
     swaylock --image ~/.cache/swaylock.jpeg --effect-blur 5x3
 }
 
-def screenshot [] {
-    let name = date now | format date "%s"
+def "screenshot edit" [] {
+    let name = date now | format date "%+"
+    grim -t png -g (slurp -d) - | satty --filename - --output-filename ~/Downloads/($name).png --no-window-decoration
+}
+
+def "screenshot save" [] {
+    let name = date now | format date "%+"
     grim -t png -g (slurp -d) ~/Downloads/($name).png
+}
+
+def "screenshot copy" [] {
+    grim -t png -g (slurp -d) - | wl-copy
 }
 
 def capture [] {
     menu "capture" [
-        { title: "screenshot", command: { || screenshot } },
+        { title: "screenshot (copy)", command: { || screenshot copy } },
+        { title: "screenshot (save)", command: { || screenshot save } },
+        { title: "screenshot (edit)", command: { || screenshot edit } },
         { title: "recording", command: { || } },
     ]
 }
