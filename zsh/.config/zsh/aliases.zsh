@@ -3,4 +3,8 @@ alias ccd="cd \$(find ~/sw -maxdepth 4 -type d -name .git -print | sed -e 's/\/.
 # alias ts="nu -c \"ls ~/sw/*/.git | get name | str replace '/.git' '' | input list --fuzzy | $(echo '\$')env.dir = { path: $(echo '\$')in, name: ($(echo '\$')in | path basename) }; try { tmux new-session -c $(echo '\$')env.dir.path -ds $(echo '\$')env.dir.name}; try { tmux a }; tmux switch-client -t $(echo '\$')env.dir.name\""
 alias oc="opencode"
 alias v="nvim"
+alias ve="nvim ."
+alias vg="nvim -c Git -c +q"
+alias vf="nvim -c \"lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy({}))\" -c +q"
+alias vd="nvim -c \"lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy({ cwd = '~/.dotfiles', hidden = true }))\" -c +q"
 alias vim="nvim"
