@@ -53,13 +53,13 @@
     };
   };
 
-  # ftp server
-  services.vsftpd = {
-    enable = true;
-    localUsers = true;
-    writeEnable = false;
-    extraConfig = "pasv_enable=Yes\npasv_min_port=56250\npasv_max_port=56260";
-  };
+  # # ftp server
+  # services.vsftpd = {
+  #   enable = true;
+  #   localUsers = true;
+  #   writeEnable = false;
+  #   extraConfig = "pasv_enable=Yes\npasv_min_port=56250\npasv_max_port=56260";
+  # };
 
   # firewall
   networking.firewall = {
@@ -69,9 +69,14 @@
     allowedTCPPortRanges = [ { from = 56250; to = 56260; } ];
   };
 
+  # network
+  networking.networkmanager.enable = true;
+
   # window managers
   programs.niri.enable = true;
   services.desktopManager.gnome.enable = true;
+  services.xserver.enable = true;
+  services.xserver.displayManager.startx.enable = true;
 
   # display manager
   services.greetd = {
@@ -170,6 +175,7 @@
      ncdu
      neofetch
      neovim
+     opencode
      openssl
      libqalculate
      ripgrep
@@ -179,6 +185,7 @@
      unzip
      vim
      wget
+     wiremix
      yazi
      zathura
      zip
