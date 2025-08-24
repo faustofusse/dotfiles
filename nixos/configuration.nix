@@ -145,6 +145,7 @@
      grim
      peaclock
      slurp
+     swaylock
      tofi
      wf-recorder
      wlr-randr
@@ -171,10 +172,13 @@
      htop
      imv
      jq
+     nushell
      mpv
      ncdu
      neofetch
      neovim
+     neomutt
+     mutt-wizard
      opencode
      openssl
      libqalculate
