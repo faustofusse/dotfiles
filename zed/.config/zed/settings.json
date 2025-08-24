@@ -24,11 +24,11 @@
       "provider": "google",
       "model": "gemini-2.5-pro"
     },
-    "default_profile": "write",
+    "default_profile": "minimal",
     "play_sound_when_agent_done": true,
     "default_model": {
-      "provider": "vercel",
-      "model": "v0-1.5-md"
+      "provider": "zed.dev",
+      "model": "claude-sonnet-4"
     }
   },
   "telemetry": {

@@ -17,5 +17,17 @@
     "bindings": {
       // "j k": ["workspace::SendKeystrokes", "escape"]
     }
+  },
+  {
+    "context": "!Terminal",
+    "bindings": {
+      "ctrl-r": "task::Rerun"
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-r": "terminal::RerunTask"
+    }
   }
 ]
