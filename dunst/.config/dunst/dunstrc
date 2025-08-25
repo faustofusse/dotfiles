@@ -1,0 +1,11 @@
+[global]
+    width = 300
+    height = (0, 300)
+    offset = (0, 0)
+    notification_limit = 5
+    frame_width = 2
+    frame_color = "#ffffff"
+    font = JetBrains Mono
+    browser = brave
+    background = "#0d1117"
+    timeout = 10
