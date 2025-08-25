@@ -116,7 +116,7 @@ layout {
     // Set gaps around windows in logical pixels.
     gaps 0
 
-    background-color "#00437C" // "#0A5C9B"
+    background-color "#000000" // "#0A5C9B"
 
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
