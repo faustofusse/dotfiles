@@ -172,6 +172,7 @@
      gimp
      htop
      imv
+     imagemagick
      jq
      nushell
      mpv
