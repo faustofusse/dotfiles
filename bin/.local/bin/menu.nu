@@ -2,7 +2,7 @@
 
 def menu [title: string, commands: table<title: string, command: closure>] {
     let titles = $commands | get title | to text 
-    let selected = $titles | tofi --prompt-text $"($title): "
+    let selected = $titles | tofi --prompt-text $"($title): " --num-results 10
     let command = $commands | where title == $selected | get command | first
     do $command
 }
@@ -13,7 +13,6 @@ def main [] {
         { title: "capture", command: { || capture } },
         { title: "time", command: { || dunstify (date now | format date "%R") } },
         { title: "battery", command: { || dunstify (open /sys/class/power_supply/BAT0/capacity | lines | first)% } },
-        { title: "pick", command: { || pick } },
         { title: "lock", command: { || lock } },
         { title: "shutdown", command: { || shutdown now } },
         { title: "reboot", command: { || reboot } },
@@ -21,7 +20,9 @@ def main [] {
 }
 
 def pick [] {
-    grim -g (slurp -p) -t ppm - | magick - txt:- | lines | split row ' ' | get 8 | wl-copy
+    let color = grim -g (slurp -p) -t ppm - | magick - txt:- | lines | split row ' ' | get 8
+    $color | wl-copy
+    dunstify $color
 }
 
 def lock [] {
@@ -50,6 +51,7 @@ def capture [] {
         { title: "screenshot (copy)", command: { || screenshot copy } },
         { title: "screenshot (save)", command: { || screenshot save } },
         { title: "screenshot (edit)", command: { || screenshot edit } },
+        { title: "color", command: { || pick } },
         { title: "recording", command: { || } },
     ]
 }
