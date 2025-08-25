@@ -10,13 +10,11 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.o.timeoutlen = 2000
 
-vim.keymap.set("", "<Space>", "<Nop>", { noremap = true, silent = true })
-
 local opts = { noremap = true, silent = true }
 
+vim.keymap.set("", "<Space>", "<Nop>", opts)
 vim.keymap.set("n", "]q", ":cn<cr>", opts)
 vim.keymap.set("n", "[q", ":cp<cr>", opts)
-
 vim.keymap.set("v", "<leader>y", "\"+y", opts)
 vim.keymap.set("v", "<leader>Y", "\"*y", opts)
 
@@ -49,10 +47,11 @@ vim.o.number = true                           -- set numbered lines
 vim.o.relativenumber = true                   -- set relative numbered lines
 vim.o.numberwidth = 4                         -- set number column width to 2 {default 4}
 vim.o.wrap = false                            -- display lines as one long line
-vim.o.scrolloff = 8                           -- is one of my fav
-vim.o.sidescrolloff = 8
+vim.o.scrolloff = 8                           -- explains itself
+vim.o.sidescrolloff = 8                       -- explains itself
 vim.o.hidden = false
 vim.o.signcolumn = "yes"                      -- always show the sign column otherwise it would shift the text each time
-vim.o.laststatus = 0 -- 3
+vim.o.laststatus = 0 -- 3                     -- remove status bar
 vim.o.mouse = "a"
 vim.o.mousemodel = "extend"
+vim.o.winborder = "rounded"                   -- borders in all the windows

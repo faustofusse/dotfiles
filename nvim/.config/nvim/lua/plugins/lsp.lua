@@ -2,11 +2,7 @@ return {
     "neovim/nvim-lspconfig",
 
     dependencies = {
-        { "mason-org/mason.nvim" },
-        { "mason-org/mason-lspconfig.nvim" },
         { "saghen/blink.cmp" },
-        { "folke/neodev.nvim", opts = {} },
-        { "folke/trouble.nvim", opts = { }, cmd = "Trouble" },
         { "j-hui/fidget.nvim", opts = { notification = { override_vim_notify = 1, window = { winblend = 0 } } } },
     },
 
@@ -45,48 +41,22 @@ return {
             end,
         })
 
-        local capabilities = require('blink.cmp').get_lsp_capabilities()
-        local lspconfig = require("lspconfig")
+        local filetypes = vim.lsp.config["ts_ls"].filetypes
+        table.insert(filetypes, "vue")
+        vim.lsp.config("ts_ls", {
+            filetypes = filetypes,
+            init_options = {
+                plugins = {
+                    {
+                        name = "@vue/typescript-plugin",
+                        location = vim.env.HOME .. "/.nix-profile/lib/node_modules/@vue/language-server",
+                        languages = { "vue" },
+                        configNamespace = "typescript",
+                    }
+                },
+            },
+        })
 
-        lspconfig.dartls.setup { capabilities = capabilities }
-        lspconfig["ts_ls"].setup { capabilities = capabilities }
-
-        require("mason").setup()
-        require("mason-lspconfig").setup {
-            automatic_installation = false,
-            ensure_installed = {},
-            handlers = {
-                function (server_name)
-                    lspconfig[server_name].setup {
-                        capabilities = capabilities
-                    }
-                end,
-                ["clangd"] = function ()
-                    lspconfig.clangd.setup {
-                        cmd = { "clangd", "--header-insertion=never" },
-                        capabilities = capabilities
-                    }
-                end,
-                ["html"] = function ()
-                    lspconfig.html.setup {
-                        filetypes = { "html", "templ", "vue" },
-                        capabilities = capabilities
-                    }
-                end,
-                ["htmx"] = function ()
-                    lspconfig.html.setup {
-                        filetypes = { "html", "templ" },
-                        capabilities = capabilities
-                    }
-                end,
-                ["tailwindcss"] = function ()
-                    lspconfig.tailwindcss.setup {
-                        filetypes = { "html", "templ", "tsx", "react", "svelte", "vue" },
-                        init_options = { userLanguages = { templ = "html" } },
-                        capabilities = capabilities
-                    }
-                end,
-            }
-        }
+        vim.lsp.enable({ "ts_ls" })
     end
 }
