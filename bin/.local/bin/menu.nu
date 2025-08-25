@@ -13,10 +13,15 @@ def main [] {
         { title: "capture", command: { || capture } },
         { title: "time", command: { || dunstify (date now | format date "%R") } },
         { title: "battery", command: { || dunstify (open /sys/class/power_supply/BAT0/capacity | lines | first)% } },
+        { title: "pick", command: { || pick } },
         { title: "lock", command: { || lock } },
         { title: "shutdown", command: { || shutdown now } },
         { title: "reboot", command: { || reboot } },
     ]
+}
+
+def pick [] {
+    grim -g (slurp -p) -t ppm - | magick - txt:- | lines | split row ' ' | get 8 | wl-copy
 }
 
 def lock [] {
@@ -32,10 +37,12 @@ def "screenshot edit" [] {
 def "screenshot save" [] {
     let name = date now | format date "%+"
     grim -t png -g (slurp -d) ~/Downloads/($name).png
+    dunstify "screenshot saved!"
 }
 
 def "screenshot copy" [] {
     grim -t png -g (slurp -d) - | wl-copy
+    dunstify "screenshot copied!"
 }
 
 def capture [] {
