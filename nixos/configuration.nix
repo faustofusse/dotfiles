@@ -53,6 +53,12 @@
     };
   };
 
+  # bluetooth
+  hardware.bluetooth.enable = true;
+
+  # network
+  networking.networkmanager.enable = true;
+
   # firewall
   networking.firewall = {
     enable = true;
@@ -60,12 +66,6 @@
     allowedTCPPorts = [ 8080 7700 21 4983 11470 12470 ];
     allowedTCPPortRanges = [ { from = 56250; to = 56260; } ];
   };
-
-  # network
-  networking.networkmanager.enable = true;
-
-  # bluetooth
-  hardware.bluetooth.enable = true;
 
   # window managers
   programs.niri.enable = true;
@@ -143,7 +143,6 @@
      # tui
      bluetui
      htop
-     impala
      neomutt
      mutt-wizard
      wiremix
@@ -162,6 +161,7 @@
      neovim
      openssl
      libqalculate
+     lima
      ripgrep
      stow
      tmux
@@ -169,6 +169,7 @@
      unzip
      vim
      wget
+     yt-dlp
      zathura
      zip
   ];
