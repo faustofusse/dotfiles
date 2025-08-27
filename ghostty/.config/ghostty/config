@@ -1,5 +1,6 @@
 theme = GitHub Dark
-font-size = 15
+font-family = Cascadia Mono NF
+font-size = 14
 clipboard-read = allow
 macos-icon = blueprint
 macos-titlebar-proxy-icon = hidden
