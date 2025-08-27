@@ -49,12 +49,16 @@ vim.filetype.add({ extension = { templ = "templ" } })
 vim.opt.shortmess:append "c"
 
 vim.api.nvim_create_autocmd("TextYankPost", {
-  desc = "Highlight when yanking (copying) text",
-  group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
-  callback = function()
-    vim.hl.on_yank()
-  end,
+    desc = "Highlight when yanking (copying) text",
+    group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+    callback = function()
+        vim.hl.on_yank()
+    end,
 })
+
+vim.pack.add({ "https://github.com/NMAC427/guess-indent.nvim" }, { confirm = false })
+
+require("guess-indent").setup()
 
 vim.pack.add({ "https://github.com/windwp/nvim-autopairs" }, { confirm = false })
 
