@@ -8,11 +8,14 @@ def menu [title: string, commands: table<title: string, command: closure>] {
 }
 
 def main [] {
-    menu "menu" [
+    menu "system" [
         { title: "run", command: { || tofi-drun --drun-launch=true } },
         { title: "capture", command: { || capture } },
         { title: "time", command: { || dunstify (date now | format date "%R") } },
         { title: "battery", command: { || dunstify (open /sys/class/power_supply/BAT0/capacity | lines | first)% } },
+        { title: "wifi", command: { || ghostty --initial-command=impala --title=settings } },
+        { title: "bluetooth", command: { || ghostty --initial-command=bluetui --title=settings } },
+        { title: "sound", command: { || ghostty --initial-command=wiremix --title=settings } },
         { title: "lock", command: { || lock } },
         { title: "shutdown", command: { || shutdown now } },
         { title: "reboot", command: { || reboot } },
