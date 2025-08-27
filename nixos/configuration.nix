@@ -80,7 +80,11 @@
     };
   };
 
-  # Enable sound with pipewire.
+  # keyring
+  # services.gnome.gnome-keyring.enable = true;
+  # security.pam.services.greetd.enableGnomeKeyring = true;
+
+  # sound
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -89,6 +93,9 @@
     pulse.enable = true;
     jack.enable = true;
   };
+
+  # music
+  services.spotifyd.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.fausto = {
@@ -152,7 +159,7 @@
      dig
      ffmpeg
      fzf
-     gimp
+     gimp3
      imv
      imagemagick
      jq
