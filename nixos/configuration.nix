@@ -75,7 +75,7 @@
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd niri-session --remember --theme 'action=darkgray;border=black;container=black;prompt=gray;input=white'";
+        command = "${pkgs.tuigreet}/bin/tuigreet --cmd niri-session --remember --theme 'action=darkgray;border=black;container=black;prompt=gray;input=white'";
       };
     };
   };
@@ -126,6 +126,7 @@
   environment.systemPackages = with pkgs; [
      # desktop
      brave
+     nautilus
      pcmanfm
      # wayland
      eww
