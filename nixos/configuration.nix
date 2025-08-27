@@ -115,6 +115,11 @@
     allowBroken = true; # minecraft
   };
 
+  programs.neovim = {
+    enable = true;
+    package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+  };
+
   programs = {
     adb.enable = true;
     direnv.enable = true;
@@ -166,7 +171,6 @@
      jq
      nushell
      mpv
-     neovim
      openssl
      libqalculate
      lima
