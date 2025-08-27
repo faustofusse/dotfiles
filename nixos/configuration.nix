@@ -153,6 +153,9 @@
      opencode
      sqlite
      zed-editor
+     # development
+     tree-sitter
+     typescript-language-server
      # tui
      bluetui
      htop
