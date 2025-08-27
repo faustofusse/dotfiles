@@ -302,31 +302,21 @@ animations {
 // Find more information on the wiki:
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Window-Rules
 
-// para las tui de configuracion
+// flotantes
 window-rule {
-    match title="settings"
+    match app-id="mpv" // videos
+    match app-id="imv" // imagenes
+    match title="settings" // tuis de configuracion
+    match title="Picture in picture"
+
     open-floating true
 }
 
-// Open the Firefox picture-in-picture player as floating by default.
-/-window-rule {
-    // This app-id regular expression will work for both:
-    // - host Firefox (app-id is "firefox")
-    // - Flatpak Firefox (app-id is "org.mozilla.firefox")
-    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
-    open-floating true
-}
-
-// Example: block out two password managers from screen capture.
-// (This example rule is commented out with a "/-" in front.)
-/-window-rule {
-    match app-id=r#"^org\.keepassxc\.KeePassXC$"#
-    match app-id=r#"^org\.gnome\.World\.Secrets$"#
+// no mostrar en screenshots / grabaciones / meet
+window-rule {
+    match title="web.whatsapp.com"
 
     block-out-from "screen-capture"
-
-    // Use this instead if you want them visible on third-party screenshot tools.
-    // block-out-from "screencast"
 }
 
 binds {
