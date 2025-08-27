@@ -53,14 +53,6 @@
     };
   };
 
-  # # ftp server
-  # services.vsftpd = {
-  #   enable = true;
-  #   localUsers = true;
-  #   writeEnable = false;
-  #   extraConfig = "pasv_enable=Yes\npasv_min_port=56250\npasv_max_port=56260";
-  # };
-
   # firewall
   networking.firewall = {
     enable = true;
@@ -72,11 +64,11 @@
   # network
   networking.networkmanager.enable = true;
 
+  # bluetooth
+  hardware.bluetooth.enable = true;
+
   # window managers
   programs.niri.enable = true;
-  services.desktopManager.gnome.enable = true;
-  services.xserver.enable = true;
-  services.xserver.displayManager.startx.enable = true;
 
   # display manager
   services.greetd = {
@@ -86,13 +78,6 @@
         command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd niri-session --remember --theme 'action=darkgray;border=black;container=black;prompt=gray;input=white'";
       };
     };
-  };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.libinput = {
-    enable = true;
-    mouse.naturalScrolling = true;
-    touchpad.naturalScrolling = true;
   };
 
   # Enable sound with pipewire.
@@ -126,15 +111,11 @@
   programs = {
     adb.enable = true;
     direnv.enable = true;
-    firefox.enable = true;
     zsh.enable = true;
   };
 
-  qt.enable = true;
-
   virtualisation.docker.enable = true;
 
-  # otros: discord, kitty, minecraft, stremio, nodejs, lf
   environment.systemPackages = with pkgs; [
      # desktop
      brave
@@ -143,45 +124,42 @@
      eww
      dunst
      grim
-     peaclock
      satty
      slurp
      swaylock-effects
      tofi
      wf-recorder
-     wlr-randr
      wl-clipboard
-     # boludeo
-     spotify
      # software
-     awscli2
      cargo
      gcc
-     gh
      ghostty
      git
      gnumake
      go
+     opencode
      sqlite
      zed-editor
+     # tui
+     bluetui
+     htop
+     impala
+     neomutt
+     mutt-wizard
+     wiremix
+     yazi
      # utils
      curl
      dig
      ffmpeg
      fzf
      gimp
-     htop
      imv
      imagemagick
      jq
      nushell
      mpv
-     ncdu
-     neofetch
      neovim
-     neomutt
-     mutt-wizard
-     opencode
      openssl
      libqalculate
      ripgrep
@@ -191,37 +169,9 @@
      unzip
      vim
      wget
-     wiremix
-     yazi
      zathura
      zip
   ];
-
-  # services.dbus.packages = [ pkgs.gnome-settings-daemon ];
-
-  # disable gnome shit
-  environment.gnome.excludePackages = (with pkgs; [
-    gnome-calculator gnome-calendar gnome-characters gnome-clocks gnome-tour
-    gnome-font-viewer gnome-logs gnome-maps gnome-music gnome-screenshot gnome-text-editor
-    gnome-system-monitor gnome-weather gnome-disk-utility gnome-contacts gnome-extension-manager
-    gnome-photos gnome-connections gnome-color-manager gnome-console
-    simple-scan totem yelp evince file-roller geary seahorse
-    epiphany cheese baobab gedit decibels loupe snapshot eog
-  ]);
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
 
   system.stateVersion = "24.05"; # dejar asi aunque suba version
 }
