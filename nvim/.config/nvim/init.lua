@@ -176,20 +176,20 @@ require("blink.cmp").setup {
 
 vim.pack.add({ "https://github.com/neovim/nvim-lspconfig" }, { confirm = false })
 
-vim.diagnostic.config {
-    signs = {
-        text = {
-            [vim.diagnostic.severity.ERROR] = "", --  
-            [vim.diagnostic.severity.WARN] = "", --  
-            [vim.diagnostic.severity.HINT] = "",
-            [vim.diagnostic.severity.INFO] = "", --  
-        }
-    }
-}
+-- vim.diagnostic.config {
+--     signs = {
+--         text = {
+--             [vim.diagnostic.severity.ERROR] = "", --  
+--             [vim.diagnostic.severity.WARN] = "", --  
+--             [vim.diagnostic.severity.HINT] = "",
+--             [vim.diagnostic.severity.INFO] = "", --  
+--         }
+--     }
+-- }
 
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count =  1 }) end, opts)
+vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, opts)
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, opts)
 
 vim.api.nvim_create_autocmd("LspAttach", {
