@@ -56,13 +56,19 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     end,
 })
 
+--
+
 vim.pack.add({ "https://github.com/NMAC427/guess-indent.nvim" }, { confirm = false })
 
 require("guess-indent").setup()
 
+--
+
 vim.pack.add({ "https://github.com/windwp/nvim-autopairs" }, { confirm = false })
 
 require("nvim-autopairs").setup()
+
+--
 
 vim.pack.add({ "https://github.com/catppuccin/nvim" }, { confirm = false })
 
@@ -76,12 +82,12 @@ require("catppuccin").setup {
 
 vim.cmd.colorscheme("catppuccin")
 
-vim.pack.add({
-    "https://github.com/nvim-lua/plenary.nvim",
-    "https://github.com/nvim-telescope/telescope-fzy-native.nvim",
-    "https://github.com/nvim-telescope/telescope-ui-select.nvim",
-    "https://github.com/nvim-telescope/telescope.nvim",
-}, { confirm = false })
+--
+
+vim.pack.add({ "https://github.com/nvim-lua/plenary.nvim" }, { confirm = false })
+vim.pack.add({ "https://github.com/nvim-telescope/telescope.nvim" }, { confirm = false })
+vim.pack.add({ "https://github.com/nvim-telescope/telescope-fzy-native.nvim" }, { confirm = false })
+vim.pack.add({ "https://github.com/nvim-telescope/telescope-ui-select.nvim" }, { confirm = false })
 
 local telescope = require("telescope")
 local actions = require("telescope.actions")
@@ -134,10 +140,10 @@ vim.keymap.set("n", "<leader>fh", function() builtin.help_tags(dropdown) end, op
 vim.keymap.set("n", "<leader>fs", function() builtin.lsp_dynamic_workspace_symbols(dropdown) end, opts)
 vim.keymap.set("n", "<leader>fr", function() builtin.lsp_references(dropdown) end, opts)
 
-vim.pack.add({
-    "https://github.com/stevearc/oil.nvim",
-    "https://github.com/nvim-tree/nvim-web-devicons",
-}, { confirm = false })
+--
+
+vim.pack.add({ "https://github.com/nvim-tree/nvim-web-devicons" }, { confirm = false })
+vim.pack.add({ "https://github.com/stevearc/oil.nvim" }, { confirm = false })
 
 require("oil").setup {
     keymaps = { ["<C-p>"] = false },
@@ -149,6 +155,8 @@ require("oil").setup {
 
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
+--
+
 vim.pack.add({ "https://github.com/j-hui/fidget.nvim" }, { confirm = false })
 
 require("fidget").setup {
@@ -157,6 +165,8 @@ require("fidget").setup {
         window = { winblend = 0 },
     }
 }
+
+--
 
 vim.pack.add({ { src = "https://github.com/saghen/blink.cmp", version = "v1.6.0" } }, { confirm = false })
 
@@ -173,6 +183,8 @@ require("blink.cmp").setup {
         documentation = { auto_show = true, auto_show_delay_ms = 500 },
     },
 }
+
+--
 
 vim.pack.add({ "https://github.com/neovim/nvim-lspconfig" }, { confirm = false })
 
@@ -225,6 +237,8 @@ vim.lsp.config("ts_ls", {
 })
 vim.lsp.enable({ "ts_ls" })
 
+--
+
 vim.pack.add({ { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" } }, { confirm = false })
 
 local filetypes = { "go", "gomod", "html", "json", "javascript", "typescript", "tsx", "dockerfile", "markdown", "sql", "lua", "yaml", "bash", "make", "kotlin" }
@@ -239,6 +253,8 @@ vim.api.nvim_create_autocmd("FileType", {
       vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
   end,
 })
+
+--
 
 vim.pack.add({ "https://github.com/tpope/vim-fugitive" }, { confirm = false })
 vim.pack.add({ "https://github.com/lewis6991/gitsigns.nvim" }, { confirm = false })
@@ -259,6 +275,8 @@ require("gitsigns").setup {
         vim.keymap.set("n", "[c", gitsigns.prev_hunk, opts)
     end
 }
+
+--
 
 vim.pack.add({ "https://github.com/nvim-lua/plenary.nvim" }, { confirm = false })
 vim.pack.add({ { src = "https://github.com/ThePrimeagen/harpoon", version = "harpoon2" } }, { confirm = false })
