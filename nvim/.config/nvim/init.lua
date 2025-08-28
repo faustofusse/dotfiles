@@ -18,7 +18,7 @@ vim.o.softtabstop = 4
 vim.o.cursorline = true
 vim.o.number = true
 vim.o.relativenumber = true
-vim.o.numberwidth = 2
+vim.o.numberwidth = 3
 vim.o.wrap = false
 vim.o.scrolloff = 8
 vim.o.sidescrolloff = 8
@@ -29,24 +29,20 @@ vim.o.mouse = "a"
 vim.o.mousemodel = "extend"
 vim.o.winborder = "rounded"
 
+-- vim.cmd "set iskeyword+=-"
+-- vim.cmd "set whichwrap+=<,>,[,],h,l"
+-- vim.opt.shortmess:append "c"
+
 vim.o.timeoutlen = 2000
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 local opts = { noremap = true, silent = true }
 
-vim.keymap.set("", "<Space>", "<Nop>", opts)
-vim.keymap.set("n", "]q", ":cn<cr>", opts)
-vim.keymap.set("n", "[q", ":cp<cr>", opts)
 vim.keymap.set("v", "<leader>y", "\"+y", opts)
 vim.keymap.set("v", "<leader>Y", "\"*y", opts)
 
-vim.cmd "set whichwrap+=<,>,[,],h,l"
-vim.cmd [[set iskeyword+=-]]
-
 vim.filetype.add({ extension = { templ = "templ" } })
-
-vim.opt.shortmess:append "c"
 
 vim.api.nvim_create_autocmd("TextYankPost", {
     desc = "Highlight when yanking (copying) text",
@@ -55,6 +51,18 @@ vim.api.nvim_create_autocmd("TextYankPost", {
         vim.hl.on_yank()
     end,
 })
+
+--
+
+vim.pack.add({ "https://github.com/catppuccin/nvim" }, { confirm = false })
+
+require("catppuccin").setup {
+    flavour = "mocha",
+    transparent_background = true,
+    float = { transparent = true },
+}
+
+vim.cmd.colorscheme("catppuccin")
 
 --
 
@@ -70,17 +78,7 @@ require("nvim-autopairs").setup()
 
 --
 
-vim.pack.add({ "https://github.com/catppuccin/nvim" }, { confirm = false })
-
-require("catppuccin").setup {
-    flavour = "mocha",
-    transparent_background = true,
-    float = {
-        transparent = true,
-    },
-}
-
-vim.cmd.colorscheme("catppuccin")
+vim.pack.add({ "https://github.com/MeanderingProgrammer/render-markdown.nvim" }, { confirm = false })
 
 --
 
