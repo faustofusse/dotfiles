@@ -97,6 +97,7 @@ telescope.setup({
     defaults = {
         file_sorter = sorters.get_fzy_sorter,
         file_ignore_patterns = {
+            "dist",
             "node_modules",
             "%_templ.go",
             "%.g.dart",
@@ -198,8 +199,8 @@ vim.pack.add({ "https://github.com/neovim/nvim-lspconfig" }, { confirm = false }
 -- }
 
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
-vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count =  1 }) end, opts)
-vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, opts)
+vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count =  1, float = true }) end, opts)
+vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, opts)
 
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -239,7 +240,7 @@ vim.lsp.enable({ "ts_ls" })
 
 vim.pack.add({ { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" } }, { confirm = false })
 
-local filetypes = { "go", "gomod", "html", "json", "javascript", "typescript", "tsx", "dockerfile", "markdown", "sql", "lua", "yaml", "bash", "make", "kotlin" }
+local filetypes = { "go", "gomod", "html", "json", "javascript", "typescript", "tsx", "dockerfile", "markdown", "sql", "lua", "yaml", "bash", "make", "kotlin", "nu" }
 
 require("nvim-treesitter").install(filetypes)
 
