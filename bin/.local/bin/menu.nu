@@ -16,6 +16,7 @@ def main [] {
         { title: "wifi", command: { || ghostty --initial-command=nmtui --title=settings } },
         { title: "bluetooth", command: { || ghostty --initial-command=bluetui --title=settings } },
         { title: "sound", command: { || ghostty --initial-command=wiremix --title=settings } },
+        { title: "packages", command: { || brave --app=https://search.nixos.org --profile="Profile 1"} },
         { title: "calculator", command: { || ghostty --initial-command=qalc --title=settings } },
         { title: "lock", command: { || lock } },
         { title: "shutdown", command: { || shutdown now } },
