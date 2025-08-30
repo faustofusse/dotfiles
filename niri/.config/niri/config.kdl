@@ -7,10 +7,14 @@ hotkey-overlay {
     skip-at-startup
 }
 
-window-rule {
-    geometry-corner-radius 0
-    clip-to-geometry true
-}
+spawn-at-startup "eww" "daemon"
+spawn-at-startup "nu" "~/.config/eww/bar.nu"; 
+
+// layer-rule {
+//     match namespace="bar"
+//     baba-is-float false
+//     place-within-backdrop true
+// }
 
 workspace "browser"
 workspace "terminal"
@@ -263,9 +267,9 @@ layout {
     // Top and bottom struts will simply add outer gaps in addition to the area occupied by
     // layer-shell panels and regular gaps.
     struts {
-        // left 64
+        left 400
         // right 64
-        // top 64
+        // top 30
         // bottom 64
     }
 }
@@ -283,7 +287,7 @@ layout {
 // Additionally, clients will be informed that they are tiled, removing some client-side rounded corners.
 // This option will also fix border/focus ring drawing behind some semitransparent windows.
 // After enabling or disabling this, you need to restart the apps for this to take effect.
-// prefer-no-csd
+prefer-no-csd
 
 // You can change the path where screenshots are saved.
 // A ~ at the front will be expanded to the home directory.
@@ -311,6 +315,11 @@ animations {
 // Window rules let you adjust behavior for individual windows.
 // Find more information on the wiki:
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Window-Rules
+
+window-rule {
+    geometry-corner-radius 0
+    clip-to-geometry true
+}
 
 // flotantes
 window-rule {
@@ -358,7 +367,7 @@ binds {
     XF86AudioMute        allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
     XF86AudioMicMute     allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
 
-    Mod+Semicolon repeat=false { toggle-overview; }
+    Mod+O repeat=false { toggle-overview; }
 
     Mod+Q { close-window; }
 

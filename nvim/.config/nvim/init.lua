@@ -240,7 +240,7 @@ vim.lsp.enable({ "ts_ls" })
 
 vim.pack.add({ { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" } }, { confirm = false })
 
-local filetypes = { "go", "gomod", "html", "json", "javascript", "typescript", "tsx", "dockerfile", "markdown", "sql", "lua", "yaml", "bash", "make", "kotlin", "nu" }
+local filetypes = { "go", "gomod", "html", "json", "javascript", "typescript", "tsx", "dockerfile", "markdown", "sql", "lua", "yaml", "bash", "make", "kotlin", "nu", "yuck" }
 
 require("nvim-treesitter").install(filetypes)
 
