@@ -29,9 +29,10 @@ vim.o.mouse = "a"
 vim.o.mousemodel = "extend"
 vim.o.winborder = "rounded"
 
--- vim.cmd "set iskeyword+=-"
--- vim.cmd "set whichwrap+=<,>,[,],h,l"
--- vim.opt.shortmess:append "c"
+vim.o.foldenable = false
+vim.o.foldmethod = "expr"
+vim.o.foldtext = ""
+vim.o.foldnestmax = 2
 
 vim.o.timeoutlen = 2000
 vim.g.mapleader = " "
@@ -239,18 +240,19 @@ vim.lsp.enable({ "ts_ls" })
 --
 
 vim.pack.add({ { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" } }, { confirm = false })
+vim.pack.add({ { src = "https://github.com/nvim-treesitter/nvim-treesitter-context" } }, { confirm = false })
 
 local filetypes = { "go", "gomod", "html", "json", "javascript", "typescript", "tsx", "dockerfile", "markdown", "sql", "lua", "yaml", "bash", "make", "kotlin", "nu", "yuck" }
 
 require("nvim-treesitter").install(filetypes)
 
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = filetypes,
-  callback = function()
-      vim.treesitter.start()
-      vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-  end,
+    pattern = filetypes,
+    callback = function()
+        vim.treesitter.start()
+        vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end,
 })
 
 --
