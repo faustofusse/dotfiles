@@ -156,6 +156,7 @@
      # development
      tree-sitter
      typescript-language-server
+     svelte-language-server
      # tui
      bluetui
      htop
