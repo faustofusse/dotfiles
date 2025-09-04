@@ -29,10 +29,11 @@ vim.o.mouse = "a"
 vim.o.mousemodel = "extend"
 vim.o.winborder = "rounded"
 
-vim.o.foldenable = false
+-- vim.o.foldenable = false
 vim.o.foldmethod = "expr"
 vim.o.foldtext = ""
 vim.o.foldnestmax = 2
+vim.o.foldlevel = 100
 
 vim.o.timeoutlen = 2000
 vim.g.mapleader = " "
@@ -222,6 +223,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 local filetypes = vim.lsp.config["ts_ls"].filetypes
 table.insert(filetypes, "vue")
+-- table.insert(filetypes, "vue")
 vim.lsp.config("ts_ls", {
     filetypes = filetypes,
     init_options = {
@@ -237,12 +239,14 @@ vim.lsp.config("ts_ls", {
 })
 vim.lsp.enable({ "ts_ls" })
 
+vim.lsp.enable({ "svelte" })
+
 --
 
 vim.pack.add({ { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" } }, { confirm = false })
 vim.pack.add({ { src = "https://github.com/nvim-treesitter/nvim-treesitter-context" } }, { confirm = false })
 
-local filetypes = { "go", "gomod", "html", "json", "javascript", "typescript", "tsx", "dockerfile", "markdown", "sql", "lua", "yaml", "bash", "make", "kotlin", "nu", "yuck" }
+local filetypes = { "go", "gomod", "html", "json", "javascript", "typescript", "tsx", "dockerfile", "markdown", "sql", "lua", "yaml", "bash", "make", "kotlin", "nu", "yuck", "svelte" }
 
 require("nvim-treesitter").install(filetypes)
 
