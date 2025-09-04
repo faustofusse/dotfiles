@@ -1,5 +1,7 @@
 ; window
 
+(defwidget bar [] (centerbox :orientation "h" (workspaces) (music) (system)))
+
 (defwindow bar
     :monitor '[0, 1]'
     :stacking "overlay"
@@ -7,8 +9,6 @@
     :namespace "bar" ; para configurar dentro de niri
     :geometry (geometry :x "0" :y "0px" :width "100%" :height "10px" :anchor "top center")
     (bar))
-
-(defwidget bar [] (centerbox :orientation "h" workspaces music information))
 
 ; workspaces
 
@@ -23,12 +23,11 @@
 
 (defwidget music [] (box :class "music" :orientation "h" :space-evenly false :halign "center" music))
 
-; information
+; system
 
 (defpoll battery :interval "10s" `nu battery.nu`)
 
 (defpoll time :interval "1s" `nu time.nu`)
 
-(defwidget information []
-    (box :class "right" :orientation "h" :space-evenly false :halign "end" :spacing 10
-        battery time))
+(defwidget system []
+    (box :class "right" :orientation "h" :space-evenly false :halign "end" :spacing 10 battery time))
