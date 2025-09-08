@@ -239,14 +239,14 @@ vim.lsp.config("ts_ls", {
 })
 vim.lsp.enable({ "ts_ls" })
 
-vim.lsp.enable({ "svelte", "dartls" })
+vim.lsp.enable({ "svelte", "dartls", "zls" })
 
 --
 
 vim.pack.add({ { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" } }, { confirm = false })
 vim.pack.add({ { src = "https://github.com/nvim-treesitter/nvim-treesitter-context" } }, { confirm = false })
 
-local filetypes = { "go", "gomod", "html", "json", "javascript", "typescript", "tsx", "dockerfile", "markdown", "sql", "lua", "yaml", "bash", "make", "kotlin", "nu", "yuck", "svelte", "dart" }
+local filetypes = { "go", "gomod", "html", "json", "javascript", "typescript", "tsx", "dockerfile", "markdown", "sql", "lua", "yaml", "bash", "make", "kotlin", "nu", "yuck", "svelte", "dart", "zig" }
 
 require("nvim-treesitter").install(filetypes)
 
