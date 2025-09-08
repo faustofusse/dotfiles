@@ -61,8 +61,7 @@ while kill -0 $FFMPEG_PID 2>/dev/null; do
 
     if [ -n "$out_time_us" ]; then
         # Calculate percentage
-        current_secs=$(echo "$out_time_us / 1000000" | bc -l)
-        percentage=$(awk -v current="$current_secs" -v total="$duration_secs" 'BEGIN { printf "%.0f", (current/total)*100 }')
+        percentage=$(awk -v outus="$out_time_us" -v total="$duration_secs" 'BEGIN { cur=outus/1000000; if (total==0) { print 0; exit } printf "%.0f", (cur/total)*100 }')
         
         # Display the progress percentage, overwriting the line
         printf "Progress: [%3d%%]\r" "$percentage"
