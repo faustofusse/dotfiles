@@ -32,6 +32,7 @@
   };
 
   services.xremap = {
+    enable = true;
     watch = true;
     withWlroots = true;
     config = {
@@ -150,6 +151,7 @@
      git
      gnumake
      go
+     gopls
      opencode
      sqlite
      zed-editor
