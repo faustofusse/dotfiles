@@ -28,6 +28,7 @@ vim.o.laststatus = 0
 vim.o.mouse = "a"
 vim.o.mousemodel = "extend"
 vim.o.winborder = "rounded"
+vim.o.autoread = true
 
 -- vim.o.foldenable = false
 vim.o.foldmethod = "expr"
@@ -223,7 +224,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 local filetypes = vim.lsp.config["ts_ls"].filetypes
 table.insert(filetypes, "vue")
--- table.insert(filetypes, "vue")
 vim.lsp.config("ts_ls", {
     filetypes = filetypes,
     init_options = {
@@ -236,17 +236,24 @@ vim.lsp.config("ts_ls", {
             }
         },
     },
+    -- on_attach = function(client)
+    --     if vim.bo.filetype == 'vue' then
+    --         existing_capabilities.semanticTokensProvider.full = false
+    --     else
+    --         existing_capabilities.semanticTokensProvider.full = true
+    --     end
+    -- end
 })
-vim.lsp.enable({ "ts_ls" })
 
-vim.lsp.enable({ "svelte", "dartls", "zls" })
+-- :help lspconfig-all
+vim.lsp.enable({ "gopls", "zls", "dartls", "ts_ls", "vue_ls", "svelte", "sqls" })
 
 --
 
 vim.pack.add({ { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" } }, { confirm = false })
 vim.pack.add({ { src = "https://github.com/nvim-treesitter/nvim-treesitter-context" } }, { confirm = false })
 
-local filetypes = { "go", "gomod", "html", "json", "javascript", "typescript", "tsx", "dockerfile", "markdown", "sql", "lua", "yaml", "bash", "make", "kotlin", "nu", "yuck", "svelte", "dart", "zig" }
+local filetypes = { "go", "gomod", "html", "json", "javascript", "typescript", "tsx", "dockerfile", "markdown", "sql", "lua", "yaml", "bash", "make", "kotlin", "nu", "yuck", "svelte", "dart", "zig", "c", "vue" }
 
 require("nvim-treesitter").install(filetypes)
 
