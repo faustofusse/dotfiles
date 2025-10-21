@@ -19,10 +19,6 @@ export PATH="/opt/homebrew/bin:$PATH"
 #  echo 'nix script not found'
 #fi
 
-# nix
-export PATH="$PATH:/nix/var/nix/profiles/default/bin"
-export PATH="$PATH:$HOME/.nix-profile/bin"
-
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
@@ -110,3 +106,7 @@ export PATH="$PATH:/Users/fausto/.lmstudio/bin"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+
+# nix
+export PATH="$PATH:/nix/var/nix/profiles/default/bin"
+export PATH="$HOME/.nix-profile/bin:$PATH"
