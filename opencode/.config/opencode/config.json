@@ -1,11 +1,16 @@
 {
     "$schema": "https://opencode.ai/config.json",
     "theme": "ayu",
-    "model": "openrouter/gpt-5-mini",
+    "model": "opencode/grok-code",
     "mcp": {
         "browser": {
             "type": "local",
             "command": ["/Users/fausto/sw/mcps/browser/mcp-browser"],
+            "enabled": true
+        },
+        "svelte": {
+            "type": "local",
+            "command": ["bunx @sveltejs/mcp"],
             "enabled": true
         }
     }
