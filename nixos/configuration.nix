@@ -144,6 +144,7 @@
      tofi
      wf-recorder
      wl-clipboard
+     xwayland-satellite
      # software
      cargo
      gcc
