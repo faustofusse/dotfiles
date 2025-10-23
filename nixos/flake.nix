@@ -22,21 +22,12 @@
       specialArgs = inputs;
       modules = [ ./hosts/lenovo.nix ./configuration.nix ];
     };
-    nixosConfigurations.exampleIso = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        ({ pkgs, modulesPath, ... }: {
-         imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix") ];
-         environment.systemPackages = [ pkgs.neovim ];
-         })
-      ];
-    };
     nixosConfigurations.live = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
+      specialArgs = inputs;
       modules = [
-        ({ pkgs, modulesPath, ... }: {
-         imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix") ./configuration.nix ];
-        })
+        (inputs.nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix")
+          ./configuration.nix
       ];
     };
   };

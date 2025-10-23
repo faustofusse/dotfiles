@@ -58,9 +58,9 @@
   hardware.bluetooth.enable = true;
 
   # network
-  networking.networkmanager.enable = true;
-
-  # firewall
+  networking.wireless.iwd.enable = true;
+  networking.wireless.userControlled.enable = true;
+  networking.wireless.networks."Personal Wifi998 5.8GHz".pskRaw = "e80bb6cc6b704dbbc25a18f3d9d76a99e86c9ed4b129366a184db3825cf760df";
   networking.firewall = {
     enable = true;
     allowedUDPPorts = [];
@@ -98,13 +98,13 @@
   # music
   services.spotifyd.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.fausto = {
     isNormalUser = true;
     description = "Fausto Fusse";
     extraGroups = [ "networkmanager" "wheel" "docker" "kvm" "adbusers" "libvirtd" ];
     shell = pkgs.zsh;
     packages = [];
+    hashedPassword = "$6$lLdaLqycDmVB8Bh7$pU0KCGUlfG6lbVCCqTor0LetXmZNZEn8XhkZ757.S.yFIHSYQsc06vuu2G1NC1NVTvG0HSwu0mb4lz6DiJiW4.";
   };
 
   fonts.packages = (with pkgs; [ cascadia-code nerd-fonts.jetbrains-mono ]);
@@ -163,6 +163,7 @@
      # tui
      bluetui
      htop
+     impala
      neomutt
      mutt-wizard
      wiremix
