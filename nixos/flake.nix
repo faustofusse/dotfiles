@@ -7,6 +7,11 @@
   };
 
   outputs = { self, nixpkgs, ... } @ inputs : {
+    nixosConfigurations.live = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = inputs;
+      modules = [ ./hosts/live.nix ./configuration.nix ];
+    };
     nixosConfigurations."fauhp" = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = inputs;
@@ -21,14 +26,6 @@
       system = "x86_64-linux";
       specialArgs = inputs;
       modules = [ ./hosts/lenovo.nix ./configuration.nix ];
-    };
-    nixosConfigurations.live = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = inputs;
-      modules = [
-        (inputs.nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix")
-          ./configuration.nix
-      ];
     };
   };
 }
