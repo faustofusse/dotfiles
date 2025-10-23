@@ -11,7 +11,7 @@ def main [] {
     menu "system" [
         { title: "run", command: { || tofi-drun --drun-launch=true } },
         { title: "capture", command: { || capture } },
-        { title: "wifi", command: { || ghostty --initial-command=nmtui --title=settings } },
+        { title: "wifi", command: { || ghostty --initial-command=impala --title=settings } },
         { title: "bluetooth", command: { || ghostty --initial-command=bluetui --title=settings } },
         { title: "sound", command: { || ghostty --initial-command=wiremix --title=settings } },
         { title: "packages", command: { || brave --app=https://search.nixos.org --profile="Profile 1"} },
