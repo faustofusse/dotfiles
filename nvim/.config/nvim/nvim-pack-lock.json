@@ -1,0 +1,28 @@
+{
+  "plugins": {
+    "blink.cmp": {
+      "version": "'v1.6.0'"
+    },
+    "fidget.nvim": [],
+    "gitsigns.nvim": [],
+    "guess-indent.nvim": [],
+    "harpoon": {
+      "version": "'harpoon2'"
+    },
+    "nvim": [],
+    "nvim-autopairs": [],
+    "nvim-lspconfig": [],
+    "nvim-treesitter": {
+      "version": "'main'"
+    },
+    "nvim-treesitter-context": [],
+    "nvim-web-devicons": [],
+    "oil.nvim": [],
+    "plenary.nvim": [],
+    "render-markdown.nvim": [],
+    "telescope-fzy-native.nvim": [],
+    "telescope-ui-select.nvim": [],
+    "telescope.nvim": [],
+    "vim-fugitive": []
+  }
+}
