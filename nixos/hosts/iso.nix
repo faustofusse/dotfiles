@@ -17,8 +17,7 @@
         mkdir -p "$HOME/.dotfiles"
         cp -rL --no-preserve=mode "/etc/dotfiles/." "$HOME/.dotfiles/"
       fi
-      cd "$HOME/.dotfiles"
-      ${pkgs.stow}/bin/stow -d . niri zsh ghostty bin apps dunst eww icons mpv nushell nvim opencode tmux tofi yazi zed
+      ${pkgs.stow}/bin/stow -d $HOME/.dotfiles niri zsh ghostty bin apps dunst eww icons mpv nushell nvim opencode tmux tofi yazi zed
     '';
     deps = [];
   };
