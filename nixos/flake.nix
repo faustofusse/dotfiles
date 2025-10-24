@@ -4,13 +4,14 @@
     xremap-flake.url = "github:xremap/nix-flake";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    dotfiles = { url = "path:.."; flake = false; };
   };
 
   outputs = { self, nixpkgs, ... } @ inputs : {
-    nixosConfigurations.live = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.iso = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = inputs;
-      modules = [ ./hosts/live.nix ./configuration.nix ];
+      modules = [ ./hosts/iso.nix ./configuration.nix ];
     };
     nixosConfigurations."fauhp" = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
