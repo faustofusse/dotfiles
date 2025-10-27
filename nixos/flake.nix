@@ -8,11 +8,6 @@
   };
 
   outputs = { self, nixpkgs, ... } @ inputs : {
-    nixosConfigurations.iso = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = inputs;
-      modules = [ ./hosts/iso.nix ./configuration.nix ];
-    };
     nixosConfigurations."fauhp" = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = inputs;
@@ -28,5 +23,13 @@
       specialArgs = inputs;
       modules = [ ./hosts/lenovo.nix ./configuration.nix ];
     };
+
+    nixosConfigurations.iso = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = inputs;
+      modules = [ ./hosts/iso.nix ./configuration.nix ];
+    };
+    packages."x86_64-linux".iso = self.nixosConfigurations.iso.config.system.build.isoImage;
+    defaultPackage."x86_64-linux" = self.packages."x86_64-linux".iso;
   };
 }
