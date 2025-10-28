@@ -116,3 +116,27 @@ flakes'
 your chosen host)
 
 
+
+# con minimal installer
+
+sudo su
+ip link show # busco la wifi interface -> ejemplo: wlp0s20f3
+wpa_passphrase "Personal Wifi 5.8GHz" > wifi.conf
+wpa_supplicant -i $interface -c wifi.conf -B
+ping nixos.org
+mkdir -p /mnt/boot
+mount /dev/disk/by-label/nixos /mnt
+mount /dev/disk/by-label/EFI /mnt/boot
+swapon /dev/disk/by-label/swap
+mkdir -p /mnt/home/fausto
+git clone https://github.com/faustofusse/dotfiles /mnt/home/fausto/.dotfiles
+nixos-generate-config --root /mnt
+cd /mnt/home/fausto/.dotfiles/nixos
+cp /mnt/etc/nixos/hardware-configuration.nix ./hardware/$host.nix
+vim ./hosts/$host.nix # creo archivo para host. copiar uno y editarlo
+vim ./flake.nix # agrego host
+git add .
+export NIX_CONFIG='experimental-features = nix-command flakes'
+nixos-install --root /mnt --flake .#$host
+chown -R nixos:users /mnt/home/fausto/.dotfiles
+reboot
