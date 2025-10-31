@@ -13,4 +13,6 @@
     '';
     deps = [];
   };
+
+  services.fprintd.enable = true;
 }
