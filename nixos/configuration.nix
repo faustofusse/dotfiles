@@ -1,4 +1,4 @@
-{ config, pkgs, ... } @ inputs :
+{ config, pkgs, lib, ... } @ inputs :
 
 {
   imports = [
@@ -90,6 +90,16 @@
       default_session = {
         command = "${pkgs.tuigreet}/bin/tuigreet --cmd niri-session --remember --theme 'action=darkgray;border=black;container=black;prompt=gray;input=white'";
       };
+    };
+  };
+
+  # fix logs que aparecen arriba de tuigreet
+  systemd.services.greetd = {
+    unitConfig = {
+      After = lib.mkOverride 0 [ "multi-user.target" ];
+    };
+    serviceConfig = {
+      Type = "idle";
     };
   };
 
