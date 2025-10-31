@@ -87,8 +87,9 @@ vim.pack.add({ "https://github.com/MeanderingProgrammer/render-markdown.nvim" },
 
 vim.pack.add({ "https://github.com/nvim-lua/plenary.nvim" }, { confirm = false })
 vim.pack.add({ "https://github.com/nvim-telescope/telescope.nvim" }, { confirm = false })
-vim.pack.add({ "https://github.com/nvim-telescope/telescope-fzy-native.nvim" }, { confirm = false })
+-- vim.pack.add({ "https://github.com/nvim-telescope/telescope-fzy-native.nvim" }, { confirm = false })
 vim.pack.add({ "https://github.com/nvim-telescope/telescope-ui-select.nvim" }, { confirm = false })
+vim.pack.add({ "https://github.com/danielvolchek/tailiscope.nvim" }, { confirm = false })
 
 local telescope = require("telescope")
 local actions = require("telescope.actions")
@@ -128,10 +129,12 @@ telescope.setup({
     },
 })
 
-telescope.load_extension("fzy_native")
+-- telescope.load_extension("fzy_native")
 telescope.load_extension("ui-select")
+telescope.load_extension("tailiscope")
 
 local dropdown = themes.get_dropdown({})
+local extensions = require('telescope').extensions
 
 vim.keymap.set("n", "<C-p>",      function() builtin.find_files(themes.get_ivy({})) end, opts)
 vim.keymap.set("n", "<leader>ff", function() builtin.find_files(themes.get_ivy({ hidden = true })) end, opts)
@@ -141,6 +144,7 @@ vim.keymap.set("n", "<leader>fb", function() builtin.buffers(dropdown) end, opts
 vim.keymap.set("n", "<leader>fh", function() builtin.help_tags(dropdown) end, opts)
 vim.keymap.set("n", "<leader>fs", function() builtin.lsp_dynamic_workspace_symbols(dropdown) end, opts)
 vim.keymap.set("n", "<leader>fr", function() builtin.lsp_references(dropdown) end, opts)
+vim.keymap.set("n", "<leader>ft", function() extensions.tailiscope.all(dropdown) end, opts)
 
 --
 

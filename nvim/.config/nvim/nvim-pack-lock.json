@@ -1,25 +1,57 @@
 {
   "plugins": {
     "blink.cmp": {
+      "rev": "bae4bae",
+      "src": "https://github.com/saghen/blink.cmp",
       "version": "'v1.6.0'"
     },
-    "fidget.nvim": [],
-    "gitsigns.nvim": [],
+    "fidget.nvim": {
+      "rev": "e32b672",
+      "src": "https://github.com/j-hui/fidget.nvim"
+    },
+    "gitsigns.nvim": {
+      "rev": "20ad441",
+      "src": "https://github.com/lewis6991/gitsigns.nvim"
+    },
     "guess-indent.nvim": [],
     "harpoon": {
+      "rev": "87b1a35",
+      "src": "https://github.com/ThePrimeagen/harpoon",
       "version": "'harpoon2'"
     },
     "nvim": [],
     "nvim-autopairs": [],
-    "nvim-lspconfig": [],
+    "nvim-lspconfig": {
+      "rev": "e25994a",
+      "src": "https://github.com/neovim/nvim-lspconfig"
+    },
     "nvim-treesitter": {
+      "rev": "64f4755b",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
-    "nvim-treesitter-context": [],
-    "nvim-web-devicons": [],
-    "oil.nvim": [],
+    "nvim-treesitter-context": {
+      "rev": "ec308c7",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter-context"
+    },
+    "nvim-web-devicons": {
+      "rev": "8dcb311",
+      "src": "https://github.com/nvim-tree/nvim-web-devicons"
+    },
+    "oil.nvim": {
+      "rev": "7e1cd77",
+      "src": "https://github.com/stevearc/oil.nvim"
+    },
     "plenary.nvim": [],
     "render-markdown.nvim": [],
+    "tailiscope.nvim": {
+      "rev": "d756e16",
+      "src": "https://github.com/danielvolchek/tailiscope.nvim"
+    },
+    "telescope-fzf-native.nvim": {
+      "rev": "1f08ed6",
+      "src": "https://github.com/nvim-telescope/telescope-fzf-native.nvim"
+    },
     "telescope-fzy-native.nvim": [],
     "telescope-ui-select.nvim": [],
     "telescope.nvim": [],
