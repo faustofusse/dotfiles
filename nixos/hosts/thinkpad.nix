@@ -1,4 +1,4 @@
-{ config, pkgs, ... } @ inputs :
+{ config, pkgs, lib, ... } @ inputs :
 
 {
   imports = [
@@ -15,4 +15,6 @@
   };
 
   services.fprintd.enable = true;
+  security.pam.services.greetd.fprintAuth = true;
+  security.pam.services.greetd.enableGnomeKeyring = true;
 }

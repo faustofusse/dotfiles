@@ -140,3 +140,9 @@ export NIX_CONFIG='experimental-features = nix-command flakes'
 nixos-install --root /mnt --flake .#$host
 chown -R nixos:users /mnt/home/fausto/.dotfiles
 reboot
+
+# fix para keyring en dispositivos con huella y greetd
+
+nix shell nixpkgs#seahorse
+seahorse
+cambiar la password de login a una vacia
