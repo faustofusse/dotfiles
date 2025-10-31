@@ -23,6 +23,11 @@
       specialArgs = inputs;
       modules = [ ./hosts/lenovo.nix ./configuration.nix ];
     };
+    nixosConfigurations."thinkpad" = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = inputs;
+      modules = [ ./hosts/thinkpad.nix ./configuration.nix ];
+    };
 
     nixosConfigurations.iso = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";

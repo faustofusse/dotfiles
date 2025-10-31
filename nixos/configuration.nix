@@ -71,6 +71,18 @@
   # window managers
   programs.niri.enable = true;
 
+  # Enable dconf for system settings
+  programs.dconf.enable = true;
+
+  # Set dark mode preference for Niri and desktop apps
+  programs.dconf.profiles.user.databases = [{
+    settings = {
+      "org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+      };
+    };
+  }];
+
   # display manager
   services.greetd = {
     enable = true;
