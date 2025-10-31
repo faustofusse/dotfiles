@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=WhatsApp (Brave)
-Exec=brave --app=https://web.whatsapp.com --profile-directory="Profile 1" %U
+Exec=brave --app=https://web.whatsapp.com --profile-directory="Default" %U
 Icon=brave
 Terminal=false
 Type=Application
