@@ -7,14 +7,10 @@ hotkey-overlay {
     skip-at-startup
 }
 
+spawn-at-startup "swww-daemon"
+spawn-at-startup "swww" "img" "~/Downloads/wallpapers/nix.jpg"
 spawn-at-startup "eww" "daemon"
 spawn-at-startup "nu" "~/.config/eww/bar.nu"; 
-
-// layer-rule {
-//     match namespace="bar"
-//     baba-is-float false
-//     place-within-backdrop true
-// }
 
 workspace "browser"
 workspace "terminal"
@@ -336,6 +332,14 @@ window-rule {
     match title="web.whatsapp.com"
 
     block-out-from "screen-capture"
+}
+
+// wallpaper
+layer-rule {
+    match namespace="swww-daemon"
+
+    place-within-backdrop true
+    block-out-from "screencast"
 }
 
 binds {
