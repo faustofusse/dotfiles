@@ -137,6 +137,7 @@
   nixpkgs.overlays = [
     (final: prev: {
       opencode = prev.opencode.overrideAttrs (old: {
+        __intentionallyOverridingVersion = true;
         version = "1.0.20";
         passthru.sources = {
           "aarch64-darwin" = final.fetchurl {
