@@ -134,6 +134,32 @@
     allowBroken = true; # minecraft
   };
 
+  nixpkgs.overlays = [
+    (final: prev: {
+      opencode = prev.opencode.overrideAttrs (old: {
+        version = "1.0.20";
+        passthru.sources = {
+          "aarch64-darwin" = final.fetchurl {
+            url = "https://github.com/sst/opencode/releases/download/v1.0.20/opencode-darwin-arm64.zip";
+            hash = "sha256-0s7mk75jsyxs3pfhbp9sqgbhkkv0psf4bnqx0ydygcgdg35wg0hp";
+          };
+          "aarch64-linux" = final.fetchurl {
+            url = "https://github.com/sst/opencode/releases/download/v1.0.20/opencode-linux-arm64.zip";
+            hash = "sha256-0fliaj6ifbld29inl46nncg2zmv10mk4klv60qi3s5wdjyv4vgm4";
+          };
+          "x86_64-darwin" = final.fetchurl {
+            url = "https://github.com/sst/opencode/releases/download/v1.0.20/opencode-darwin-x64.zip";
+            hash = "sha256-0fg5h48avqmjxsdjzk8zyydsd12a4yd578z640hg5gqvbb6ys7va";
+          };
+          "x86_64-linux" = final.fetchurl {
+            url = "https://github.com/sst/opencode/releases/download/v1.0.20/opencode-linux-x64.zip";
+            hash = "sha256-1vkh8b6smi9ga8x131am7f3q7045i5ijxfk9wynha64j695iqcp0";
+          };
+        };
+      });
+    })
+  ];
+
   programs.neovim = {
     enable = true;
     package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
