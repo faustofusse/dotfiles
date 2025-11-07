@@ -8,4 +8,5 @@ padding-top = 20%
 result-spacing = 20
 num-results = 7
 font = monospace
+selection-color = #5276C2
 background-color = #000A
