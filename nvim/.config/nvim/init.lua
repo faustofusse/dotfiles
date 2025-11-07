@@ -250,7 +250,7 @@ vim.lsp.config("ts_ls", {
 })
 
 -- :help lspconfig-all
-vim.lsp.enable({ "gopls", "zls", "dartls", "ts_ls", "vue_ls", "svelte", "sqls" })
+vim.lsp.enable({ "gopls", "zls", "dartls", "ts_ls", "vue_ls", "svelte", "sqls", "tailwindcss" })
 
 --
 
@@ -273,6 +273,9 @@ vim.api.nvim_create_autocmd("FileType", {
 --
 
 vim.pack.add({ "https://github.com/tpope/vim-fugitive" }, { confirm = false })
+
+vim.keymap.set("n", "<leader>g", "<cmd>Git<cr>", opts)
+
 vim.pack.add({ "https://github.com/lewis6991/gitsigns.nvim" }, { confirm = false })
 
 require("gitsigns").setup {
