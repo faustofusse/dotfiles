@@ -10,7 +10,7 @@
         },
         "svelte": {
             "type": "local",
-            "command": ["bunx @sveltejs/mcp"],
+            "command": ["/Users/fausto/.nix-profile/bin/bunx", "@sveltejs/mcp"],
             "enabled": true
         }
     }
