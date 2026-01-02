@@ -1,3 +1,6 @@
+local servers = { "gopls", "zls", "dartls", "ts_ls", "vue_ls", "svelte", "sqls", "tailwindcss" }
+local highlighted = { "go", "gomod", "html", "json", "javascript", "typescript", "tsx", "dockerfile", "markdown", "sql", "lua", "yaml", "bash", "make", "kotlin", "nu", "yuck", "svelte", "dart", "zig", "c", "vue", "php" }
+
 vim.o.backup = false
 vim.o.conceallevel = 0
 vim.o.fileencoding = "utf-8"
@@ -78,10 +81,6 @@ require("guess-indent").setup()
 vim.pack.add({ "https://github.com/windwp/nvim-autopairs" }, { confirm = false })
 
 require("nvim-autopairs").setup()
-
---
-
-vim.pack.add({ "https://github.com/MeanderingProgrammer/render-markdown.nvim" }, { confirm = false })
 
 --
 
@@ -250,19 +249,17 @@ vim.lsp.config("ts_ls", {
 })
 
 -- :help lspconfig-all
-vim.lsp.enable({ "gopls", "zls", "dartls", "ts_ls", "vue_ls", "svelte", "sqls", "tailwindcss" })
+vim.lsp.enable(servers)
 
 --
 
 vim.pack.add({ { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" } }, { confirm = false })
 vim.pack.add({ { src = "https://github.com/nvim-treesitter/nvim-treesitter-context" } }, { confirm = false })
 
-local filetypes = { "go", "gomod", "html", "json", "javascript", "typescript", "tsx", "dockerfile", "markdown", "sql", "lua", "yaml", "bash", "make", "kotlin", "nu", "yuck", "svelte", "dart", "zig", "c", "vue" }
-
-require("nvim-treesitter").install(filetypes)
+require("nvim-treesitter").install(highlighted):wait(300000)
 
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = filetypes,
+    pattern = highlighted,
     callback = function()
         vim.treesitter.start()
         vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
@@ -314,3 +311,9 @@ vim.keymap.set("n", "<leader>;", function() harpoon:list():select(4) end, opts)
 local extensions = require("harpoon.extensions")
 
 harpoon:extend(extensions.builtins.highlight_current_file())
+
+--
+
+vim.pack.add({ "https://github.com/stevearc/quicker.nvim" }, { confirm = false })
+
+require("quicker").setup()
