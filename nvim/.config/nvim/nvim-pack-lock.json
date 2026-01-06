@@ -1,5 +1,9 @@
 {
   "plugins": {
+    "99": {
+      "rev": "38885924a4eb9001f8ef4b2a97157ab5436921c0",
+      "src": "https://github.com/ThePrimeagen/99"
+    },
     "blink.cmp": {
       "rev": "bae4bae",
       "src": "https://github.com/saghen/blink.cmp",
