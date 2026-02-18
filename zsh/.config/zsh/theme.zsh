@@ -7,7 +7,7 @@ function git_branch_name() {
   then
     :
   else
-    echo ' ('$branch')'
+    echo ':'$branch''
   fi
 }
 
@@ -15,7 +15,7 @@ function git_branch_name() {
 function icon() {
     if [[ $IN_NIX_SHELL == "" ]];
     then
-        echo '%#'
+        echo '$'
     else
         echo '' # #7EBAE4
     fi
@@ -25,4 +25,4 @@ function icon() {
 setopt prompt_subst
 
 # Config for prompt. PS1 synonym.
-prompt=' %1~$(git_branch_name) $(icon) '
+prompt=' %~$(git_branch_name) $(icon) '
