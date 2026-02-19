@@ -140,7 +140,6 @@
   };
 
   programs = {
-    adb.enable = true;
     direnv.enable = true;
     zsh.enable = true;
   };
@@ -152,6 +151,7 @@
      brave
      nautilus
      pcmanfm
+     stremio
      # wayland
      eww
      dunst
