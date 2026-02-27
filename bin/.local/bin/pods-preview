@@ -4,22 +4,42 @@ line=$(echo "$1" | sed 's/\x1b\[[0-9;]*m//g')
 ns=$(echo "$line" | awk '{print $(NF)}' | tr -d '()' | tr -d '[:space:]')
 pod=$(echo "$line" | awk '{print $(NF-1)}' | tr -d '[:space:]')
 
-kubectl get pod "$pod" -n "$ns" -o json 2>/dev/null | jq -r "
-  . as \$pod |
-  \"Status: \(.status.phase)\n\" +
-  \"Pod: \(.metadata.name)\n\" +
-  \"Namespace: \(.metadata.namespace)\n\" +
-  \"Ready: \(.status.containerStatuses[0].ready | tostring)/\(.spec.containers | length)\n\" +
-  \"Restarts: \(.status.containerStatuses[0].restartCount // 0)\n\" +
-  \"Age: \(.metadata.creationTimestamp)\n\" +
-  \"\nImage: \(.spec.containers[0].image)\n\" +
-  \"\nLabels:\n\(.metadata.labels | to_entries | map(\"  \(.key): \(.value)\") | join(\"\\n\"))\"
-" 2>/dev/null || echo "Error: Could not fetch pod"
+kubectl get pod "$pod" -n "$ns" -o json 2>/dev/null | jq -r '
+  def human_readable_age(timestamp):
+    (now - (timestamp | fromdateiso8601)) as $seconds |
+    if $seconds < 60 then "\($seconds | floor)s"
+    elif $seconds < 3600 then "\(($seconds / 60) | floor)m"
+    elif $seconds < 86400 then "\(($seconds / 3600) | floor)h"
+    elif $seconds < 604800 then "\(($seconds / 86400) | floor)d"
+    elif $seconds < 2592000 then "\(($seconds / 604800) | floor)w"
+    elif $seconds < 31536000 then "\(($seconds / 2592000) | floor)M"
+    else "\(($seconds / 31536000) | floor)y"
+    end;
+  
+  def count_ready:
+    [(.status.containerStatuses // [])[] | select(.ready == true)] | length;
+  
+  . as $pod |
+  "Status: \(.status.phase)\n" +
+  "Pod: \(.metadata.name)\n" +
+  "Namespace: \(.metadata.namespace)\n" +
+  "Ready: \(count_ready)/\(.spec.containers | length)\n" +
+  "Restarts: \(.status.containerStatuses[0].restartCount // 0)\n" +
+  "Age: \(human_readable_age(.metadata.creationTimestamp))\n" +
+  "Image: \(.spec.containers[0].image)\n" +
+  "\nLabels:\n\(.metadata.labels | to_entries | map("  \(.key): \(.value)") | join("\n"))"
+' 2>/dev/null || echo "Error: Could not fetch pod"
 
 echo ""
-echo "--- Ingresses ---"
+echo "Ingress:"
 svc_name=$(echo "$pod" | sed 's/-[a-z0-9]*-[a-z0-9]*$//')
 kubectl get ingress -n "$ns" -o json 2>/dev/null | jq -r --arg svc "$svc_name" '
-  .items[] | select(.spec.rules[].http.paths[].backend.service.name | contains($svc)) | 
-  "  - " + .metadata.name
-' 2>/dev/null | head -5 || echo "  No ingresses found"
+  .items[] |
+  select(.spec.rules[].http.paths[].backend.service.name | contains($svc)) |
+  .spec.rules[] |
+  .host as $host |
+  .http.paths[] |
+  "\($host)\(.path // "")" |
+  sub("/$"; "") |
+  "  - " + .
+' 2>/dev/null | sort -u | head -10 || echo "  No ingresses found"
