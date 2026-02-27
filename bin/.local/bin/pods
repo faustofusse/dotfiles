@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+kubectl get pods -A --no-headers | awk '
+  {
+    status=$4
+    ns=$1
+    pod=$2
+    if(status=="Running") color="\033[32m"
+    else if(status=="Error" || status=="CrashLoopBackOff") color="\033[31m"
+    else if(status=="Pending") color="\033[33m"
+    else color="\033[0m"
+    printf "%s%-12s\033[0m  %-50s  (%s)\n", color, status, pod, ns
+  }' | fzf --layout=reverse --ansi \
+  --preview 'pods-preview {}' \
+  --preview-window=right:50% \
+  | sed 's/\x1b\[[0-9;]*m//g' | awk '{print $(NF-1), $NF}' | tr -d '()' | xargs -n2 sh -c 'kubectl logs -n $1 $2' _

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+line=$(echo "$1" | sed 's/\x1b\[[0-9;]*m//g')
+ns=$(echo "$line" | awk '{print $(NF)}' | tr -d '()' | tr -d '[:space:]')
+pod=$(echo "$line" | awk '{print $(NF-1)}' | tr -d '[:space:]')
+
+kubectl get pod "$pod" -n "$ns" -o json 2>/dev/null | jq -r "
+  . as \$pod |
+  \"Status: \(.status.phase)\n\" +
+  \"Pod: \(.metadata.name)\n\" +
+  \"Namespace: \(.metadata.namespace)\n\" +
+  \"Ready: \(.status.containerStatuses[0].ready | tostring)/\(.spec.containers | length)\n\" +
+  \"Restarts: \(.status.containerStatuses[0].restartCount // 0)\n\" +
+  \"Age: \(.metadata.creationTimestamp)\n\" +
+  \"\nImage: \(.spec.containers[0].image)\n\" +
+  \"\nLabels:\n\(.metadata.labels | to_entries | map(\"  \(.key): \(.value)\") | join(\"\\n\"))\"
+" 2>/dev/null || echo "Error: Could not fetch pod"
+
+echo ""
+echo "--- Ingresses ---"
+svc_name=$(echo "$pod" | sed 's/-[a-z0-9]*-[a-z0-9]*$//')
+kubectl get ingress -n "$ns" -o json 2>/dev/null | jq -r --arg svc "$svc_name" '
+  .items[] | select(.spec.rules[].http.paths[].backend.service.name | contains($svc)) | 
+  "  - " + .metadata.name
+' 2>/dev/null | head -5 || echo "  No ingresses found"
