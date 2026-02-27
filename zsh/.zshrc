@@ -14,3 +14,5 @@ source ~/.config/zsh/aliases.zsh
 export PATH="$PATH:/Users/fausto/.lmstudio/bin"
 # End of LM Studio CLI section
 
+export DIRENV_LOG_FORMAT=
+export PATH=$PATH:$HOME/.maestro/bin

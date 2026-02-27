@@ -7,7 +7,7 @@ function git_branch_name() {
   then
     :
   else
-    echo ':'$branch''
+    echo '%F{238}:%f'$branch''
   fi
 }
 
