@@ -26,7 +26,7 @@ kubectl get pod "$pod" -n "$ns" -o json 2>/dev/null | jq -r '
   "Ready: \(count_ready)/\(.spec.containers | length)\n" +
   "Restarts: \(.status.containerStatuses[0].restartCount // 0)\n" +
   "Age: \(human_readable_age(.metadata.creationTimestamp))\n" +
-  "Image: \(.spec.containers[0].image)\n" +
+  "Image: \(.spec.containers[0].image | split("/") | last)\n" +
   "\nLabels:\n\(.metadata.labels | to_entries | map("  \(.key): \(.value)") | join("\n"))"
 ' 2>/dev/null || echo "Error: Could not fetch pod"
 
@@ -41,5 +41,5 @@ kubectl get ingress -n "$ns" -o json 2>/dev/null | jq -r --arg svc "$svc_name" '
   .http.paths[] |
   "\($host)\(.path // "")" |
   sub("/$"; "") |
-  "  - " + .
+  "  " + .
 ' 2>/dev/null | sort -u | head -10 || echo "  No ingresses found"

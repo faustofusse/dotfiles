@@ -12,4 +12,4 @@ kubectl get pods -A --no-headers | awk '
   }' | fzf --layout=reverse --ansi \
   --preview 'pods-preview {}' \
   --preview-window=right:50% \
-  | sed 's/\x1b\[[0-9;]*m//g' | awk '{print $(NF-1), $NF}' | tr -d '()' | xargs -n2 sh -c 'kubectl logs -n $1 $2' _
+  | sed 's/\x1b\[[0-9;]*m//g' | awk '{print $2, $3}' | tr -d '()' | xargs -n2 sh -c 'kubectl logs -n $2 $1 -f' _
