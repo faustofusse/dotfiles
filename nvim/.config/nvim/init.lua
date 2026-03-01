@@ -132,13 +132,55 @@ telescope.setup({
 telescope.load_extension("ui-select")
 telescope.load_extension("tailiscope")
 
+local pickers = require("telescope.pickers")
+local finders = require("telescope.finders")
+local make_entry = require("telescope.make_entry")
+local conf = require("telescope.config").values
+
+local live_multigrep = function(opts)
+  opts = opts or {}
+  opts.cwd = opts.cwd or vim.uv.cwd()
+
+  local finder = finders.new_async_job {
+    command_generator = function(prompt)
+      if not prompt or prompt == "" then
+        return nil
+      end
+
+      local pieces = vim.split(prompt, "  ")
+      local args = { "rg" }
+      if pieces[1] then
+        table.insert(args, "-e")
+        table.insert(args, pieces[1])
+      end
+
+      if pieces[2] then
+        table.insert(args, "-g")
+        table.insert(args, pieces[2])
+      end
+
+      return vim.iter({ args, { "--color=never", "--no-heading", "--with-filename", "--line-number", "--column", "--smart-case" } }):flatten():totable()
+    end,
+    entry_maker = make_entry.gen_from_vimgrep(opts),
+    cwd = opts.cwd,
+  }
+
+  pickers.new(opts, {
+    debounce = 100,
+    prompt_title = "Multi Grep",
+    finder = finder,
+    previewer = conf.grep_previewer(opts),
+    sorter = require("telescope.sorters").empty(),
+  }):find()
+end
+
 local dropdown = themes.get_dropdown({})
 local extensions = require('telescope').extensions
 
 vim.keymap.set("n", "<C-p>",      function() builtin.find_files(themes.get_ivy({})) end, opts)
 vim.keymap.set("n", "<leader>ff", function() builtin.find_files(themes.get_ivy({ hidden = true })) end, opts)
 vim.keymap.set("n", "<leader>fd", function() builtin.find_files(themes.get_ivy({ cwd = '~/.dotfiles', hidden = true })) end, opts)
-vim.keymap.set("n", "<leader>fg", function() builtin.live_grep(dropdown) end, opts)
+vim.keymap.set("n", "<leader>fg", function() live_multigrep(dropdown) end, opts)
 vim.keymap.set("n", "<leader>fb", function() builtin.buffers(dropdown) end, opts)
 vim.keymap.set("n", "<leader>fh", function() builtin.help_tags(dropdown) end, opts)
 vim.keymap.set("n", "<leader>fs", function() builtin.lsp_dynamic_workspace_symbols(dropdown) end, opts)
