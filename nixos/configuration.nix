@@ -15,6 +15,7 @@
     options kvm ignore_msrs=1
   '';
   virtualisation.libvirtd.enable = true;
+  systemd.services.virt-secret-init-encryption.enable = false;
 
   # Set your time zone and internationalisation properties
   time.timeZone = "America/Argentina/Buenos_Aires";
@@ -146,12 +147,16 @@
 
   virtualisation.docker.enable = true;
 
+  nixpkgs.config.permittedInsecurePackages = [
+    # "qtwebengine-5.15.19"  # No longer needed - using stremio-linux-shell instead
+  ];
+
   environment.systemPackages = with pkgs; [
      # desktop
      brave
      nautilus
      pcmanfm
-     stremio
+      stremio-linux-shell
      # wayland
      eww
      dunst
