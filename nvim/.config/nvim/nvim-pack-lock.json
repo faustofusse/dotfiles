@@ -4,10 +4,18 @@
       "rev": "91ea4cfd4a46d756152e9470abe495f4b178e818",
       "src": "https://github.com/ThePrimeagen/99"
     },
+    "Comment.nvim": {
+      "rev": "e30b7f2008e52442154b66f7c519bfd2f1e32acb",
+      "src": "https://github.com/numToStr/Comment.nvim"
+    },
     "blink.cmp": {
       "rev": "bae4bae",
       "src": "https://github.com/saghen/blink.cmp",
       "version": "'v1.6.0'"
+    },
+    "comfy-line-numbers.nvim": {
+      "rev": "31e2f9287b4491ad72defb9e0185eb2739983799",
+      "src": "https://github.com/mluders/comfy-line-numbers.nvim"
     },
     "fidget.nvim": {
       "rev": "64463022a1f2ff1318ab22a2ea4125ed9313a483",
@@ -58,6 +66,10 @@
     "opencode.nvim": {
       "rev": "cb8660e08fb6ecc248f267ff0f45d5be5075c586",
       "src": "https://github.com/nickjvandyke/opencode.nvim"
+    },
+    "playground": {
+      "rev": "ba48c6a62a280eefb7c85725b0915e021a1a0749",
+      "src": "https://github.com/nvim-treesitter/playground"
     },
     "plenary.nvim": {
       "rev": "b9fd5226c2f76c951fc8ed5923d85e4de065e509",
