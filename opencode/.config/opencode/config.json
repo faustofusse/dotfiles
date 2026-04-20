@@ -11,4 +11,5 @@
         "messages_page_up": "ctrl+u",
         "messages_page_down": "ctrl+d",
     },
+    "plugin": ["@sveltejs/opencode"]
 }
