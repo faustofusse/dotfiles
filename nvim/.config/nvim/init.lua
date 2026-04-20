@@ -1,7 +1,7 @@
 require("vim._core.ui2").enable()
 
 local servers = { "gopls", "zls", "dartls", "ts_ls", "vue_ls", "svelte", "sqls", "tailwindcss", "kotlin_lsp" }
-local highlighted = { "go", "gomod", "html", "json", "javascript", "typescript", "tsx", "dockerfile", "markdown", "sql", "lua", "yaml", "bash", "make", "kotlin", "nu", "yuck", "svelte", "dart", "zig", "c", "vue", "php" }
+local highlighted = { "go", "gomod", "html", "json", "javascript", "typescript", "tsx", "dockerfile", "markdown", "sql", "lua", "yaml", "bash", "make", "kotlin", "nu", "yuck", "svelte", "dart", "zig", "c", "vue", "php", "prisma" }
 
 vim.o.backup = false
 vim.o.conceallevel = 0
@@ -264,7 +264,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
         vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
         vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-        vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+        vim.keymap.set("n", "gR", vim.lsp.buf.rename, opts)
         vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
     end,
 })
@@ -440,3 +440,12 @@ vim.keymap.set("n", "<S-C-d>", function() require("opencode").command("session.h
 -- You may want these if you stick with the opinionated "<C-a>" and "<C-x>" above — otherwise consider "<leader>o…".
 -- vim.keymap.set("n", "+", "<C-a>", { desc = "Increment under cursor", noremap = true })
 -- vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement under cursor", noremap = true })
+
+--
+
+vim.pack.add({ "https://github.com/ej-shafran/compile-mode.nvim" }, { confirm = false })
+
+vim.g.compile_mode = { default_command = "" }
+
+vim.keymap.set("n", "<leader>R", require("compile-mode").compile, opts)
+vim.keymap.set("n", "<leader>r", require("compile-mode").recompile, opts)

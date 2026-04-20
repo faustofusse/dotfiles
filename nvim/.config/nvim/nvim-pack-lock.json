@@ -17,6 +17,10 @@
       "rev": "31e2f9287b4491ad72defb9e0185eb2739983799",
       "src": "https://github.com/mluders/comfy-line-numbers.nvim"
     },
+    "compile-mode.nvim": {
+      "rev": "6b41499bd782be2c213011072ce0f0eb9f7b78a2",
+      "src": "https://github.com/ej-shafran/compile-mode.nvim"
+    },
     "fidget.nvim": {
       "rev": "64463022a1f2ff1318ab22a2ea4125ed9313a483",
       "src": "https://github.com/j-hui/fidget.nvim"
