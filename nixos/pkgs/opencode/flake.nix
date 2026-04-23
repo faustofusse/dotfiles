@@ -5,7 +5,7 @@
 
   outputs = { self, nixpkgs }:
     let
-      opencode = { lib, stdenv, fetchurl, unzip, makeBinaryWrapper, ripgrep, sysctl }:
+      opencode = { lib, stdenv, fetchurl, makeBinaryWrapper, autoPatchelfHook, ripgrep, sysctl, zlib }:
         let
           isLinux = stdenv.hostPlatform.isLinux;
           isDarwin = stdenv.hostPlatform.isDarwin;
@@ -13,19 +13,19 @@
           platform = {
             aarch64-darwin = {
               name = "darwin-arm64";
-              hash = "sha256-zeqDvk2eEvD7SyFosSLwGj0CQ1k8r07IEEHF5tcX+Po=";
+              hash = "sha256:1ypq2zbydia12344xbrwb51h4g8sy0ib2s119gxz04ly9nz87snd";
             };
             x86_64-darwin = {
               name = "darwin-x64";
-              hash = "sha256-jV/184ZOjCVXce6vHU3zXFQVSXLcu+k7S6qqazIj49c=";
+              hash = "sha256:1mz34cr6pama9cxykfywf94iam2wyd6ivbzff5bjb32fhvrzapwd";
             };
             x86_64-linux = {
-              name = "linux-amd64";
-              hash = "sha256-C7GBxiaISt0S5H1bjS+IwculvVCnQnl6QYAkLmfa4nw=";
+              name = "linux-x64";
+              hash = "sha256:0rc1xs204jhaw8wzsy5icxs25hyw61qx7fmr46ikcxwwk0hcsik9";
             };
             aarch64-linux = {
               name = "linux-arm64";
-              hash = "sha256-ZOI+5b5ZETRPQAnXGr0UH+ZQ5eskrPDT6/yEyJ1L6uA=";
+              hash = "sha256:1hlp8lfyzfs5l879qnvh4h4mdrwvs2wz6fgd6c9d92rljps3rfxq";
             };
           }.${stdenv.hostPlatform.system} or (throw "Unsupported system: ${stdenv.hostPlatform.system}");
 
@@ -34,25 +34,29 @@
           src = fetchurl {
             url = if isDarwin
               then "https://github.com/anomalyco/opencode/releases/download/v${version}/opencode-${platform.name}.zip"
-              else "https://github.com/anomalyco/opencode/releases/download/v${version}/opencode-desktop-${platform.name}.deb";
+              else "https://github.com/anomalyco/opencode/releases/download/v${version}/opencode-${platform.name}.tar.gz";
             hash = platform.hash;
           };
         in
-        stdenv.mkDerivation (rec {
+        stdenv.mkDerivation ({
           inherit src version;
           pname = "opencode";
 
           nativeBuildInputs = [ makeBinaryWrapper ]
-            ++ lib.optionals isDarwin [ unzip ];
+            ++ lib.optionals isLinux [ autoPatchelfHook ];
 
+          buildInputs = lib.optionals isLinux [ stdenv.cc.cc.lib zlib ];
+
+          dontStrip = true;
+          dontUnpack = isDarwin;
           sourceRoot = ".";
 
           installPhase = ''
             runHook preInstall
             ${if isDarwin then ''
-              install -Dm755 opencode $out/bin/opencode
+              install -Dm755 $src $out/bin/opencode
             '' else ''
-              install -Dm755 usr/bin/opencode-cli $out/bin/opencode
+              install -Dm755 opencode $out/bin/opencode
             ''}
             wrapProgram $out/bin/opencode \
               --prefix PATH : ${lib.makeBinPath (
@@ -69,13 +73,6 @@
             mainProgram = "opencode";
             platforms = [ "aarch64-darwin" "x86_64-darwin" "x86_64-linux" "aarch64-linux" ];
           };
-        } // lib.optionalAttrs isLinux {
-          unpackPhase = ''
-            runHook preUnpack
-            ar x "$src"
-            tar xzf data.tar.gz
-            runHook postUnpack
-          '';
         });
     in
     {

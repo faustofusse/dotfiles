@@ -108,6 +108,22 @@
         "type": "github"
       }
     },
+    "opencode": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "pkgs/opencode",
+        "type": "path"
+      },
+      "original": {
+        "path": "pkgs/opencode",
+        "type": "path"
+      },
+      "parent": []
+    },
     "pi-coding-agent": {
       "inputs": {
         "nixpkgs": [
@@ -129,6 +145,7 @@
         "dotfiles": "dotfiles",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
+        "opencode": "opencode",
         "pi-coding-agent": "pi-coding-agent",
         "xremap-flake": "xremap-flake"
       }
