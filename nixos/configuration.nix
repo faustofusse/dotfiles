@@ -171,8 +171,8 @@
      git
      gnumake
      go
-     gopls
-      opencode
+      gopls
+      inputs.self.packages.${pkgs.system}.opencode
       inputs.self.packages.${pkgs.system}.pi-coding-agent
       sqlite
       zed-editor

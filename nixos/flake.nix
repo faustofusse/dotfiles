@@ -8,15 +8,22 @@
       url = "path:pkgs/pi-coding-agent";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    opencode = {
+      url = "path:pkgs/opencode";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, ... } @ inputs :
     let
       pi-coding-agent = system: inputs.pi-coding-agent.packages.${system}.default;
+      opencode = system: inputs.opencode.packages.${system}.default;
     in
     {
     packages.x86_64-linux.pi-coding-agent = pi-coding-agent "x86_64-linux";
     packages.aarch64-darwin.pi-coding-agent = pi-coding-agent "aarch64-darwin";
+    packages.x86_64-linux.opencode = opencode "x86_64-linux";
+    packages.aarch64-darwin.opencode = opencode "aarch64-darwin";
 
     nixosConfigurations."fauhp" = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
