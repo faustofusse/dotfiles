@@ -1,8 +1,6 @@
 { config, pkgs, lib, ... } @ inputs :
 
-let
-  pi-coding-agent = pkgs.callPackage ./pkgs/pi-coding-agent {};
-in
+
 {
   imports = [
     inputs.xremap-flake.nixosModules.default
@@ -175,7 +173,7 @@ in
      go
      gopls
       opencode
-      pi-coding-agent
+      inputs.self.packages.${pkgs.system}.pi-coding-agent
       sqlite
       zed-editor
      # development

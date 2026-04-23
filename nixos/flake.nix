@@ -6,7 +6,14 @@
     dotfiles = { url = "path:.."; flake = false; };
   };
 
-  outputs = { self, nixpkgs, ... } @ inputs : {
+  outputs = { self, nixpkgs, ... } @ inputs :
+    let
+      pi-coding-agent = system: (builtins.getFlake (toString ./. + "/pkgs/pi-coding-agent")).packages.${system}.default;
+    in
+    {
+    packages.x86_64-linux.pi-coding-agent = pi-coding-agent "x86_64-linux";
+    packages.aarch64-darwin.pi-coding-agent = pi-coding-agent "aarch64-darwin";
+
     nixosConfigurations."fauhp" = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = inputs;
