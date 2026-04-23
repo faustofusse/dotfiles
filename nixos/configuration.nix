@@ -135,11 +135,6 @@
     allowBroken = true; # minecraft
   };
 
-  programs.neovim = {
-    enable = true;
-    package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
-  };
-
   programs = {
     direnv.enable = true;
     zsh.enable = true;
@@ -156,7 +151,7 @@
      brave
      nautilus
      pcmanfm
-      stremio-linux-shell
+     stremio-linux-shell
      # wayland
      eww
      dunst
@@ -201,6 +196,7 @@
      imagemagick
      jq
      nushell
+     neovim
      mpv
      openssl
      libqalculate

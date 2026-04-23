@@ -7,6 +7,10 @@ hotkey-overlay {
     skip-at-startup
 }
 
+environment {
+    GTK_THEME "Adwaita:dark"
+}
+
 spawn-at-startup "swww-daemon"
 spawn-at-startup "swww" "img" "~/Downloads/wallpapers/nix.jpg"
 spawn-at-startup "eww" "daemon"
@@ -55,12 +59,9 @@ workspace "9" {
 input {
     keyboard {
         xkb {
-            // You can set rules, model, layout, variant and options.
-            // For more information, see xkeyboard-config(7).
-
-            // For example:
-            // layout "us,ru"
-            // options "grp:win_space_toggle,compose:ralt,ctrl:nocaps"
+            layout "us"
+            variant "altgr-intl"
+            options "lv3:lalt_switch"
         }
 
         // Enable numlock on startup, omitting this setting disables it.
