@@ -1,0 +1,118 @@
+{
+  "version": 3,
+  "skills": {
+    "btca-local": {
+      "source": "davis7dotsh/better-context",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/davis7dotsh/better-context.git",
+      "skillPath": "skills/btca-local/SKILL.md",
+      "skillFolderHash": "672717a655579407e9fb716f0b28f8b8a88d9a6a",
+      "installedAt": "2026-04-15T13:06:27.778Z",
+      "updatedAt": "2026-04-15T13:06:27.778Z"
+    },
+    "agents-sdk": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/cloudflare/skills.git",
+      "skillPath": "skills/agents-sdk/SKILL.md",
+      "skillFolderHash": "9c5d32179a903197133310632ed5ba448566bdfe",
+      "installedAt": "2026-04-15T13:09:42.140Z",
+      "updatedAt": "2026-04-15T13:09:42.140Z"
+    },
+    "building-ai-agent-on-cloudflare": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/cloudflare/skills.git",
+      "skillPath": "skills/building-ai-agent-on-cloudflare/SKILL.md",
+      "skillFolderHash": "1cc0b190e3522ac057854f68454919e5dd0b3593",
+      "installedAt": "2026-04-15T13:09:42.202Z",
+      "updatedAt": "2026-04-15T13:09:42.202Z"
+    },
+    "building-mcp-server-on-cloudflare": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/cloudflare/skills.git",
+      "skillPath": "skills/building-mcp-server-on-cloudflare/SKILL.md",
+      "skillFolderHash": "248cb2a2b68fe85d61f685bdb4dd7192c60a45b8",
+      "installedAt": "2026-04-15T13:09:42.259Z",
+      "updatedAt": "2026-04-15T13:09:42.259Z"
+    },
+    "cloudflare": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/cloudflare/skills.git",
+      "skillPath": "skills/cloudflare/SKILL.md",
+      "skillFolderHash": "f8cb65f36614663c6fabc082be7e905ba5da74d4",
+      "installedAt": "2026-04-15T13:09:42.317Z",
+      "updatedAt": "2026-04-15T13:09:42.317Z"
+    },
+    "durable-objects": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/cloudflare/skills.git",
+      "skillPath": "skills/durable-objects/SKILL.md",
+      "skillFolderHash": "72810f48414f2e68d0aa65a8895f749c959dea91",
+      "installedAt": "2026-04-15T13:09:42.374Z",
+      "updatedAt": "2026-04-15T13:09:42.374Z"
+    },
+    "sandbox-sdk": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/cloudflare/skills.git",
+      "skillPath": "skills/sandbox-sdk/SKILL.md",
+      "skillFolderHash": "4d90eab74b6f49050c92b95ba635bc99c41671e9",
+      "installedAt": "2026-04-15T13:09:42.428Z",
+      "updatedAt": "2026-04-15T13:09:42.428Z"
+    },
+    "workers-best-practices": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/cloudflare/skills.git",
+      "skillPath": "skills/workers-best-practices/SKILL.md",
+      "skillFolderHash": "7dd384e79c76d3e388dfe53e12e93642679ff1fd",
+      "installedAt": "2026-04-15T13:09:42.484Z",
+      "updatedAt": "2026-04-15T13:09:42.484Z"
+    },
+    "wrangler": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/cloudflare/skills.git",
+      "skillPath": "skills/wrangler/SKILL.md",
+      "skillFolderHash": "e62e1a384325810b7159c48106c5be9571bde636",
+      "installedAt": "2026-04-15T13:09:42.539Z",
+      "updatedAt": "2026-04-15T13:09:42.539Z"
+    },
+    "web-perf": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/cloudflare/skills.git",
+      "skillPath": "skills/web-perf/SKILL.md",
+      "skillFolderHash": "e8e8c50ca6abf0849a4d9d69c1bed8b98b5d7411",
+      "installedAt": "2026-04-15T13:09:42.596Z",
+      "updatedAt": "2026-04-15T13:09:42.596Z"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/anthropics/skills.git",
+      "skillPath": "skills/frontend-design/SKILL.md",
+      "skillFolderHash": "928950704df8a8b885c03de5da626331e6f29cf8",
+      "pluginName": "example-skills",
+      "installedAt": "2026-04-15T13:10:31.335Z",
+      "updatedAt": "2026-04-15T13:10:31.335Z"
+    },
+    "mcp-builder": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/anthropics/skills.git",
+      "skillPath": "skills/mcp-builder/SKILL.md",
+      "skillFolderHash": "9173e2c2107aac82d4ca6c726d71e89d11760470",
+      "pluginName": "example-skills",
+      "installedAt": "2026-04-15T13:11:09.917Z",
+      "updatedAt": "2026-04-15T13:11:09.917Z"
+    }
+  },
+  "dismissed": {
+    "findSkillsPrompt": true
+  }
+}
