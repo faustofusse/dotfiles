@@ -1,5 +1,8 @@
 { config, pkgs, lib, ... } @ inputs :
 
+let
+  pi-coding-agent = pkgs.callPackage ./pkgs/pi-coding-agent {};
+in
 {
   imports = [
     inputs.xremap-flake.nixosModules.default
@@ -171,9 +174,10 @@
      gnumake
      go
      gopls
-     opencode
-     sqlite
-     zed-editor
+      opencode
+      pi-coding-agent
+      sqlite
+      zed-editor
      # development
      tree-sitter
      typescript-language-server
