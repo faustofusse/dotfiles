@@ -108,11 +108,28 @@
         "type": "github"
       }
     },
+    "pi-coding-agent": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "pkgs/pi-coding-agent",
+        "type": "path"
+      },
+      "original": {
+        "path": "pkgs/pi-coding-agent",
+        "type": "path"
+      },
+      "parent": []
+    },
     "root": {
       "inputs": {
         "dotfiles": "dotfiles",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
+        "pi-coding-agent": "pi-coding-agent",
         "xremap-flake": "xremap-flake"
       }
     },

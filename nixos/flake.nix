@@ -4,11 +4,15 @@
     xremap-flake.url = "github:xremap/nix-flake";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     dotfiles = { url = "path:.."; flake = false; };
+    pi-coding-agent = {
+      url = "path:pkgs/pi-coding-agent";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, ... } @ inputs :
     let
-      pi-coding-agent = system: (builtins.getFlake (toString ./. + "/pkgs/pi-coding-agent")).packages.${system}.default;
+      pi-coding-agent = system: inputs.pi-coding-agent.packages.${system}.default;
     in
     {
     packages.x86_64-linux.pi-coding-agent = pi-coding-agent "x86_64-linux";
