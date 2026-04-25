@@ -8,7 +8,7 @@ echo "==> Fetching latest version from npm..."
 LATEST_VERSION=$(npm view "$PACKAGE_NAME" version)
 echo "    Latest: $LATEST_VERSION"
 
-# Extract current version from flake.nix
+# Extract current version from flake.nix (portable, no grep -P)
 CURRENT_VERSION=$(sed -n 's/.*version = "\([^"]*\)".*/\1/p' "$SCRIPT_DIR/flake.nix" || true)
 echo "    Current: ${CURRENT_VERSION:-unknown}"
 
@@ -81,36 +81,53 @@ set -e
 
 if [[ $BUILD_STATUS -eq 0 ]]; then
     echo "==> Build succeeded immediately (dependencies unchanged?)"
-    echo "==> Done! Updated pi-coding-agent to $LATEST_VERSION"
-    exit 0
+else
+    echo "==> Extracting npmDepsHash from build output..."
+    NPM_HASH=$(echo "$BUILD_OUTPUT" | perl -nle 'print $1 if /npmDepsHash:\s*(sha256-[A-Za-z0-9+\/=]+)/')
+
+    if [[ -z "$NPM_HASH" ]]; then
+        NPM_HASH=$(echo "$BUILD_OUTPUT" | perl -nle 'print $1 if /got:\s+(sha256-[A-Za-z0-9+\/=]+)/')
+    fi
+
+    if [[ -z "$NPM_HASH" ]]; then
+        NPM_HASH=$(echo "$BUILD_OUTPUT" | perl -nle 'print $1 if /(sha256-[A-Za-z0-9+\/=]{40,})/' | head -n1)
+    fi
+
+    if [[ -z "$NPM_HASH" ]]; then
+        echo "ERROR: Could not extract npmDepsHash from build output."
+        echo ""
+        echo "Build output:"
+        echo "$BUILD_OUTPUT"
+        exit 1
+    fi
+
+    echo "    npmDepsHash: $NPM_HASH"
+
+    echo "==> Updating flake.nix with correct npmDepsHash..."
+    sed -i.bak -E "s|(npmDepsHash = \")[^\"]+(\";)|\1$NPM_HASH\2|" "$SCRIPT_DIR/flake.nix"
+    rm -f "$SCRIPT_DIR/flake.nix.bak"
+
+    echo "==> Verifying final build..."
+    nix build --no-link "$SCRIPT_DIR#default"
 fi
-
-echo "==> Extracting npmDepsHash from build output..."
-NPM_HASH=$(echo "$BUILD_OUTPUT" | perl -nle 'print $1 if /npmDepsHash:\s*(sha256-[A-Za-z0-9+\/=]+)/')
-
-if [[ -z "$NPM_HASH" ]]; then
-    NPM_HASH=$(echo "$BUILD_OUTPUT" | perl -nle 'print $1 if /got:\s+(sha256-[A-Za-z0-9+\/=]+)/')
-fi
-
-if [[ -z "$NPM_HASH" ]]; then
-    NPM_HASH=$(echo "$BUILD_OUTPUT" | perl -nle 'print $1 if /(sha256-[A-Za-z0-9+\/=]{40,})/' | head -n1)
-fi
-
-if [[ -z "$NPM_HASH" ]]; then
-    echo "ERROR: Could not extract npmDepsHash from build output."
-    echo ""
-    echo "Build output:"
-    echo "$BUILD_OUTPUT"
-    exit 1
-fi
-
-echo "    npmDepsHash: $NPM_HASH"
-
-echo "==> Updating flake.nix with correct npmDepsHash..."
-sed -i.bak -E "s|(npmDepsHash = \")[^\"]+(\";)|\1$NPM_HASH\2|" "$SCRIPT_DIR/flake.nix"
-rm -f "$SCRIPT_DIR/flake.nix.bak"
-
-echo "==> Verifying final build..."
-nix build --no-link "$SCRIPT_DIR#default"
 
 echo "==> Done! Updated pi-coding-agent to $LATEST_VERSION"
+
+echo "==> Checking nix profile..."
+
+# Use JSON output for reliable parsing
+PROFILE_JSON=$(nix profile list --json 2>/dev/null || true)
+
+PROFILE_NAME=$(echo "$PROFILE_JSON" | jq -r '
+    .elements | to_entries[]
+    | select(.key | contains("pi-coding-agent"))
+    | .key
+')
+
+if [ -n "$PROFILE_NAME" ]; then
+    echo "    Found in nix profile as '$PROFILE_NAME', upgrading..."
+    nix profile upgrade "$PROFILE_NAME"
+    echo "    Profile upgraded."
+else
+    echo "    Not installed via nix profile, skipping."
+fi
