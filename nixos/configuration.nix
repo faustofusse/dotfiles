@@ -150,6 +150,7 @@
   environment.systemPackages = with pkgs; [
      # desktop
      brave
+     chromium
      nautilus
      pcmanfm
      stremio-linux-shell
@@ -171,11 +172,11 @@
      git
      gnumake
      go
-      gopls
-      inputs.self.packages.${pkgs.system}.opencode
-      inputs.self.packages.${pkgs.system}.pi-coding-agent
-      sqlite
-      zed-editor
+     gopls
+     inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.opencode
+     inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.pi-coding-agent
+     sqlite
+     zed-editor
      # development
      tree-sitter
      typescript-language-server
