@@ -4,6 +4,11 @@
   "defaultModel": "kimi-k2.6",
   "defaultThinkingLevel": "medium",
   "editorPaddingX": 0,
-  "hideThinkingBlock": true,
-  "quietStartup": true
+  "hideThinkingBlock": false,
+  "quietStartup": true,
+  "enabledModels": [
+    "google-antigravity/gemini-3-flash",
+    "opencode-go/kimi-k2.6",
+    "opencode/gemini-3.1-pro"
+  ]
 }
