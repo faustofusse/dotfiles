@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if ! command -v npm &> /dev/null; then
+    if command -v nix &> /dev/null; then
+        npm() {
+            nix shell nixpkgs#nodejs --command npm "$@"
+        }
+    else
+        echo "ERROR: npm is not installed and nix is not available." >&2
+        exit 1
+    fi
+fi
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PACKAGE_NAME="@mariozechner/pi-coding-agent"
 
