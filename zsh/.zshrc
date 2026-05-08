@@ -9,10 +9,3 @@ source ~/.config/zsh/history.zsh
 source ~/.config/zsh/options.zsh
 source ~/.config/zsh/keymaps.zsh
 source ~/.config/zsh/aliases.zsh
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/fausto/.lmstudio/bin"
-# End of LM Studio CLI section
-
-export DIRENV_LOG_FORMAT=
-export PATH=$PATH:$HOME/.maestro/bin
