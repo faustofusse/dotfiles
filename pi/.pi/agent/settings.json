@@ -1,11 +1,11 @@
 {
   "lastChangelogVersion": "0.73.0",
-  "defaultProvider": "opencode",
-  "defaultModel": "gemini-3-flash",
-  "defaultThinkingLevel": "low",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "kimi-k2.6",
+  "defaultThinkingLevel": "high",
   "editorPaddingX": 0,
   "hideThinkingBlock": true,
-  "quietStartup": true,
+  "quietStartup": false,
   "enabledModels": [
     "opencode-go/kimi-k2.6",
     "opencode/gemini-3.1-pro",
