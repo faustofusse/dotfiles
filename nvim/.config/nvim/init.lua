@@ -449,3 +449,5 @@ vim.g.compile_mode = { default_command = "" }
 
 vim.keymap.set("n", "<leader>R", require("compile-mode").compile, opts)
 vim.keymap.set("n", "<leader>r", require("compile-mode").recompile, opts)
+
+vim.keymap.set("t", "<C-[>", [[<C-\><C-n>]], { desc = "Exit terminal mode" })
