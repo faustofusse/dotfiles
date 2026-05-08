@@ -343,18 +343,157 @@ vim.pack.add({ { src = "https://github.com/ThePrimeagen/harpoon", version = "har
 
 local harpoon = require("harpoon")
 
-harpoon:setup()
+local function keep_terminal_buffer(bufnr)
+    if bufnr and vim.api.nvim_buf_is_valid(bufnr) then
+        vim.api.nvim_set_option_value("bufhidden", "hide", { buf = bufnr })
+        vim.api.nvim_set_option_value("buflisted", true, { buf = bufnr })
+    end
+end
 
+harpoon:setup({
+    term = {
+        encode = false,
+        select_with_nil = true,
+
+        display = function(list_item)
+            if not list_item then
+                return "(new terminal)"
+            end
+
+            local bufnr = list_item.context and list_item.context.bufnr
+            if not bufnr or not vim.api.nvim_buf_is_valid(bufnr) then
+                return "(dead terminal)"
+            end
+
+            local name = vim.api.nvim_buf_get_name(bufnr)
+            local cmd = name:match(":%d+:(.+)$") or "terminal"
+            return cmd
+        end,
+
+        equals = function(a, b)
+            if not a or not b then
+                return false
+            end
+            return a.context.bufnr == b.context.bufnr
+        end,
+
+        create_list_item = function(config, name)
+            if name then
+                return nil
+            end
+
+            local bufnr = vim.api.nvim_get_current_buf()
+            if vim.bo[bufnr].buftype ~= "terminal" then
+                vim.notify("Not a terminal buffer", vim.log.levels.WARN)
+                return nil
+            end
+
+            keep_terminal_buffer(bufnr)
+
+            return {
+                value = vim.api.nvim_buf_get_name(bufnr),
+                context = { bufnr = bufnr },
+            }
+        end,
+
+        select = function(list_item, list, options)
+            options = options or {}
+
+            local bufnr = list_item and list_item.context and list_item.context.bufnr
+
+            if bufnr and vim.api.nvim_buf_is_valid(bufnr) then
+                keep_terminal_buffer(bufnr)
+
+                if options.vsplit then
+                    vim.cmd("vsplit")
+                elseif options.split then
+                    vim.cmd("split")
+                elseif options.tabedit then
+                    vim.cmd("tabedit")
+                end
+
+                vim.api.nvim_set_current_buf(bufnr)
+                return
+            end
+
+            if options.vsplit then
+                vim.cmd("vsplit")
+            elseif options.split then
+                vim.cmd("split")
+            elseif options.tabedit then
+                vim.cmd("tabedit")
+            end
+
+            vim.cmd("terminal")
+            local new_bufnr = vim.api.nvim_get_current_buf()
+            keep_terminal_buffer(new_bufnr)
+
+            if list_item then
+                list_item.value = vim.api.nvim_buf_get_name(new_bufnr)
+                list_item.context.bufnr = new_bufnr
+            end
+        end,
+    }
+})
+
+-- File marks
 vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end, opts)
 vim.keymap.set("n", "<leader>h", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, opts)
-vim.keymap.set("n", "<leader>j", function() harpoon:list():select(1) end, opts)
-vim.keymap.set("n", "<leader>k", function() harpoon:list():select(2) end, opts)
-vim.keymap.set("n", "<leader>l", function() harpoon:list():select(3) end, opts)
-vim.keymap.set("n", "<leader>;", function() harpoon:list():select(4) end, opts)
+vim.keymap.set("n", "<leader>u", function() harpoon:list():select(1) end, opts)
+vim.keymap.set("n", "<leader>i", function() harpoon:list():select(2) end, opts)
+vim.keymap.set("n", "<leader>o", function() harpoon:list():select(3) end, opts)
+vim.keymap.set("n", "<leader>p", function() harpoon:list():select(4) end, opts)
+
+-- Terminal marks
+local function select_or_create_term(idx)
+    local term_list = harpoon:list("term")
+    local item = term_list:get(idx)
+    local bufnr = item and item.context and item.context.bufnr
+
+    if bufnr and vim.api.nvim_buf_is_valid(bufnr) then
+        term_list:select(idx)
+        return
+    end
+
+    vim.cmd("terminal")
+    local new_bufnr = vim.api.nvim_get_current_buf()
+    keep_terminal_buffer(new_bufnr)
+
+    term_list:replace_at(idx, {
+        value = vim.api.nvim_buf_get_name(new_bufnr),
+        context = { bufnr = new_bufnr },
+    })
+end
+
+-- vim.keymap.set("n", "<leader>A", function() harpoon:list("term"):add() end, opts)
+vim.keymap.set("n", "<leader>H", function() harpoon.ui:toggle_quick_menu(harpoon:list("term")) end, opts)
+vim.keymap.set("n", "<leader>j", function() select_or_create_term(1) end, opts)
+vim.keymap.set("n", "<leader>k", function() select_or_create_term(2) end, opts)
+vim.keymap.set("n", "<leader>l", function() select_or_create_term(3) end, opts)
+vim.keymap.set("n", "<leader>;", function() select_or_create_term(4) end, opts)
+vim.keymap.set("n", "<leader>[", function() harpoon:list("term"):prev() end, opts)
+vim.keymap.set("n", "<leader>]", function() harpoon:list("term"):next() end, opts)
 
 local extensions = require("harpoon.extensions")
 
 harpoon:extend(extensions.builtins.highlight_current_file())
+
+-- Splits in both file and terminal menus
+harpoon:extend({
+    UI_CREATE = function(cx)
+        vim.keymap.set("n", "<C-v>", function()
+            harpoon.ui:select_menu_item({ vsplit = true })
+        end, { buffer = cx.bufnr })
+
+        vim.keymap.set("n", "<C-x>", function()
+            harpoon.ui:select_menu_item({ split = true })
+        end, { buffer = cx.bufnr })
+
+        vim.keymap.set("n", "<C-t>", function()
+            harpoon.ui:select_menu_item({ tabedit = true })
+        end, { buffer = cx.bufnr })
+    end,
+})
 
 --
 
@@ -426,16 +565,16 @@ vim.g.opencode_opts = {
 -- Required for `opts.events.reload`.
 vim.o.autoread = true
 
--- Recommended/example keymaps.
-vim.keymap.set({ "n", "x" }, "<leader>oa", function() require("opencode").ask("@this: ", { submit = true }) end, { desc = "Ask opencode…" })
-vim.keymap.set({ "n", "x" }, "<leader>ox", function() require("opencode").select() end,                          { desc = "Execute opencode action…" })
-vim.keymap.set({ "n", "t" }, "<leader>ot", function() require("opencode").toggle() end,                          { desc = "Toggle opencode" })
-
-vim.keymap.set({ "n", "x" }, "go",  function() return require("opencode").operator("@this ") end,        { desc = "Add range to opencode", expr = true })
-vim.keymap.set("n",          "goo", function() return require("opencode").operator("@this ") .. "_" end, { desc = "Add line to opencode", expr = true })
-
-vim.keymap.set("n", "<S-C-u>", function() require("opencode").command("session.half.page.up") end,   { desc = "Scroll opencode up" })
-vim.keymap.set("n", "<S-C-d>", function() require("opencode").command("session.half.page.down") end, { desc = "Scroll opencode down" })
+-- -- Recommended/example keymaps.
+-- vim.keymap.set({ "n", "x" }, "<leader>oa", function() require("opencode").ask("@this: ", { submit = true }) end, { desc = "Ask opencode…" })
+-- vim.keymap.set({ "n", "x" }, "<leader>ox", function() require("opencode").select() end,                          { desc = "Execute opencode action…" })
+-- vim.keymap.set({ "n", "t" }, "<leader>ot", function() require("opencode").toggle() end,                          { desc = "Toggle opencode" })
+--
+-- vim.keymap.set({ "n", "x" }, "go",  function() return require("opencode").operator("@this ") end,        { desc = "Add range to opencode", expr = true })
+-- vim.keymap.set("n",          "goo", function() return require("opencode").operator("@this ") .. "_" end, { desc = "Add line to opencode", expr = true })
+--
+-- vim.keymap.set("n", "<S-C-u>", function() require("opencode").command("session.half.page.up") end,   { desc = "Scroll opencode up" })
+-- vim.keymap.set("n", "<S-C-d>", function() require("opencode").command("session.half.page.down") end, { desc = "Scroll opencode down" })
 
 -- You may want these if you stick with the opinionated "<C-a>" and "<C-x>" above — otherwise consider "<leader>o…".
 -- vim.keymap.set("n", "+", "<C-a>", { desc = "Increment under cursor", noremap = true })
@@ -451,3 +590,11 @@ vim.keymap.set("n", "<leader>R", require("compile-mode").compile, opts)
 vim.keymap.set("n", "<leader>r", require("compile-mode").recompile, opts)
 
 vim.keymap.set("t", "<C-[>", [[<C-\><C-n>]], { desc = "Exit terminal mode" })
+
+vim.api.nvim_create_autocmd("TermOpen", {
+    callback = function()
+        local map_opts = { buffer = true, silent = true }
+        vim.keymap.set({ "n", "t" }, "<ScrollWheelLeft>", "<Ignore>", map_opts)
+        vim.keymap.set({ "n", "t" }, "<ScrollWheelRight>", "<Ignore>", map_opts)
+    end,
+})
