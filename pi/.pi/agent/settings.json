@@ -5,7 +5,7 @@
   "defaultThinkingLevel": "high",
   "editorPaddingX": 0,
   "hideThinkingBlock": true,
-  "quietStartup": false,
+  "quietStartup": true,
   "enabledModels": [
     "opencode-go/kimi-k2.6",
     "opencode/gemini-3.1-pro",
