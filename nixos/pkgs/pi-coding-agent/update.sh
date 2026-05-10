@@ -13,7 +13,7 @@ if ! command -v npm &> /dev/null; then
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PACKAGE_NAME="@mariozechner/pi-coding-agent"
+PACKAGE_NAME="@earendil-works/pi-coding-agent"
 
 echo "==> Fetching latest version from npm..."
 LATEST_VERSION=$(npm view "$PACKAGE_NAME" version)
@@ -57,7 +57,7 @@ cat > "$SCRIPT_DIR/flake.nix" <<EOF
           version = "${LATEST_VERSION}";
 
           src = fetchurl {
-            url = "https://registry.npmjs.org/@mariozechner/pi-coding-agent/-/pi-coding-agent-\${version}.tgz";
+            url = "https://registry.npmjs.org/@earendil-works/pi-coding-agent/-/pi-coding-agent-\${version}.tgz";
             sha256 = "${SOURCE_HASH}";
           };
 
@@ -71,7 +71,7 @@ cat > "$SCRIPT_DIR/flake.nix" <<EOF
 
           meta = {
             description = "Coding agent CLI with read, bash, edit, write tools and session management";
-            homepage = "https://github.com/badlogic/pi-mono";
+            homepage = "https://github.com/earendil-works/pi-mono";
             license = lib.licenses.mit;
             mainProgram = "pi";
           };

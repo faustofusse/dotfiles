@@ -13,23 +13,23 @@
           platform = {
             aarch64-darwin = {
               name = "darwin-arm64";
-              hash = "sha256:1ypq2zbydia12344xbrwb51h4g8sy0ib2s119gxz04ly9nz87snd";
+              hash = "sha256-/iVrbdhkPJQEtpBI/l3WUHZbjDoEqewxANwo16ySuK4=";
             };
             x86_64-darwin = {
               name = "darwin-x64";
-              hash = "sha256:1mz34cr6pama9cxykfywf94iam2wyd6ivbzff5bjb32fhvrzapwd";
+              hash = "sha256-vkIQTuTxNycaxSnrRWYohSsaKGvOxa6n++1FEb0rHFo=";
             };
             x86_64-linux = {
               name = "linux-x64";
-              hash = "sha256:0rc1xs204jhaw8wzsy5icxs25hyw61qx7fmr46ikcxwwk0hcsik9";
+              hash = "sha256-GdgMQDlpMOlq/j9jAAvCjZCUdg2qFsex1+dtyZnP68s=";
             };
             aarch64-linux = {
               name = "linux-arm64";
-              hash = "sha256:1hlp8lfyzfs5l879qnvh4h4mdrwvs2wz6fgd6c9d92rljps3rfxq";
+              hash = "sha256-6zXqSnx3eIK8+dkR7pyPJeakInu97akQqiRx3qzzKRo=";
             };
           }.${stdenv.hostPlatform.system} or (throw "Unsupported system: ${stdenv.hostPlatform.system}");
 
-          version = "1.14.22";
+          version = "1.14.46";
 
           src = fetchurl {
             url = if isDarwin

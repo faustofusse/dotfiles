@@ -8,24 +8,24 @@
       pi-coding-agent = { lib, buildNpmPackage, fetchurl }:
         buildNpmPackage rec {
           pname = "pi-coding-agent";
-          version = "0.73.0";
+          version = "0.74.0";
 
           src = fetchurl {
-            url = "https://registry.npmjs.org/@mariozechner/pi-coding-agent/-/pi-coding-agent-${version}.tgz";
-            sha256 = "1fvl2axnkblwxc78xwss9ixbwh3i9spxd5nj86749div3x9d257n";
+            url = "https://registry.npmjs.org/@earendil-works/pi-coding-agent/-/pi-coding-agent-${version}.tgz";
+            sha256 = "0i53siiqci4rvhk4kviq79f7mpg0npn6jn0i1ripvgcmc6wp6jlp";
           };
 
           postPatch = ''
             cp ${./package-lock.json} package-lock.json
           '';
 
-          npmDepsHash = "sha256-lWsEDOXBeEolZUGcfJs2FeIY4HsRsjo2thJSRQPVf/Q=";
+          npmDepsHash = "sha256-GiTmVzlHZoZ3x3FOhByDPfesepmfkOc7l9DzwURKBps=";
 
           dontNpmBuild = true;
 
           meta = {
             description = "Coding agent CLI with read, bash, edit, write tools and session management";
-            homepage = "https://github.com/badlogic/pi-mono";
+            homepage = "https://github.com/earendil-works/pi-mono";
             license = lib.licenses.mit;
             mainProgram = "pi";
           };
