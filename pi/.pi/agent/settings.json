@@ -1,8 +1,8 @@
 {
-  "lastChangelogVersion": "0.73.0",
+  "lastChangelogVersion": "0.74.0",
   "defaultProvider": "opencode-go",
-  "defaultModel": "kimi-k2.6",
-  "defaultThinkingLevel": "high",
+  "defaultModel": "deepseek-v4-flash",
+  "defaultThinkingLevel": "low",
   "editorPaddingX": 0,
   "hideThinkingBlock": true,
   "quietStartup": true,
