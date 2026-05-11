@@ -171,7 +171,7 @@ function M.info()
       table.insert(msg, '')
       table.insert(msg, 'URLs that will be called:')
       if epic_key then
-        table.insert(msg, ('  Search: %s/rest/api/3/search/jql?jql="Epic Link"=%s'):format(base_url, epic_key))
+        table.insert(msg, ('  Search: %s/rest/api/3/search/jql?jql=parent=%s'):format(base_url, epic_key))
       elseif project_key then
         table.insert(msg, ('  Project check: %s/rest/api/3/project/%s'):format(base_url, project_key))
         table.insert(msg, ('  Search:        %s/rest/api/3/search/jql?jql=project=%s'):format(base_url, project_key))

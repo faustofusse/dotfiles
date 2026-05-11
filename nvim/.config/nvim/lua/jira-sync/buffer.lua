@@ -56,6 +56,19 @@ function M.set_buffer_lines(lines)
   api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
 end
 
+--- Map Jira status names to markdown checkbox bracket content.
+--- @param status string raw Jira status name
+--- @return string bracket content (single char or status)
+function M.format_status(status)
+  local map = {
+    ['Nuevo'] = ' ',
+    ['Finalizado'] = 'x',
+    ['En curso'] = '~',
+    ['En revision'] = 'r',
+  }
+  return map[status] or status
+end
+
 --- Merge fetched tickets with existing buffer lines.
 --- Preserves notes (text after summary) for existing tickets.
 --- Appends new tickets at the end.
@@ -88,7 +101,8 @@ function M.merge_tickets(existing_lines, frontmatter_end, tickets)
     if key and tickets_by_key[key] then
       -- This ticket exists in Jira: update status, preserve rest (summary + notes)
       used_keys[key] = true
-      table.insert(merged, ('- [%s] %s: %s'):format(tickets_by_key[key].status, key, rest))
+      local bracket = M.format_status(tickets_by_key[key].status)
+      table.insert(merged, ('- [%s] %s: %s'):format(bracket, key, rest))
     else
       -- Non-ticket line or ticket no longer in Jira: preserve as-is
       table.insert(merged, line)
@@ -98,7 +112,8 @@ function M.merge_tickets(existing_lines, frontmatter_end, tickets)
   -- Append any new tickets that weren't in the original file
   for _, ticket in ipairs(tickets) do
     if not used_keys[ticket.key] then
-      table.insert(merged, ('- [%s] %s: %s'):format(ticket.status, ticket.key, ticket.summary))
+      local bracket = M.format_status(ticket.status)
+      table.insert(merged, ('- [%s] %s: %s'):format(bracket, ticket.key, ticket.summary))
     end
   end
 

@@ -30,7 +30,6 @@ function M.fetch_tickets(base_url, email, token, project_key, epic_key, on_done)
   local function fetch_page()
     local jql
     if epic_key then
-      -- Query child issues of a specific epic using parent field (Jira Cloud)
       jql = 'parent=' .. vim.uri_encode(epic_key)
     else
       jql = 'project=' .. vim.uri_encode(project_key)

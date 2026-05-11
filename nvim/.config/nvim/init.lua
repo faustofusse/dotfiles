@@ -210,24 +210,10 @@ vim.pack.add({ "https://github.com/j-hui/fidget.nvim" }, { confirm = false })
 
 require("fidget").setup {
     notification = {
-        override_vim_notify = true,
+        override_vim_notify = 1,
         window = { winblend = 0 },
     }
 }
-
--- -- Keep a reference to fidget's notify wrapper so we can also echo to :messages
--- local fidget_notify = vim.notify
--- vim.notify = function(msg, level, opts)
---     fidget_notify(msg, level, opts)
---     -- Also echo to messages (which fidget normally suppresses)
---     if level == vim.log.levels.ERROR then
---         vim.api.nvim_echo({ { tostring(msg), "ErrorMsg" } }, true, {})
---     elseif level == vim.log.levels.WARN then
---         vim.api.nvim_echo({ { tostring(msg), "WarningMsg" } }, true, {})
---     else
---         vim.api.nvim_echo({ { tostring(msg) } }, true, {})
---     end
--- end
 
 --
 
