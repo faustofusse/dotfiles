@@ -389,7 +389,7 @@ binds {
     Mod+Space hotkey-overlay-title="open the system menu: tofi" { spawn "~/.local/bin/menu.nu"; }
     Mod+T hotkey-overlay-title="open a terminal: ghostty" { spawn "ghostty"; }
     Mod+D hotkey-overlay-title="run a desktop application: tofi" { spawn "tofi-drun" "--drun-launch=true"; }
-    Mod+A hotkey-overlay-title="open the ai agent: opencode" { spawn "ghostty" "--initial-command=opencode" "--title=opencode"; }
+    Mod+A hotkey-overlay-title="open the ai agent: pi" { spawn "ghostty" "--initial-command=pi" "--title=pi"; }
     Mod+N hotkey-overlay-title="open the notes: tldraw" { spawn "brave" "--app=https://tldraw.com"; }
 
     // Example volume keys mappings for PipeWire & WirePlumber.
