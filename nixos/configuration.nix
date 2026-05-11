@@ -198,9 +198,9 @@
      imv
      imagemagick
      jq
-     nushell
-     neovim
-     mpv
+      nushell
+      inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.neovim-nightly
+      mpv
      openssl
      libqalculate
      lima
