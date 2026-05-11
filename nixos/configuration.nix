@@ -1,6 +1,32 @@
 { config, pkgs, lib, ... } @ inputs :
 
+let
+  opencode-latest = pkgs.buildFHSEnv {
+    name = "opencode";
+    runScript = "${pkgs.stdenv.mkDerivation {
+      pname = "opencode-unwrapped";
+      version = "1.14.19";
 
+      src = pkgs.fetchurl {
+        url = "https://github.com/anomalyco/opencode/releases/download/v1.14.19/opencode-linux-x64.tar.gz";
+        sha256 = "sha256-jLEXI84OyC4rb/miNWsSwvTEqVoIe6CjAEsZ8WeVFEA=";
+      };
+
+      sourceRoot = ".";
+
+      installPhase = ''
+        mkdir -p $out/bin
+        cp opencode $out/bin/opencode
+        chmod +x $out/bin/opencode
+      '';
+    }}/bin/opencode";
+
+    targetPkgs = pkgs: with pkgs; [
+      glibc
+      zlib
+    ];
+  };
+in
 {
   imports = [
     inputs.xremap-flake.nixosModules.default
@@ -150,10 +176,9 @@
   environment.systemPackages = with pkgs; [
      # desktop
      brave
-     chromium
      nautilus
      pcmanfm
-     stremio-linux-shell
+      stremio-linux-shell
      # wayland
      eww
      dunst
@@ -173,8 +198,8 @@
      gnumake
      go
      gopls
-     inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.opencode
-     inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.pi-coding-agent
+     neovim
+      opencode-latest
      sqlite
      zed-editor
      # development
@@ -198,9 +223,8 @@
      imv
      imagemagick
      jq
-      nushell
-      inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.neovim-nightly
-      mpv
+     nushell
+     mpv
      openssl
      libqalculate
      lima
