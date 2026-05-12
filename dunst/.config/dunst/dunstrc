@@ -2,6 +2,7 @@
     width = 300
     height = (0, 300)
     offset = (0, 0)
+    follow = keyboard
     notification_limit = 5
     frame_width = 2
     frame_color = "#ffffff"
