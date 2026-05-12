@@ -4,6 +4,14 @@ local parser = require('jira-sync.parser')
 local api_client = require('jira-sync.api')
 local buffer = require('jira-sync.buffer')
 
+local DEFAULT_STATUS_ORDER = {
+  'Nuevo',
+  'Por Hacer',
+  'En curso',
+  'En revision',
+  'Finalizado',
+}
+
 --- Extract and validate config from the current buffer.
 --- @return table|nil config { project_key, epic_key, base_url, email, token, lines, fm_end, project_key_source }
 local function get_buffer_config()
@@ -51,6 +59,26 @@ local function get_buffer_config()
     end
   end
 
+  local status_order = nil
+  if frontmatter.jira_status_order then
+    local raw = frontmatter.jira_status_order
+    raw = raw:match("^'(.*)'$") or raw
+    raw = raw:match('^"(.*)"$') or raw
+    local ok, decoded = pcall(vim.json.decode, raw)
+    if ok and vim.islist(decoded) then
+      status_order = decoded
+    else
+      -- Comma-separated fallback
+      status_order = {}
+      for part in raw:gmatch('[^,]+') do
+        part = part:match('^%s*(.-)%s*$')
+        if part ~= '' then
+          table.insert(status_order, part)
+        end
+      end
+    end
+  end
+
   if not base_url or base_url == '' then
     buffer.notify('jira_base_url missing in frontmatter', vim.log.levels.ERROR)
     return nil
@@ -74,6 +102,7 @@ local function get_buffer_config()
     lines = lines,
     fm_end = fm_end,
     status_map = status_map,
+    status_order = status_order,
   }
 end
 
@@ -157,7 +186,11 @@ function M.sync()
     end
 
     for _, update in ipairs(updates) do
-      api_client.update_status(cfg.base_url, cfg.email, cfg.token, update.key, update.status, function(ok, err_msg)
+      local ticket = ticket_map[update.key]
+      local current_status = ticket and ticket.status or 'Unknown'
+      local order = cfg.status_order or DEFAULT_STATUS_ORDER
+
+      local function on_transition_done(ok, err_msg)
         if ok then
           if ticket_map[update.key] then
             ticket_map[update.key].status = update.status
@@ -166,7 +199,29 @@ function M.sync()
           table.insert(failures, ('%s: %s'):format(update.key, err_msg))
         end
         check_done()
-      end)
+      end
+
+      api_client.transition_chain(
+        cfg.base_url, cfg.email, cfg.token,
+        update.key, update.status, current_status, order,
+        function(ok, err_msg)
+          if ok then
+            on_transition_done(true, nil)
+          elseif err_msg and err_msg:match('No transition to') then
+            local samples = {}
+            for _, t in ipairs(tickets) do
+              table.insert(samples, { key = t.key, status = t.status })
+            end
+            api_client.auto_transition(
+              cfg.base_url, cfg.email, cfg.token,
+              update.key, update.status, current_status, samples,
+              on_transition_done
+            )
+          else
+            on_transition_done(false, err_msg)
+          end
+        end
+      )
     end
   end)
 end
