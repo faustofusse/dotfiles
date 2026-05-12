@@ -154,96 +154,288 @@ function M.sync()
 
     buffer.progress_report(('Pushing %d status updates...'):format(#updates), 40)
 
-    local completed = 0
     local failures = {}
-
-    local function check_done()
-      completed = completed + 1
-      if completed == #updates then
-        finalize(tickets, failures)
-      end
-    end
-
     local samples = {}
     for _, t in ipairs(tickets) do
       table.insert(samples, { key = t.key, status = t.status })
     end
 
-    local function process_updates(graph)
-      for _, update in ipairs(updates) do
-        local ticket = ticket_map[update.key]
-        local current_status = ticket and ticket.status or 'Unknown'
-
-        local function on_transition_done(ok, err_msg, actual_status)
-          if ok then
-            if ticket_map[update.key] then
-              ticket_map[update.key].status = update.status
-            end
-          else
-            if actual_status and ticket_map[update.key] then
-              ticket_map[update.key].status = actual_status
-            end
-            table.insert(failures, ('%s: %s'):format(update.key, err_msg))
-          end
-          check_done()
-        end
-
-        local function fallback_chain(err_msg)
-          api_client.transition_chain(
-            cfg.base_url, cfg.email, cfg.token,
-            update.key, update.status, current_status, DEFAULT_STATUS_ORDER,
-            function(ok2, err2, actual2)
-              if ok2 then
-                on_transition_done(true, nil)
-              else
-                on_transition_done(false, err2 or err_msg, actual2)
-              end
-            end
-          )
-        end
-
-        if graph and graph[current_status] and graph[current_status][update.status] then
-          -- Direct transition available in graph
-          api_client.transition_issue(
-            cfg.base_url, cfg.email, cfg.token,
-            update.key, graph[current_status][update.status],
-            function(ok, err)
-              if ok then
-                on_transition_done(true, nil)
-              else
-                on_transition_done(false, err)
-              end
-            end
-          )
-        elseif graph then
-          local path = api_client.find_path_bfs(graph, current_status, update.status)
-          if path and #path > 0 then
-            api_client.execute_graph_path(
-              cfg.base_url, cfg.email, cfg.token,
-              update.key, graph, path, current_status,
-              function(ok, err_msg, actual_status)
-                if ok then
-                  on_transition_done(true, nil)
-                else
-                  fallback_chain(err_msg)
-                end
-              end
-            )
-          else
-            fallback_chain(('No path from "%s" to "%s" in global graph'):format(current_status, update.status))
-          end
-        else
-          fallback_chain('No transition graph available')
-        end
-      end
+    -- Helper: convert plain text to Atlassian Document Format
+    local function to_adf(text)
+      return {
+        type = 'doc',
+        version = 1,
+        content = {
+          {
+            type = 'paragraph',
+            content = {
+              { type = 'text', text = text or '' },
+            },
+          },
+        },
+      }
     end
 
-    api_client.build_transition_graph(cfg.base_url, cfg.email, cfg.token, samples, function(graph, graph_err)
-      if graph_err then
-        process_updates(nil)
-      else
-        process_updates(graph)
+    -- Helper: transform user-provided values based on field schemas
+    local function transform_fields(values, schemas, my_account_id)
+      local result = {}
+      for key, val in pairs(values) do
+        local schema = schemas and schemas[key]
+        if schema then
+          if schema.type == 'user' or key == 'assignee' then
+            -- Assignee expects { accountId = '...' }
+            if val == my_account_id then
+              result[key] = { accountId = my_account_id }
+            elseif val:match('@') then
+              -- User typed an email; try to use it as-is (Jira may resolve it)
+              result[key] = { name = val }
+            else
+              result[key] = { accountId = val }
+            end
+          elseif key == 'summary' then
+            -- Summary is always plain string
+            result[key] = val
+          elseif key == 'description' or key == 'comment' then
+            -- Standard rich-text fields always need ADF in API v3
+            result[key] = to_adf(val)
+          elseif schema.type == 'doc' or schema.type == 'any' then
+            result[key] = to_adf(val)
+          elseif schema.type == 'string' and schema.custom then
+            -- Custom string field: textarea needs ADF, textfield is plain
+            local custom_type = schema.custom or ''
+            if custom_type:match('textfield') and not custom_type:match('textarea') then
+              result[key] = val
+            else
+              -- textarea, wikitext, or unknown custom string → ADF
+              result[key] = to_adf(val)
+            end
+          elseif schema.type == 'string' then
+            -- System string field without custom info: description-like fields need ADF
+            -- Only summary is known to be plain; everything else string → ADF on retry
+            result[key] = to_adf(val)
+          else
+            result[key] = val
+          end
+        else
+          -- No schema info (inferred from error): try ADF for text, plain for others
+          if type(val) == 'string' and val:match('^%d+$') then
+            -- Looks like an ID
+            result[key] = val
+          else
+            result[key] = to_adf(val)
+          end
+        end
       end
+      return result
+    end
+
+    api_client.get_myself(cfg.base_url, cfg.email, cfg.token, function(myself, myself_err)
+      local my_account_id = myself and myself.accountId
+
+      local function process_updates(graph)
+        local update_index = 1
+
+        local function process_next()
+          if update_index > #updates then
+            finalize(tickets, failures)
+            return
+          end
+
+          local update = updates[update_index]
+          local ticket = ticket_map[update.key]
+          local current_status = ticket and ticket.status or 'Unknown'
+
+          local function on_done(ok, err_msg, actual_status)
+            if ok then
+              if ticket_map[update.key] then
+                ticket_map[update.key].status = update.status
+              end
+            else
+              if actual_status and ticket_map[update.key] then
+                ticket_map[update.key].status = actual_status
+              end
+              table.insert(failures, ('%s: %s'):format(update.key, err_msg))
+            end
+            update_index = update_index + 1
+            process_next()
+          end
+
+          -- Query specific issue transitions first
+          api_client.get_transitions(cfg.base_url, cfg.email, cfg.token, update.key, function(transitions, err)
+            if err then
+              on_done(false, err)
+              return
+            end
+
+            -- Try direct transition
+            local direct = nil
+            for _, t in ipairs(transitions) do
+              if t.to and t.to.name == update.status then
+                direct = t
+                break
+              end
+            end
+
+            if direct then
+              local meta_schemas = {}
+
+              local function try_direct(raw_values)
+                local fields = raw_values and transform_fields(raw_values, meta_schemas, my_account_id) or nil
+                api_client.transition_issue(cfg.base_url, cfg.email, cfg.token, update.key, direct.id, function(ok, err2, err_data)
+                  if ok then
+                    on_done(true)
+                    return
+                  end
+
+                  if raw_values then
+                    -- Already retried with user-provided fields; fail permanently
+                    on_done(false, err2)
+                    return
+                  end
+
+                  -- First failure — try to discover required fields and prompt
+                  local function prompt_and_retry(transition_fields)
+                    if not transition_fields or #transition_fields == 0 then
+                      on_done(false, err2)
+                      return
+                    end
+                    -- Build schema lookup for the prompt result
+                    for _, f in ipairs(transition_fields) do
+                      if f.schema and next(f.schema) then
+                        meta_schemas[f.key] = f.schema
+                      end
+                    end
+                    local prompt_transition = vim.deepcopy(direct)
+                    prompt_transition.required_fields = transition_fields
+
+                    -- Pre-fill user/assignee fields with current user's accountId
+                    local prefills = {}
+                    if my_account_id then
+                      for _, f in ipairs(transition_fields) do
+                        local schema = f.schema or {}
+                        if schema.type == 'user' or f.key == 'assignee' then
+                          prefills[f.key] = my_account_id
+                        end
+                      end
+                    end
+
+                    buffer.prompt_transition_fields(update.key, update.status, prompt_transition, function(values)
+                      if values then
+                        try_direct(values)
+                      else
+                        on_done(false, 'User cancelled')
+                      end
+                    end, prefills)
+                  end
+
+                  -- Always query transition meta for proper schemas,
+                  -- then merge with inferred field names from error response.
+                  api_client.get_transition_meta(cfg.base_url, cfg.email, cfg.token, update.key, direct.id, function(meta_fields, meta_err)
+                    local merged_fields = {}
+
+                    if meta_fields and #meta_fields > 0 then
+                      for _, mf in ipairs(meta_fields) do
+                        table.insert(merged_fields, mf)
+                      end
+                    end
+
+                    -- Merge inferred field names (from error) for any fields meta missed
+                    if err_data and err_data.errors and next(err_data.errors) then
+                      local meta_keys = {}
+                      for _, mf in ipairs(merged_fields) do
+                        meta_keys[mf.key] = true
+                      end
+                      for field_key, msg in pairs(err_data.errors) do
+                        if not meta_keys[field_key] then
+                          table.insert(merged_fields, {
+                            key = field_key,
+                            name = msg,
+                            schema = {},
+                          })
+                        end
+                      end
+                    end
+
+                    if #merged_fields == 0 then
+                      on_done(false, err2)
+                      return
+                    end
+
+                    prompt_and_retry(merged_fields)
+                  end)
+                end, fields)
+              end
+
+              if #direct.required_fields > 0 then
+                local prefills = {}
+                if my_account_id then
+                  for _, f in ipairs(direct.required_fields) do
+                    local schema = f.schema or {}
+                    if schema.type == 'user' or f.key == 'assignee' then
+                      prefills[f.key] = my_account_id
+                    end
+                  end
+                end
+                buffer.prompt_transition_fields(update.key, update.status, direct, function(values)
+                  if values then
+                    try_direct(values)
+                  else
+                    on_done(false, 'User cancelled')
+                  end
+                end, prefills)
+                return
+              end
+
+              try_direct(nil)
+              return
+            end
+
+            -- Try graph path
+            if graph then
+              local path = api_client.find_path_bfs(graph, current_status, update.status)
+              if path and #path > 0 then
+                api_client.execute_graph_path(
+                  cfg.base_url, cfg.email, cfg.token,
+                  update.key, graph, path, current_status,
+                  function(ok, err_msg, actual)
+                    if ok then
+                      on_done(true)
+                    else
+                      api_client.transition_chain(
+                        cfg.base_url, cfg.email, cfg.token,
+                        update.key, update.status, actual or current_status, DEFAULT_STATUS_ORDER,
+                        function(ok2, err2, actual2)
+                          if ok2 then on_done(true) else on_done(false, err2 or err_msg, actual2) end
+                        end
+                      )
+                    end
+                  end
+                )
+                return
+              end
+            end
+
+            -- Fallback to chain
+            api_client.transition_chain(
+              cfg.base_url, cfg.email, cfg.token,
+              update.key, update.status, current_status, DEFAULT_STATUS_ORDER,
+              function(ok2, err2, actual2)
+                if ok2 then on_done(true) else on_done(false, err2, actual2) end
+              end
+            )
+          end)
+        end
+
+        process_next()
+      end
+
+      api_client.build_transition_graph(cfg.base_url, cfg.email, cfg.token, samples, function(graph, graph_err)
+        if graph_err then
+          process_updates(nil)
+        else
+          process_updates(graph)
+        end
+      end)
     end)
   end)
 end

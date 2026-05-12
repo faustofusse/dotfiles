@@ -210,6 +210,94 @@ function M.get_transitions(base_url, email, token, issue_key, on_done)
   end)
 end
 
+--- Get detailed field metadata for a specific transition.
+--- @param base_url string
+--- @param email string
+--- @param token string
+--- @param issue_key string
+--- @param transition_id string
+--- @param on_done fun(fields: table[]|nil, err: string|nil)
+function M.get_transition_meta(base_url, email, token, issue_key, transition_id, on_done)
+  local auth = vim.base64.encode(email .. ':' .. token)
+  local headers = {
+    Authorization = 'Basic ' .. auth,
+    ['Content-Type'] = 'application/json',
+    Accept = 'application/json',
+  }
+
+  local url = ('%s/rest/api/3/issue/%s/transitions?transitionId=%s&expand=transitions.fields'):format(
+    base_url, vim.uri_encode(issue_key), vim.uri_encode(transition_id)
+  )
+
+  vim.net.request(url, { headers = headers }, function(err, res)
+    if err then
+      on_done(nil, err)
+      return
+    end
+
+    local ok, data = pcall(vim.json.decode, res.body)
+    if not ok then
+      on_done(nil, 'JSON parse error: ' .. tostring(data))
+      return
+    end
+
+    if data.errorMessages then
+      on_done(nil, 'Jira error: ' .. table.concat(data.errorMessages, '; '))
+      return
+    end
+
+    local fields = {}
+    local transition = (data.transitions or {})[1]
+    if transition and transition.fields then
+      for field_key, meta in pairs(transition.fields) do
+        table.insert(fields, {
+          key = field_key,
+          name = meta.name or field_key,
+          required = meta.required or false,
+          schema = meta.schema,
+        })
+      end
+    end
+    on_done(fields, nil)
+  end)
+end
+
+--- Get current Jira user info.
+--- @param base_url string
+--- @param email string
+--- @param token string
+--- @param on_done fun(user: table|nil, err: string|nil)
+function M.get_myself(base_url, email, token, on_done)
+  local auth = vim.base64.encode(email .. ':' .. token)
+  local headers = {
+    Authorization = 'Basic ' .. auth,
+    ['Content-Type'] = 'application/json',
+    Accept = 'application/json',
+  }
+
+  local url = base_url .. '/rest/api/3/myself'
+
+  vim.net.request(url, { headers = headers }, function(err, res)
+    if err then
+      on_done(nil, err)
+      return
+    end
+
+    local ok, data = pcall(vim.json.decode, res.body)
+    if not ok then
+      on_done(nil, 'JSON parse error: ' .. tostring(data))
+      return
+    end
+
+    if data.errorMessages then
+      on_done(nil, 'Jira error: ' .. table.concat(data.errorMessages, '; '))
+      return
+    end
+
+    on_done(data, nil)
+  end)
+end
+
 --- Execute a transition on an issue.
 --- Uses vim.system directly (not vim.net.request) so we can read the response body on 400/500 errors.
 --- @param base_url string
@@ -217,11 +305,16 @@ end
 --- @param token string
 --- @param issue_key string
 --- @param transition_id string
---- @param on_done fun(ok: boolean, err: string|nil)
-function M.transition_issue(base_url, email, token, issue_key, transition_id, on_done)
+--- @param on_done fun(ok: boolean, err: string|nil, err_data: table|nil)
+--- @param fields table|nil { [field_key] = value }
+function M.transition_issue(base_url, email, token, issue_key, transition_id, on_done, fields)
   local auth = vim.base64.encode(email .. ':' .. token)
   local url = ('%s/rest/api/3/issue/%s/transitions'):format(base_url, vim.uri_encode(issue_key))
-  local body = vim.json.encode({ transition = { id = transition_id } })
+  local payload = { transition = { id = transition_id } }
+  if fields then
+    payload.fields = fields
+  end
+  local body = vim.json.encode(payload)
 
   local args = {
     'curl', '-s', '-S', '-w', '\nHTTP_CODE:%{http_code}\n',
@@ -234,7 +327,7 @@ function M.transition_issue(base_url, email, token, issue_key, transition_id, on
 
   vim.system(args, {}, function(res)
     if res.code ~= 0 then
-      on_done(false, res.stderr ~= '' and res.stderr or ('curl exit %d'):format(res.code))
+      on_done(false, res.stderr ~= '' and res.stderr or ('curl exit %d'):format(res.code), nil)
       return
     end
 
@@ -243,7 +336,7 @@ function M.transition_issue(base_url, email, token, issue_key, transition_id, on
     local body_text = stdout:gsub('\nHTTP_CODE:%d%d%d\n$', '')
 
     if status_code and status_code:match('^2') then
-      on_done(true, nil)
+      on_done(true, nil, nil)
       return
     end
 
@@ -251,7 +344,7 @@ function M.transition_issue(base_url, email, token, issue_key, transition_id, on
     local ok, data = pcall(vim.json.decode, body_text)
     if ok then
       if data.errorMessages and #data.errorMessages > 0 then
-        on_done(false, table.concat(data.errorMessages, '; '))
+        on_done(false, table.concat(data.errorMessages, '; '), data)
         return
       end
       if data.errors then
@@ -260,13 +353,13 @@ function M.transition_issue(base_url, email, token, issue_key, transition_id, on
           table.insert(msgs, v)
         end
         if #msgs > 0 then
-          on_done(false, table.concat(msgs, '; '))
+          on_done(false, table.concat(msgs, '; '), data)
           return
         end
       end
     end
 
-    on_done(false, ('HTTP %s'):format(status_code or 'unknown'))
+    on_done(false, ('HTTP %s'):format(status_code or 'unknown'), nil)
   end)
 end
 
@@ -334,7 +427,10 @@ end
 ---   On failure at start: (false, err, current_status)
 --- @param depth integer|nil internal recursion depth
 --- @param visited table<string, boolean>|nil statuses already visited in this chain
-function M.transition_chain(base_url, email, token, issue_key, desired_status, current_status, status_order, on_done, depth, visited)
+--- @param resolve_fields fun(transition: table, on_resolved: fun(values: table|nil))|nil
+---   Called when a transition requires fields. transition has id, to, required_fields.
+---   on_resolved should be called with { [field_key] = value } or nil to cancel.
+function M.transition_chain(base_url, email, token, issue_key, desired_status, current_status, status_order, on_done, depth, visited, resolve_fields)
   depth = (depth or 0) + 1
   if depth > 10 then
     on_done(false, ('Transition chain too deep for %s'):format(issue_key), current_status)
@@ -362,7 +458,19 @@ function M.transition_chain(base_url, email, token, issue_key, desired_status, c
     -- Try direct transition first
     for _, t in ipairs(transitions) do
       if t.to and t.to.name == desired_status then
-        if #t.required_fields > 0 then
+        if #t.required_fields > 0 and resolve_fields then
+          resolve_fields(t, function(values)
+            if values then
+              M.transition_issue(base_url, email, token, issue_key, t.id, function(ok, err)
+                if ok then on_done(true, nil, desired_status)
+                else on_done(false, err, current_status) end
+              end, values)
+            else
+              on_done(false, 'User cancelled', current_status)
+            end
+          end)
+          return
+        elseif #t.required_fields > 0 then
           local names = {}
           for _, f in ipairs(t.required_fields) do
             table.insert(names, f.name)
@@ -439,7 +547,25 @@ function M.transition_chain(base_url, email, token, issue_key, desired_status, c
       return
     end
 
-    if #best.required_fields > 0 then
+    if #best.required_fields > 0 and resolve_fields then
+      resolve_fields(best, function(values)
+        if values then
+          M.transition_issue(base_url, email, token, issue_key, best.id, function(ok2, err2)
+            if not ok2 then
+              on_done(false, err2, current_status)
+              return
+            end
+            M.transition_chain(base_url, email, token, issue_key, desired_status, best.to.name, status_order, function(ok3, err3, actual)
+              if ok3 then on_done(true, nil, actual)
+              else on_done(false, err3, actual) end
+            end, depth, visited, resolve_fields)
+          end, values)
+        else
+          on_done(false, 'User cancelled', current_status)
+        end
+      end)
+      return
+    elseif #best.required_fields > 0 then
       local names = {}
       for _, f in ipairs(best.required_fields) do
         table.insert(names, f.name)
@@ -462,7 +588,7 @@ function M.transition_chain(base_url, email, token, issue_key, desired_status, c
         else
           on_done(false, err3, actual)
         end
-      end, depth, visited)
+      end, depth, visited, resolve_fields)
     end)
   end)
 end
