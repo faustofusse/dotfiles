@@ -70,7 +70,7 @@ function M.format_status(status)
     ['Por Hacer'] = 'p',
     ['Finalizado'] = 'x',
     ['En curso'] = '~',
-    ['En revision'] = 'r',
+    ['En Revision'] = 'r',
     ['Cancelado'] = 'c',
   }
   return map[status] or status
@@ -154,7 +154,7 @@ function M.build_reverse_status_map(custom_map)
     ['Por Hacer'] = 'p',
     ['Finalizado'] = 'x',
     ['En curso'] = '~',
-    ['En revision'] = 'r',
+    ['En Revision'] = 'r',
     ['Cancelado'] = 'c',
   }
   for status, bracket in pairs(forward) do

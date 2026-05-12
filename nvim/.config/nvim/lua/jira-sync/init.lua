@@ -8,7 +8,7 @@ local DEFAULT_STATUS_ORDER = {
   'Nuevo',
   'Por Hacer',
   'En curso',
-  'En revision',
+  'En Revision',
   'Finalizado',
 }
 
@@ -59,26 +59,6 @@ local function get_buffer_config()
     end
   end
 
-  local status_order = nil
-  if frontmatter.jira_status_order then
-    local raw = frontmatter.jira_status_order
-    raw = raw:match("^'(.*)'$") or raw
-    raw = raw:match('^"(.*)"$') or raw
-    local ok, decoded = pcall(vim.json.decode, raw)
-    if ok and vim.islist(decoded) then
-      status_order = decoded
-    else
-      -- Comma-separated fallback
-      status_order = {}
-      for part in raw:gmatch('[^,]+') do
-        part = part:match('^%s*(.-)%s*$')
-        if part ~= '' then
-          table.insert(status_order, part)
-        end
-      end
-    end
-  end
-
   if not base_url or base_url == '' then
     buffer.notify('jira_base_url missing in frontmatter', vim.log.levels.ERROR)
     return nil
@@ -102,7 +82,6 @@ local function get_buffer_config()
     lines = lines,
     fm_end = fm_end,
     status_map = status_map,
-    status_order = status_order,
   }
 end
 
@@ -185,44 +164,87 @@ function M.sync()
       end
     end
 
-    for _, update in ipairs(updates) do
-      local ticket = ticket_map[update.key]
-      local current_status = ticket and ticket.status or 'Unknown'
-      local order = cfg.status_order or DEFAULT_STATUS_ORDER
+    local samples = {}
+    for _, t in ipairs(tickets) do
+      table.insert(samples, { key = t.key, status = t.status })
+    end
 
-      local function on_transition_done(ok, err_msg)
-        if ok then
-          if ticket_map[update.key] then
-            ticket_map[update.key].status = update.status
-          end
-        else
-          table.insert(failures, ('%s: %s'):format(update.key, err_msg))
-        end
-        check_done()
-      end
+    local function process_updates(graph)
+      for _, update in ipairs(updates) do
+        local ticket = ticket_map[update.key]
+        local current_status = ticket and ticket.status or 'Unknown'
 
-      api_client.transition_chain(
-        cfg.base_url, cfg.email, cfg.token,
-        update.key, update.status, current_status, order,
-        function(ok, err_msg)
+        local function on_transition_done(ok, err_msg, actual_status)
           if ok then
-            on_transition_done(true, nil)
-          elseif err_msg and err_msg:match('No transition to') then
-            local samples = {}
-            for _, t in ipairs(tickets) do
-              table.insert(samples, { key = t.key, status = t.status })
+            if ticket_map[update.key] then
+              ticket_map[update.key].status = update.status
             end
-            api_client.auto_transition(
+          else
+            if actual_status and ticket_map[update.key] then
+              ticket_map[update.key].status = actual_status
+            end
+            table.insert(failures, ('%s: %s'):format(update.key, err_msg))
+          end
+          check_done()
+        end
+
+        local function fallback_chain(err_msg)
+          api_client.transition_chain(
+            cfg.base_url, cfg.email, cfg.token,
+            update.key, update.status, current_status, DEFAULT_STATUS_ORDER,
+            function(ok2, err2, actual2)
+              if ok2 then
+                on_transition_done(true, nil)
+              else
+                on_transition_done(false, err2 or err_msg, actual2)
+              end
+            end
+          )
+        end
+
+        if graph and graph[current_status] and graph[current_status][update.status] then
+          -- Direct transition available in graph
+          api_client.transition_issue(
+            cfg.base_url, cfg.email, cfg.token,
+            update.key, graph[current_status][update.status],
+            function(ok, err)
+              if ok then
+                on_transition_done(true, nil)
+              else
+                on_transition_done(false, err)
+              end
+            end
+          )
+        elseif graph then
+          local path = api_client.find_path_bfs(graph, current_status, update.status)
+          if path and #path > 0 then
+            api_client.execute_graph_path(
               cfg.base_url, cfg.email, cfg.token,
-              update.key, update.status, current_status, samples,
-              on_transition_done
+              update.key, graph, path, current_status,
+              function(ok, err_msg, actual_status)
+                if ok then
+                  on_transition_done(true, nil)
+                else
+                  fallback_chain(err_msg)
+                end
+              end
             )
           else
-            on_transition_done(false, err_msg)
+            fallback_chain(('No path from "%s" to "%s" in global graph'):format(current_status, update.status))
           end
+        else
+          fallback_chain('No transition graph available')
         end
-      )
+      end
     end
+
+    api_client.build_transition_graph(cfg.base_url, cfg.email, cfg.token, samples, function(graph, graph_err)
+      if graph_err then
+        process_updates(nil)
+      else
+        process_updates(graph)
+      end
+    end)
   end)
 end
 

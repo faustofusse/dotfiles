@@ -167,7 +167,7 @@ function M.get_transitions(base_url, email, token, issue_key, on_done)
     Accept = 'application/json',
   }
 
-  local url = ('%s/rest/api/3/issue/%s/transitions'):format(base_url, vim.uri_encode(issue_key))
+  local url = ('%s/rest/api/3/issue/%s/transitions?expand=transitions.fields'):format(base_url, vim.uri_encode(issue_key))
 
   vim.net.request(url, { headers = headers }, function(err, res)
     if err then
@@ -186,11 +186,32 @@ function M.get_transitions(base_url, email, token, issue_key, on_done)
       return
     end
 
-    on_done(data.transitions or {}, nil)
+    local transitions = {}
+    for _, t in ipairs(data.transitions or {}) do
+      local required_fields = {}
+      if t.fields then
+        for field_key, field_meta in pairs(t.fields) do
+          if field_meta.required then
+            table.insert(required_fields, {
+              key = field_key,
+              name = field_meta.name or field_key,
+            })
+          end
+        end
+      end
+      table.insert(transitions, {
+        id = t.id,
+        name = t.name,
+        to = t.to,
+        required_fields = required_fields,
+      })
+    end
+    on_done(transitions, nil)
   end)
 end
 
 --- Execute a transition on an issue.
+--- Uses vim.system directly (not vim.net.request) so we can read the response body on 400/500 errors.
 --- @param base_url string
 --- @param email string
 --- @param token string
@@ -199,21 +220,53 @@ end
 --- @param on_done fun(ok: boolean, err: string|nil)
 function M.transition_issue(base_url, email, token, issue_key, transition_id, on_done)
   local auth = vim.base64.encode(email .. ':' .. token)
-  local headers = {
-    Authorization = 'Basic ' .. auth,
-    ['Content-Type'] = 'application/json',
-    Accept = 'application/json',
-  }
-
   local url = ('%s/rest/api/3/issue/%s/transitions'):format(base_url, vim.uri_encode(issue_key))
   local body = vim.json.encode({ transition = { id = transition_id } })
 
-  vim.net.request('POST', url, { headers = headers, body = body }, function(err, res)
-    if err then
-      on_done(false, err)
+  local args = {
+    'curl', '-s', '-S', '-w', '\nHTTP_CODE:%{http_code}\n',
+    '-X', 'POST',
+    '-H', 'Authorization: Basic ' .. auth,
+    '-H', 'Content-Type: application/json',
+    '-d', body,
+    url,
+  }
+
+  vim.system(args, {}, function(res)
+    if res.code ~= 0 then
+      on_done(false, res.stderr ~= '' and res.stderr or ('curl exit %d'):format(res.code))
       return
     end
-    on_done(true, nil)
+
+    local stdout = res.stdout or ''
+    local status_code = stdout:match('HTTP_CODE:(%d%d%d)')
+    local body_text = stdout:gsub('\nHTTP_CODE:%d%d%d\n$', '')
+
+    if status_code and status_code:match('^2') then
+      on_done(true, nil)
+      return
+    end
+
+    -- Try to parse Jira's structured error response
+    local ok, data = pcall(vim.json.decode, body_text)
+    if ok then
+      if data.errorMessages and #data.errorMessages > 0 then
+        on_done(false, table.concat(data.errorMessages, '; '))
+        return
+      end
+      if data.errors then
+        local msgs = {}
+        for k, v in pairs(data.errors) do
+          table.insert(msgs, v)
+        end
+        if #msgs > 0 then
+          on_done(false, table.concat(msgs, '; '))
+          return
+        end
+      end
+    end
+
+    on_done(false, ('HTTP %s'):format(status_code or 'unknown'))
   end)
 end
 
@@ -231,15 +284,15 @@ function M.update_status(base_url, email, token, issue_key, desired_status, on_d
       return
     end
 
-    local transition_id = nil
+    local chosen = nil
     for _, t in ipairs(transitions) do
       if t.to and t.to.name == desired_status then
-        transition_id = t.id
+        chosen = t
         break
       end
     end
 
-    if not transition_id then
+    if not chosen then
       local available = {}
       for _, t in ipairs(transitions) do
         table.insert(available, (t.to and t.to.name or t.name or '?'))
@@ -250,12 +303,24 @@ function M.update_status(base_url, email, token, issue_key, desired_status, on_d
       return
     end
 
-    M.transition_issue(base_url, email, token, issue_key, transition_id, on_done)
+    if #chosen.required_fields > 0 then
+      local names = {}
+      for _, f in ipairs(chosen.required_fields) do
+        table.insert(names, f.name)
+      end
+      on_done(false, ('Transition to "%s" requires fields: %s'):format(
+        desired_status, table.concat(names, ', ')
+      ))
+      return
+    end
+
+    M.transition_issue(base_url, email, token, issue_key, chosen.id, on_done)
   end)
 end
 
 --- Transition an issue to a desired status, automatically chaining through intermediates.
 --- Uses status_order to pick the best intermediate step when a direct transition is unavailable.
+--- Tracks visited statuses to avoid infinite loops.
 --- @param base_url string
 --- @param email string
 --- @param token string
@@ -263,30 +328,57 @@ end
 --- @param desired_status string
 --- @param current_status string
 --- @param status_order string[]|nil ordered statuses to guide path selection
---- @param on_done fun(ok: boolean, err: string|nil)
+--- @param on_done fun(ok: boolean, err: string|nil, actual_status: string|nil)
+---   On success: (true, nil, desired_status)
+---   On failure after partial progress: (false, err, actual_status_reached)
+---   On failure at start: (false, err, current_status)
 --- @param depth integer|nil internal recursion depth
-function M.transition_chain(base_url, email, token, issue_key, desired_status, current_status, status_order, on_done, depth)
+--- @param visited table<string, boolean>|nil statuses already visited in this chain
+function M.transition_chain(base_url, email, token, issue_key, desired_status, current_status, status_order, on_done, depth, visited)
   depth = (depth or 0) + 1
   if depth > 10 then
-    on_done(false, ('Transition chain too deep for %s'):format(issue_key))
+    on_done(false, ('Transition chain too deep for %s'):format(issue_key), current_status)
     return
   end
 
+  visited = visited or {}
+  if visited[current_status] then
+    on_done(false, ('Transition loop detected for %s at status "%s"'):format(issue_key, current_status), current_status)
+    return
+  end
+  visited[current_status] = true
+
   if current_status == desired_status then
-    on_done(true, nil)
+    on_done(true, nil, current_status)
     return
   end
 
   M.get_transitions(base_url, email, token, issue_key, function(transitions, trans_err)
     if trans_err then
-      on_done(false, trans_err)
+      on_done(false, trans_err, current_status)
       return
     end
 
     -- Try direct transition first
     for _, t in ipairs(transitions) do
       if t.to and t.to.name == desired_status then
-        M.transition_issue(base_url, email, token, issue_key, t.id, on_done)
+        if #t.required_fields > 0 then
+          local names = {}
+          for _, f in ipairs(t.required_fields) do
+            table.insert(names, f.name)
+          end
+          on_done(false, ('Transition to "%s" requires fields: %s'):format(
+            desired_status, table.concat(names, ', ')
+          ), current_status)
+          return
+        end
+        M.transition_issue(base_url, email, token, issue_key, t.id, function(ok, err)
+          if ok then
+            on_done(true, nil, desired_status)
+          else
+            on_done(false, err, current_status)
+          end
+        end)
         return
       end
     end
@@ -298,7 +390,7 @@ function M.transition_chain(base_url, email, token, issue_key, desired_status, c
       end
       on_done(false, ('No transition to "%s" found for %s. Available: %s'):format(
         desired_status, issue_key, table.concat(available, ', ')
-      ))
+      ), current_status)
       return
     end
 
@@ -316,7 +408,7 @@ function M.transition_chain(base_url, email, token, issue_key, desired_status, c
 
     for _, t in ipairs(transitions) do
       local to_name = t.to and t.to.name
-      if to_name then
+      if to_name and not visited[to_name] then
         local to_idx = order_map[to_name] or 999
         local score = math.abs((desired_idx or 999) - to_idx)
 
@@ -341,19 +433,36 @@ function M.transition_chain(base_url, email, token, issue_key, desired_status, c
       for _, t in ipairs(transitions) do
         table.insert(available, t.to and t.to.name or '?')
       end
-      on_done(false, ('No transition to "%s" found for %s. Available: %s'):format(
-        desired_status, issue_key, table.concat(available, ', ')
-      ))
+      on_done(false, ('No unvisited transition from "%s" toward "%s" for %s. Available: %s'):format(
+        current_status, desired_status, issue_key, table.concat(available, ', ')
+      ), current_status)
+      return
+    end
+
+    if #best.required_fields > 0 then
+      local names = {}
+      for _, f in ipairs(best.required_fields) do
+        table.insert(names, f.name)
+      end
+      on_done(false, ('Intermediate transition to "%s" requires fields: %s'):format(
+        best.to.name, table.concat(names, ', ')
+      ), current_status)
       return
     end
 
     M.transition_issue(base_url, email, token, issue_key, best.id, function(ok2, err2)
       if not ok2 then
-        on_done(false, err2)
+        on_done(false, err2, current_status)
         return
       end
 
-      M.transition_chain(base_url, email, token, issue_key, desired_status, best.to.name, status_order, on_done, depth)
+      M.transition_chain(base_url, email, token, issue_key, desired_status, best.to.name, status_order, function(ok3, err3, actual)
+        if ok3 then
+          on_done(true, nil, actual)
+        else
+          on_done(false, err3, actual)
+        end
+      end, depth, visited)
     end)
   end)
 end
@@ -396,7 +505,9 @@ function M.build_transition_graph(base_url, email, token, samples, on_done)
       graph[status] = {}
       for _, t in ipairs(transitions) do
         if t.to and t.to.name and t.id then
-          graph[status][t.to.name] = t.id
+          if #t.required_fields == 0 then
+            graph[status][t.to.name] = t.id
+          end
         end
       end
 
@@ -413,7 +524,7 @@ end
 --- @param from string
 --- @param to string
 --- @return string[]|nil path list of statuses to traverse through (excluding 'from', including 'to')
-local function find_path_bfs(graph, from, to)
+function M.find_path_bfs(graph, from, to)
   if from == to then
     return {}
   end
@@ -448,6 +559,46 @@ local function find_path_bfs(graph, from, to)
   return nil
 end
 
+--- Walk a pre-computed transition path on a specific issue.
+--- @param base_url string
+--- @param email string
+--- @param token string
+--- @param issue_key string
+--- @param graph table<string, table<string, string>>
+--- @param path string[] list of statuses to visit
+--- @param start_status string
+--- @param on_done fun(ok: boolean, err: string|nil, actual_status: string|nil)
+function M.execute_graph_path(base_url, email, token, issue_key, graph, path, start_status, on_done)
+  local step = 1
+  local current = start_status
+
+  local function walk()
+    if step > #path then
+      on_done(true, nil, current)
+      return
+    end
+
+    local next_status = path[step]
+    local transition_id = graph[current] and graph[current][next_status]
+    if not transition_id then
+      on_done(false, ('No transition edge from %s to %s'):format(current, next_status), current)
+      return
+    end
+
+    M.transition_issue(base_url, email, token, issue_key, transition_id, function(ok, err)
+      if not ok then
+        on_done(false, err, current)
+        return
+      end
+      current = next_status
+      step = step + 1
+      walk()
+    end)
+  end
+
+  walk()
+end
+
 --- Auto-discover transition path and execute it.
 --- @param base_url string
 --- @param email string
@@ -456,15 +607,15 @@ end
 --- @param desired_status string
 --- @param current_status string
 --- @param samples {key: string, status: string}[]
---- @param on_done fun(ok: boolean, err: string|nil)
+--- @param on_done fun(ok: boolean, err: string|nil, actual_status: string|nil)
 function M.auto_transition(base_url, email, token, issue_key, desired_status, current_status, samples, on_done)
   M.build_transition_graph(base_url, email, token, samples, function(graph, err)
     if err then
-      on_done(false, 'Auto-discovery failed: ' .. err)
+      on_done(false, 'Auto-discovery failed: ' .. err, current_status)
       return
     end
 
-    local path = find_path_bfs(graph, current_status, desired_status)
+    local path = M.find_path_bfs(graph, current_status, desired_status)
     if not path or #path == 0 then
       local available = {}
       for s, _ in pairs(graph[current_status] or {}) do
@@ -472,38 +623,11 @@ function M.auto_transition(base_url, email, token, issue_key, desired_status, cu
       end
       on_done(false, ('No path from "%s" to "%s" discovered. Available from %s: %s'):format(
         current_status, desired_status, current_status, table.concat(available, ', ')
-      ))
+      ), current_status)
       return
     end
 
-    local step = 1
-    local walk_status = current_status
-
-    local function walk()
-      if step > #path then
-        on_done(true, nil)
-        return
-      end
-
-      local next_status = path[step]
-      local transition_id = graph[walk_status] and graph[walk_status][next_status]
-      if not transition_id then
-        on_done(false, ('Lost transition from %s to %s'):format(walk_status, next_status))
-        return
-      end
-
-      M.transition_issue(base_url, email, token, issue_key, transition_id, function(ok, trans_err)
-        if not ok then
-          on_done(false, trans_err)
-          return
-        end
-        walk_status = next_status
-        step = step + 1
-        walk()
-      end)
-    end
-
-    walk()
+    M.execute_graph_path(base_url, email, token, issue_key, graph, path, current_status, on_done)
   end)
 end
 
