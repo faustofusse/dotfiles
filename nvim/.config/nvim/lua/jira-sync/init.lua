@@ -40,6 +40,17 @@ local function get_buffer_config()
   local email = frontmatter.jira_email
   local token = frontmatter.jira_api_token
 
+  local status_map = nil
+  if frontmatter.jira_status_map then
+    local raw = frontmatter.jira_status_map
+    raw = raw:match("^'(.*)'$") or raw
+    raw = raw:match('^"(.*)"$') or raw
+    local ok, decoded = pcall(vim.json.decode, raw)
+    if ok and type(decoded) == 'table' then
+      status_map = decoded
+    end
+  end
+
   if not base_url or base_url == '' then
     buffer.notify('jira_base_url missing in frontmatter', vim.log.levels.ERROR)
     return nil
@@ -62,19 +73,43 @@ local function get_buffer_config()
     token = token,
     lines = lines,
     fm_end = fm_end,
+    status_map = status_map,
   }
 end
 
 --- Main sync function.
---- Reads current buffer, fetches tickets, merges, writes back.
+--- Reads current buffer, fetches tickets, pushes local status changes, merges, writes back.
 function M.sync()
   local cfg = get_buffer_config()
   if not cfg then
     return
   end
 
+  local local_brackets = buffer.extract_local_brackets(cfg.lines, cfg.fm_end)
+  local last_brackets = vim.b.jira_sync_brackets
+  local reverse_map = buffer.build_reverse_status_map(cfg.status_map)
+
   local scope = cfg.epic_key or cfg.project_key
   buffer.progress_begin(('Syncing %s tickets...'):format(scope))
+
+  local function finalize(tickets, failure_msgs)
+    vim.schedule(function()
+      buffer.progress_report(('Merging %d tickets...'):format(#tickets), 80)
+      local merged = buffer.merge_tickets(cfg.lines, cfg.fm_end, tickets)
+      buffer.set_buffer_lines(merged)
+      vim.b.jira_sync_brackets = buffer.extract_local_brackets(merged, cfg.fm_end)
+      buffer.progress_end(('Synced %d tickets'):format(#tickets))
+      local msg = ('Synced %d tickets for %s'):format(#tickets, scope)
+      if #tickets == 0 then
+        msg = ('Synced 0 tickets for %s. Check that the key is correct.'):format(scope)
+        buffer.notify(msg, vim.log.levels.WARN)
+      elseif failure_msgs and #failure_msgs > 0 then
+        buffer.notify(msg .. '\n' .. table.concat(failure_msgs, '\n'), vim.log.levels.WARN)
+      else
+        buffer.notify(msg, vim.log.levels.INFO)
+      end
+    end)
+  end
 
   api_client.fetch_tickets(cfg.base_url, cfg.email, cfg.token, cfg.project_key, cfg.epic_key, function(tickets, err)
     if err then
@@ -85,20 +120,54 @@ function M.sync()
       return
     end
 
-    vim.schedule(function()
-      buffer.progress_report(('Merging %d tickets...'):format(#tickets), 80)
-      local merged = buffer.merge_tickets(cfg.lines, cfg.fm_end, tickets)
-      buffer.set_buffer_lines(merged)
-      buffer.progress_end(('Synced %d tickets'):format(#tickets))
-      if #tickets == 0 then
-        buffer.notify(
-          ('Synced 0 tickets for %s. Check that the key is correct.'):format(scope),
-          vim.log.levels.WARN
-        )
-      else
-        buffer.notify(('Synced %d tickets for %s'):format(#tickets, scope), vim.log.levels.INFO)
+    local ticket_map = {}
+    for _, t in ipairs(tickets) do
+      ticket_map[t.key] = t
+    end
+
+    local updates = {}
+    if last_brackets then
+      for key, local_bracket in pairs(local_brackets) do
+        local last_bracket = last_brackets[key]
+        if last_bracket and local_bracket ~= last_bracket then
+          local desired_status = reverse_map[local_bracket]
+          local ticket = ticket_map[key]
+          if desired_status and ticket and desired_status ~= ticket.status then
+            table.insert(updates, { key = key, status = desired_status })
+          end
+        end
       end
-    end)
+    end
+
+    if #updates == 0 then
+      finalize(tickets, nil)
+      return
+    end
+
+    buffer.progress_report(('Pushing %d status updates...'):format(#updates), 40)
+
+    local completed = 0
+    local failures = {}
+
+    local function check_done()
+      completed = completed + 1
+      if completed == #updates then
+        finalize(tickets, failures)
+      end
+    end
+
+    for _, update in ipairs(updates) do
+      api_client.update_status(cfg.base_url, cfg.email, cfg.token, update.key, update.status, function(ok, err_msg)
+        if ok then
+          if ticket_map[update.key] then
+            ticket_map[update.key].status = update.status
+          end
+        else
+          table.insert(failures, ('%s: %s'):format(update.key, err_msg))
+        end
+        check_done()
+      end)
+    end
   end)
 end
 

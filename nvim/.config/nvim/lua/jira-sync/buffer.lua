@@ -13,7 +13,9 @@ local function notify_progress(msg, level, percent)
     status = level == 'end' and 'success' or 'running',
     percent = percent or (level == 'begin' and 0 or (level == 'end' and 100 or 50)),
   }
-  api.nvim_echo({ { msg } }, level ~= 'report', progress)
+  vim.schedule(function()
+    api.nvim_echo({ { msg } }, level ~= 'report', progress)
+  end)
 end
 
 function M.progress_begin(msg)
@@ -29,16 +31,19 @@ function M.progress_end(msg)
 end
 
 --- Send a message to :messages, bypassing vim.notify (and thus fidget).
+--- Safe to call from async/fast-event callbacks.
 --- @param msg string
 --- @param level? integer vim.log.levels value
 function M.notify(msg, level)
-  local hl
-  if level == vim.log.levels.ERROR then
-    hl = 'ErrorMsg'
-  elseif level == vim.log.levels.WARN then
-    hl = 'WarningMsg'
-  end
-  api.nvim_echo({ { msg, hl } }, true, {})
+  vim.schedule(function()
+    local hl
+    if level == vim.log.levels.ERROR then
+      hl = 'ErrorMsg'
+    elseif level == vim.log.levels.WARN then
+      hl = 'WarningMsg'
+    end
+    api.nvim_echo({ { msg, hl } }, true, {})
+  end)
 end
 
 --- Read all lines from the current buffer.
@@ -62,9 +67,11 @@ end
 function M.format_status(status)
   local map = {
     ['Nuevo'] = ' ',
+    ['Por Hacer'] = 'p',
     ['Finalizado'] = 'x',
     ['En curso'] = '~',
     ['En revision'] = 'r',
+    ['Cancelado'] = 'c',
   }
   return map[status] or status
 end
@@ -118,6 +125,47 @@ function M.merge_tickets(existing_lines, frontmatter_end, tickets)
   end
 
   return merged
+end
+
+--- Extract current checkbox brackets for each ticket key in the buffer.
+--- @param lines string[]
+--- @param frontmatter_end integer
+--- @return table<string, string> key -> bracket
+function M.extract_local_brackets(lines, frontmatter_end)
+  local brackets = {}
+  local pattern = '^%s*%-%s*%[([^%]]*)%]%s*([A-Z0-9]+%-%d+):%s*(.*)$'
+  for i = frontmatter_end + 1, #lines do
+    local bracket, key = lines[i]:match(pattern)
+    if key then
+      brackets[key] = bracket
+    end
+  end
+  return brackets
+end
+
+--- Build a reverse map from bracket character to Jira status name.
+--- Uses built-in defaults and optional user-provided overrides.
+--- @param custom_map table<string, string>|nil bracket -> status
+--- @return table<string, string>
+function M.build_reverse_status_map(custom_map)
+  local reverse = {}
+  local forward = {
+    ['Nuevo'] = ' ',
+    ['Por Hacer'] = 'p',
+    ['Finalizado'] = 'x',
+    ['En curso'] = '~',
+    ['En revision'] = 'r',
+    ['Cancelado'] = 'c',
+  }
+  for status, bracket in pairs(forward) do
+    reverse[bracket] = status
+  end
+  if custom_map then
+    for bracket, status in pairs(custom_map) do
+      reverse[bracket] = status
+    end
+  end
+  return reverse
 end
 
 return M

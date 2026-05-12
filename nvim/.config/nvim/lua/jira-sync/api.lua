@@ -153,4 +153,105 @@ function M.list_projects(base_url, email, token, on_done)
   end)
 end
 
+--- Get available transitions for an issue.
+--- @param base_url string
+--- @param email string
+--- @param token string
+--- @param issue_key string
+--- @param on_done fun(transitions: table[]|nil, err: string|nil)
+function M.get_transitions(base_url, email, token, issue_key, on_done)
+  local auth = vim.base64.encode(email .. ':' .. token)
+  local headers = {
+    Authorization = 'Basic ' .. auth,
+    ['Content-Type'] = 'application/json',
+    Accept = 'application/json',
+  }
+
+  local url = ('%s/rest/api/3/issue/%s/transitions'):format(base_url, vim.uri_encode(issue_key))
+
+  vim.net.request(url, { headers = headers }, function(err, res)
+    if err then
+      on_done(nil, err)
+      return
+    end
+
+    local ok, data = pcall(vim.json.decode, res.body)
+    if not ok then
+      on_done(nil, 'JSON parse error: ' .. tostring(data))
+      return
+    end
+
+    if data.errorMessages then
+      on_done(nil, 'Jira error: ' .. table.concat(data.errorMessages, '; '))
+      return
+    end
+
+    on_done(data.transitions or {}, nil)
+  end)
+end
+
+--- Execute a transition on an issue.
+--- @param base_url string
+--- @param email string
+--- @param token string
+--- @param issue_key string
+--- @param transition_id string
+--- @param on_done fun(ok: boolean, err: string|nil)
+function M.transition_issue(base_url, email, token, issue_key, transition_id, on_done)
+  local auth = vim.base64.encode(email .. ':' .. token)
+  local headers = {
+    Authorization = 'Basic ' .. auth,
+    ['Content-Type'] = 'application/json',
+    Accept = 'application/json',
+  }
+
+  local url = ('%s/rest/api/3/issue/%s/transitions'):format(base_url, vim.uri_encode(issue_key))
+  local body = vim.json.encode({ transition = { id = transition_id } })
+
+  vim.net.request('POST', url, { headers = headers, body = body }, function(err, res)
+    if err then
+      on_done(false, err)
+      return
+    end
+    on_done(true, nil)
+  end)
+end
+
+--- Update an issue's status by finding and executing the appropriate transition.
+--- @param base_url string
+--- @param email string
+--- @param token string
+--- @param issue_key string
+--- @param desired_status string
+--- @param on_done fun(ok: boolean, err: string|nil)
+function M.update_status(base_url, email, token, issue_key, desired_status, on_done)
+  M.get_transitions(base_url, email, token, issue_key, function(transitions, err)
+    if err then
+      on_done(false, 'Failed to get transitions: ' .. err)
+      return
+    end
+
+    local transition_id = nil
+    for _, t in ipairs(transitions) do
+      if t.to and t.to.name == desired_status then
+        transition_id = t.id
+        break
+      end
+    end
+
+    if not transition_id then
+      local available = {}
+      for _, t in ipairs(transitions) do
+        table.insert(available, (t.to and t.to.name or t.name or '?'))
+      end
+      on_done(false, ('No transition to "%s" found for %s. Available: %s'):format(
+        desired_status, issue_key, table.concat(available, ', ')
+      ))
+      return
+    end
+
+    M.transition_issue(base_url, email, token, issue_key, transition_id, on_done)
+  end)
+end
+
 return M
