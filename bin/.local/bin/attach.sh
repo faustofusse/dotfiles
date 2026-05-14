@@ -6,7 +6,7 @@ set -euo pipefail
 if [[ $# -eq 1 ]]; then
     selected_dir=$1
 else
-    selected_dir=$(find ~/.dotfiles ~/sw ~/dex -maxdepth 4 -type d -name .git -print | sed -e 's/\/.git//g' | sed -e "s/$(echo ~ | sed -e 's/\//\\\//g')/~/g" | fzf --reverse)
+    selected_dir=$(find ~/.dotfiles ~/sw ~/dex -maxdepth 4 -name .git -print | sed -e 's/\/.git//g' | sed -e "s/$(echo ~ | sed -e 's/\//\\\//g')/~/g" | fzf --reverse)
 fi
 
 if [[ -z $selected_dir ]]; then
