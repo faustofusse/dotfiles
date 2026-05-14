@@ -1,0 +1,13 @@
+{
+  "providers": {
+    "opencode": {
+      "modelOverrides": {
+        "gpt-5.5": {
+          "thinkingLevelMap": {
+            "minimal": "none"
+          }
+        }
+      }
+    }
+  }
+}
