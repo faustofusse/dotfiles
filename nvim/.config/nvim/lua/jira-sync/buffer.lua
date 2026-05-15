@@ -169,7 +169,7 @@ function M.build_reverse_status_map(custom_map)
 end
 
 --- Open a split buffer to prompt for transition field values.
---- Fugitive-commit-style: user edits, then saves (:w) or presses <Enter> to submit.
+--- Fugitive-commit-style: user edits, then :wq to submit, :q! to cancel.
 --- @param issue_key string
 --- @param target_status string
 --- @param transition table { id, to, required_fields = { {key, name}, ... } }
@@ -178,140 +178,178 @@ end
 --- @param prefills table<string, string>|nil field_key -> prefill value
 function M.prompt_transition_fields(issue_key, target_status, transition, on_submit, prefills)
   vim.schedule(function()
-  local bufnr = vim.api.nvim_create_buf(false, true)
-  vim.bo[bufnr].buftype = 'acwrite'
-  vim.bo[bufnr].bufhidden = 'wipe'
-  vim.bo[bufnr].swapfile = false
-  vim.bo[bufnr].filetype = 'jira-transition'
-
-  local lines = {
-    '# Transition: ' .. issue_key .. ' → ' .. target_status,
-    '#',
-    '# Required fields:',
-  }
-  for _, f in ipairs(transition.required_fields) do
-    local type_hint = ''
-    if f.schema then
-      if f.schema.type == 'user' then
-        type_hint = ' (user/accountId)'
-      elseif f.schema.type == 'doc' or f.schema.type == 'any' then
-        type_hint = ' (rich text)'
-      elseif f.schema.type == 'string' then
-        type_hint = ' (text)'
+    -- Filter out user/assignee fields (auto-filled, hidden from user)
+    local visible_fields = {}
+    local hidden_values = vim.deepcopy(prefills or {})
+    for _, f in ipairs(transition.required_fields) do
+      local schema = f.schema or {}
+      if schema.type == 'user' or f.key == 'assignee' then
+        hidden_values[f.key] = hidden_values[f.key] or ''
+      else
+        table.insert(visible_fields, f)
       end
     end
-    table.insert(lines, '#   - ' .. f.name .. type_hint)
-  end
-  table.insert(lines, '#')
-  table.insert(lines, '# Fill in values below each field name.')
-  table.insert(lines, '# Press <Enter> to submit, q to cancel.')
-  table.insert(lines, '# Lines starting with # are ignored.')
-  table.insert(lines, '')
 
-  for _, f in ipairs(transition.required_fields) do
-    local type_hint = ''
-    if f.schema then
-      if f.schema.type == 'user' then
-        type_hint = ' [user/accountId]'
-      elseif f.schema.type == 'doc' or f.schema.type == 'any' then
-        type_hint = ' [rich text]'
-      elseif f.schema.type == 'string' then
-        type_hint = ' [text]'
-      end
-    end
-    table.insert(lines, f.name .. type_hint .. ':')
-    local prefill = prefills and prefills[f.key] or ''
-    table.insert(lines, prefill)
-  end
-
-  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
-
-  vim.cmd('belowright split')
-  local win = vim.api.nvim_get_current_win()
-  vim.api.nvim_win_set_buf(win, bufnr)
-
-  -- Position cursor on first editable line (first field value line after headers)
-  local cursor_line
-  if #transition.required_fields == 0 then
-    -- No fields to edit; put cursor on last comment line
-    cursor_line = #lines
-  else
-    cursor_line = #lines - (#transition.required_fields * 2) + 2
-  end
-  vim.api.nvim_win_set_cursor(win, { math.min(cursor_line, #lines), 0 })
-
-  local submitted = false
-
-  local function parse_and_submit()
-    if submitted then
+    if #visible_fields == 0 then
+      on_submit(hidden_values)
       return
     end
 
-    local buf_lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-    local values = {}
-    local current_field_name = nil
-    local current_lines = {}
+    local tmpfile = vim.fn.tempname() .. '-' .. issue_key:gsub('[^A-Za-z0-9]', '-') .. '.jira'
 
-    for _, line in ipairs(buf_lines) do
-      if not line:match('^%s*#') then
-        local field_header = line:match('^(.-):%s*$')
-        if field_header then
-          if current_field_name then
-            for _, f in ipairs(transition.required_fields) do
-              if f.name == current_field_name then
-                values[f.key] = table.concat(current_lines, '\n'):match('^%s*(.-)%s*$') or ''
-                break
-              end
-            end
-          end
-          -- Strip type hint like [rich text] from header to match field name
-          current_field_name = (field_header:match('^(.-)%s*%[.*%]$') or field_header):match('^%s*(.-)%s*$')
-          current_lines = {}
-        elseif current_field_name then
-          table.insert(current_lines, line)
+    local bufnr = vim.api.nvim_create_buf(false, false)
+    vim.api.nvim_buf_set_name(bufnr, tmpfile)
+    vim.bo[bufnr].buftype = ''
+    vim.bo[bufnr].bufhidden = 'wipe'
+    vim.bo[bufnr].swapfile = false
+    vim.bo[bufnr].filetype = 'jira-transition'
+
+    local lines = {
+      '# Transition: ' .. issue_key .. ' → ' .. target_status,
+      '#',
+      '# Required fields:',
+    }
+    for _, f in ipairs(visible_fields) do
+      local type_hint = ''
+      if f.schema then
+        if f.schema.type == 'user' then
+          type_hint = ' (user/accountId)'
+        elseif f.schema.type == 'doc' or f.schema.type == 'any' then
+          type_hint = ' (rich text)'
+        elseif f.schema.type == 'string' then
+          type_hint = ' (text)'
         end
       end
+      table.insert(lines, '#   - ' .. f.name .. type_hint)
     end
+    table.insert(lines, '#')
+    table.insert(lines, '# Fill in values below each field name.')
+    table.insert(lines, '# :wq to submit, :q! to cancel.')
+    table.insert(lines, '# Lines starting with # are ignored.')
+    table.insert(lines, '')
 
-    if current_field_name then
-      for _, f in ipairs(transition.required_fields) do
-        if f.name == current_field_name then
-          values[f.key] = table.concat(current_lines, '\n'):match('^%s*(.-)%s*$') or ''
-          break
+    for _, f in ipairs(visible_fields) do
+      local type_hint = ''
+      if f.schema then
+        if f.schema.type == 'user' then
+          type_hint = ' [user/accountId]'
+        elseif f.schema.type == 'doc' or f.schema.type == 'any' then
+          type_hint = ' [rich text]'
+        elseif f.schema.type == 'string' then
+          type_hint = ' [text]'
         end
       end
+      table.insert(lines, f.name .. type_hint .. ':')
+      local prefill = prefills and prefills[f.key] or ''
+      table.insert(lines, prefill)
     end
 
-    for _, f in ipairs(transition.required_fields) do
-      if not values[f.key] or values[f.key] == '' then
-        M.notify('Field "' .. f.name .. '" is required', vim.log.levels.WARN)
+    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+    vim.bo[bufnr].modified = false
+
+    -- Simple syntax: # comments in Comment highlight
+    vim.api.nvim_set_hl(0, 'JiraTransitionComment', { link = 'Comment', default = true })
+    vim.api.nvim_set_hl(0, 'JiraTransitionHeader', { link = 'Title', default = true })
+    vim.api.nvim_set_hl(0, 'JiraTransitionField', { link = 'Identifier', default = true })
+
+    vim.api.nvim_buf_call(bufnr, function()
+      vim.cmd('syntax clear')
+      vim.cmd('syntax match JiraTransitionComment "^\\s*#.*$"')
+      vim.cmd('syntax match JiraTransitionHeader "^# Transition:.*$"')
+      vim.cmd('syntax match JiraTransitionField "^[^#].-:"')
+    end)
+
+    vim.cmd('aboveleft split')
+    local win = vim.api.nvim_get_current_win()
+    vim.api.nvim_win_set_buf(win, bufnr)
+
+    -- Position cursor on first editable line
+    local cursor_line = #lines - (#visible_fields * 2) + 2
+    vim.api.nvim_win_set_cursor(win, { math.min(cursor_line, #lines), 0 })
+
+    local submitted = false
+
+    local function parse_and_submit()
+      if submitted then
         return
       end
+
+      local buf_lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+      local values = vim.deepcopy(hidden_values)
+      local current_field_name = nil
+      local current_lines = {}
+
+      for _, line in ipairs(buf_lines) do
+        if not line:match('^%s*#') then
+          local field_header = line:match('^(.-):%s*$')
+          if field_header then
+            if current_field_name then
+              for _, f in ipairs(visible_fields) do
+                if f.name == current_field_name then
+                  values[f.key] = table.concat(current_lines, '\n'):match('^%s*(.-)%s*$') or ''
+                  break
+                end
+              end
+            end
+            -- Strip type hint like [rich text] from header to match field name
+            current_field_name = (field_header:match('^(.-)%s*%[.*%]$') or field_header):match('^%s*(.-)%s*$')
+            current_lines = {}
+          elseif current_field_name then
+            table.insert(current_lines, line)
+          end
+        end
+      end
+
+      if current_field_name then
+        for _, f in ipairs(visible_fields) do
+          if f.name == current_field_name then
+            values[f.key] = table.concat(current_lines, '\n'):match('^%s*(.-)%s*$') or ''
+            break
+          end
+        end
+      end
+
+      for _, f in ipairs(visible_fields) do
+        if not values[f.key] or values[f.key] == '' then
+          M.notify('Field "' .. f.name .. '" is required', vim.log.levels.WARN)
+          return
+        end
+      end
+
+      submitted = true
+      vim.schedule(function()
+        pcall(vim.fn.delete, tmpfile)
+        on_submit(values)
+      end)
     end
 
-    submitted = true
-    vim.schedule(function()
-      pcall(vim.api.nvim_win_close, win, true)
-      on_submit(values)
-    end)
-  end
-
-  local function cancel()
-    if submitted then
-      return
+    local function cancel()
+      if submitted then
+        return
+      end
+      submitted = true
+      vim.schedule(function()
+        pcall(vim.fn.delete, tmpfile)
+        on_submit(nil)
+      end)
     end
-    submitted = true
-    pcall(vim.api.nvim_win_close, win, true)
-    on_submit(nil)
-  end
 
-  vim.api.nvim_create_autocmd('BufWriteCmd', {
-    buffer = bufnr,
-    callback = parse_and_submit,
-  })
+    -- :w or :wq → parse and submit after successful write
+    vim.api.nvim_create_autocmd('BufWritePost', {
+      buffer = bufnr,
+      callback = parse_and_submit,
+    })
 
-  vim.keymap.set('n', '<CR>', parse_and_submit, { buffer = bufnr, silent = true, nowait = true })
-  vim.keymap.set('n', 'q', cancel, { buffer = bufnr, silent = true, nowait = true })
+    -- :q! (or any unload without submit) → cancel
+    vim.api.nvim_create_autocmd('BufUnload', {
+      buffer = bufnr,
+      once = true,
+      callback = function()
+        if not submitted then
+          cancel()
+        end
+      end,
+    })
   end)
 end
 
