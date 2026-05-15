@@ -6,6 +6,11 @@
           "thinkingLevelMap": {
             "minimal": "none"
           }
+        },
+        "gpt-5.4-mini": {
+          "thinkingLevelMap": {
+            "minimal": "none"
+          }
         }
       }
     }
