@@ -62,6 +62,7 @@ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
 
 # direnv
+export DIRENV_LOG_FORMAT=""
 eval "$(direnv hook zsh)"
 
 # # clangd (si lo descomento rompe los 'pod install')

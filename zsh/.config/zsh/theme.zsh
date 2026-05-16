@@ -17,7 +17,7 @@ function icon() {
     then
         echo '$'
     else
-        echo '' # #7EBAE4
+        echo '%F{#7EBAE4}$%f'
     fi
 }
 
