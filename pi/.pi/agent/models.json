@@ -11,6 +11,13 @@
           "thinkingLevelMap": {
             "minimal": "none"
           }
+        },
+        "kimi-k2.6": {
+          "reasoning": false,
+          "compat": {
+            "supportsReasoningEffort": false,
+            "requiresThinkingAsText": true
+          }
         }
       }
     }
