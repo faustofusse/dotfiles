@@ -1,32 +1,5 @@
 { config, pkgs, lib, ... } @ inputs :
 
-let
-  opencode-latest = pkgs.buildFHSEnv {
-    name = "opencode";
-    runScript = "${pkgs.stdenv.mkDerivation {
-      pname = "opencode-unwrapped";
-      version = "1.14.19";
-
-      src = pkgs.fetchurl {
-        url = "https://github.com/anomalyco/opencode/releases/download/v1.14.19/opencode-linux-x64.tar.gz";
-        sha256 = "sha256-jLEXI84OyC4rb/miNWsSwvTEqVoIe6CjAEsZ8WeVFEA=";
-      };
-
-      sourceRoot = ".";
-
-      installPhase = ''
-        mkdir -p $out/bin
-        cp opencode $out/bin/opencode
-        chmod +x $out/bin/opencode
-      '';
-    }}/bin/opencode";
-
-    targetPkgs = pkgs: with pkgs; [
-      glibc
-      zlib
-    ];
-  };
-in
 {
   imports = [
     inputs.xremap-flake.nixosModules.default
@@ -199,9 +172,12 @@ in
      go
      gopls
      neovim
-      opencode-latest
      sqlite
      zed-editor
+     inputs.opencode.packages.${pkgs.system}.default
+     inputs.tuify.packages.${pkgs.system}.default
+     inputs.neovim-nightly.packages.${pkgs.system}.default
+     inputs.pi-coding-agent.packages.${pkgs.system}.default
      # development
      tree-sitter
      typescript-language-server

@@ -1,7 +1,10 @@
-{ config, pkgs, ... } @ inputs :
+{ config, pkgs, lib, ... } @ inputs :
 
 {
   imports = [ (inputs.nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix") ];
+
+  networking.wireless.enable = lib.mkForce false;
+  networking.networkmanager.enable = lib.mkForce false;
 
   networking.hostName = "iso";
 

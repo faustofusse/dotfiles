@@ -4,6 +4,11 @@
     xremap-flake.url = "github:xremap/nix-flake";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     dotfiles = { url = "path:.."; flake = false; };
+
+    opencode.url = "path:./pkgs/opencode";
+    tuify.url = "path:./pkgs/tuify";
+    neovim-nightly.url = "path:./pkgs/neovim-nightly";
+    pi-coding-agent.url = "path:./pkgs/pi-coding-agent";
   };
 
   outputs = { self, nixpkgs, ... } @ inputs : {
