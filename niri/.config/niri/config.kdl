@@ -349,6 +349,7 @@ window-rule {
 window-rule {
     match app-id="mpv" // videos
     match app-id="imv" // imagenes
+    match app-id="Emulator" // emuladores de android
     match title="settings" // tuis de configuracion
     match title="Picture in picture"
 
