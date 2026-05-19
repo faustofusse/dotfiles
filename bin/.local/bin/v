@@ -14,13 +14,6 @@ if [ "${#missing[@]}" -ne 0 ]; then
     exit 1
 fi
 
-# for arg in "$@"; do
-#     if [ -d "$arg" ]; then
-#         echo "$0: error: '$arg' is a directory" >&2
-#         exit 1
-#     fi
-# done
-
 if [ -n "$NVIM" ]; then
     # inside neovim
     for arg in "$@"; do
