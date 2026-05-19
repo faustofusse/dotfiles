@@ -1,10 +1,10 @@
 {
-  "lastChangelogVersion": "0.74.0",
+  "lastChangelogVersion": "0.75.3",
   "defaultProvider": "opencode-go",
   "defaultModel": "kimi-k2.6",
   "defaultThinkingLevel": "low",
   "editorPaddingX": 0,
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "quietStartup": true,
   "enabledModels": [
     "opencode-go/kimi-k2.6",
