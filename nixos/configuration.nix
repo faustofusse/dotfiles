@@ -149,6 +149,7 @@
   environment.systemPackages = with pkgs; [
      # desktop
      brave
+     chromium
      nautilus
      pcmanfm
       stremio-linux-shell
@@ -171,7 +172,6 @@
      gnumake
      go
      gopls
-     neovim
      sqlite
      zed-editor
      inputs.opencode.packages.${pkgs.system}.default
