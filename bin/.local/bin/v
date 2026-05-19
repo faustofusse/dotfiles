@@ -14,12 +14,64 @@ if [ "${#missing[@]}" -ne 0 ]; then
     exit 1
 fi
 
-if [ -n "$NVIM" ]; then
-    # inside neovim
-    for arg in "$@"; do
-        abs_path=$(realpath "$arg")
-        nvim --server "$NVIM" --remote "$abs_path"
+# Detect if inside neovim. NVIM is current, NVIM_LISTEN_ADDRESS is legacy.
+NVIM_SERVER="${NVIM:-$NVIM_LISTEN_ADDRESS}"
+
+if [ -n "$NVIM_SERVER" ]; then
+    if [ ! -S "$NVIM_SERVER" ]; then
+        echo "v: error: NVIM server socket does not exist: $NVIM_SERVER" >&2
+        exit 1
+    fi
+
+    # inside neovim: parse args and send files/commands to parent
+    commands=()
+    paths=()
+
+    i=1
+    while [ $i -le $# ]; do
+        arg="${!i}"
+        if [ "$arg" = "-c" ]; then
+            i=$((i + 1))
+            if [ $i -gt $# ]; then
+                echo "v: error: -c requires an argument" >&2
+                exit 1
+            fi
+            commands+=("${!i}")
+        elif [[ "$arg" == +* ]]; then
+            commands+=("${arg:1}")
+        elif [[ "$arg" == -* ]]; then
+            echo "v: error: unsupported flag inside nvim: $arg" >&2
+            exit 1
+        else
+            abs_path=$(realpath "$arg" 2>/dev/null)
+            if [ $? -ne 0 ] || [ -z "$abs_path" ]; then
+                echo "v: error: invalid path: $arg" >&2
+                exit 1
+            fi
+            paths+=("$abs_path")
+        fi
+        i=$((i + 1))
     done
+
+    # Open paths first so commands operate on them
+    for p in "${paths[@]}"; do
+        nvim --server "$NVIM_SERVER" --remote "$p"
+    done
+
+    # Send commands to parent (skip quit commands — they close the picker/window)
+    for raw_cmd in "${commands[@]}"; do
+        cmd="$raw_cmd"
+        cmd="${cmd#+}"  # normalize +q → q, +qa → qa, etc.
+
+        case "$cmd" in
+            q|qa|quit|wq|x|exit|qa!|q!|wq!|x!)
+                continue
+                ;;
+        esac
+        # <C-\><C-n> forces normal mode in case parent is in terminal insert mode
+        nvim --server "$NVIM_SERVER" --remote-send "<C-\><C-n>:$cmd<CR>"
+    done
+
     exit
 fi
 
