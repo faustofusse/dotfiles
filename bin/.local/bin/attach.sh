@@ -18,15 +18,19 @@ selected_name=$(basename "$selected_dir" | tr . _)
 pipe_path="$HOME/.cache/nvim/${selected_name}.pipe"
 mkdir -p "$HOME/.cache/nvim"
 
-if [[ -e "$pipe_path" ]]; then
+# Check if socket exists and server is actually responding
+if [[ -e "$pipe_path" ]] && nvim --server "$pipe_path" --remote-expr 'v:version' >/dev/null 2>&1; then
     nvim --server "$pipe_path" --remote-ui
 else
+    # Remove stale socket if it exists
+    [[ -e "$pipe_path" ]] && rm -f "$pipe_path"
+
     nvim --listen "$pipe_path" --headless --cmd "cd $selected_dir" &
-    
+
     # Wait for the socket to be created
     while [[ ! -e "$pipe_path" ]]; do
         sleep 0.1
     done
-    
+
     nvim --server "$pipe_path" --remote-ui
 fi
