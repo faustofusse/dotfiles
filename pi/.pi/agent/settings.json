@@ -1,8 +1,8 @@
 {
   "lastChangelogVersion": "0.75.3",
   "defaultProvider": "opencode-go",
-  "defaultModel": "kimi-k2.6",
-  "defaultThinkingLevel": "low",
+  "defaultModel": "deepseek-v4-flash",
+  "defaultThinkingLevel": "high",
   "editorPaddingX": 0,
   "hideThinkingBlock": true,
   "quietStartup": true,
@@ -11,6 +11,7 @@
     "opencode/gemini-3.1-pro",
     "opencode/gpt-5.5",
     "opencode/claude-sonnet-4-6",
-    "opencode-go/deepseek-v4-pro"
+    "opencode-go/deepseek-v4-pro",
+    "opencode-go/deepseek-v4-flash"
   ]
 }
