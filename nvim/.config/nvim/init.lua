@@ -367,33 +367,48 @@ harpoon:setup({
 
             local name = vim.api.nvim_buf_get_name(bufnr)
             local cmd = name:match(":%d+:(.+)$") or "terminal"
-            return cmd
+            -- embed bufnr so the menu can reconstruct items after reordering
+            return string.format("%s  [buf:%d]", cmd, bufnr)
         end,
 
         equals = function(a, b)
             if not a or not b then
                 return false
             end
+            if not a.context or not b.context then
+                return false
+            end
             return a.context.bufnr == b.context.bufnr
         end,
 
         create_list_item = function(config, name)
-            if name then
-                return nil
+            if not name then
+                -- adding from current buffer
+                local bufnr = vim.api.nvim_get_current_buf()
+                if vim.bo[bufnr].buftype ~= "terminal" then
+                    vim.notify("Not a terminal buffer", vim.log.levels.WARN)
+                    return nil
+                end
+
+                keep_terminal_buffer(bufnr)
+
+                return {
+                    value = vim.api.nvim_buf_get_name(bufnr),
+                    context = { bufnr = bufnr },
+                }
             end
 
-            local bufnr = vim.api.nvim_get_current_buf()
-            if vim.bo[bufnr].buftype ~= "terminal" then
-                vim.notify("Not a terminal buffer", vim.log.levels.WARN)
-                return nil
+            -- reconstructing from a menu line (e.g. "bash  [buf:123]")
+            local bufnr = tonumber(name:match("%[buf:(%d+)%]$"))
+            if bufnr and vim.api.nvim_buf_is_valid(bufnr) and vim.bo[bufnr].buftype == "terminal" then
+                keep_terminal_buffer(bufnr)
+                return {
+                    value = vim.api.nvim_buf_get_name(bufnr),
+                    context = { bufnr = bufnr },
+                }
             end
 
-            keep_terminal_buffer(bufnr)
-
-            return {
-                value = vim.api.nvim_buf_get_name(bufnr),
-                context = { bufnr = bufnr },
-            }
+            return nil
         end,
 
         select = function(list_item, list, options)
