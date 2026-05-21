@@ -6,6 +6,9 @@ if ! command -v npm &> /dev/null; then
         npm() {
             nix shell nixpkgs#nodejs --command npm "$@"
         }
+        node() {
+            nix shell nixpkgs#nodejs --command node "$@"
+        }
     else
         echo "ERROR: npm is not installed and nix is not available." >&2
         exit 1
@@ -38,7 +41,19 @@ trap "rm -rf $TMPDIR" EXIT
 
 curl -sL "https://registry.npmjs.org/$PACKAGE_NAME/-/pi-coding-agent-$LATEST_VERSION.tgz" | tar xz -C "$TMPDIR" --strip-components=1
 cd "$TMPDIR"
-npm install --package-lock-only 2>/dev/null || true
+
+# The publisher ships npm-shrinkwrap.json which is incomplete (missing integrity
+# for some packages). We remove it and generate a fresh package-lock.json from
+# npm install so the lockfile is complete and consistent.
+rm -f npm-shrinkwrap.json
+
+npm install 2>&1 | tail -3
+
+if [[ ! -f package-lock.json ]]; then
+    echo "ERROR: package-lock.json was not generated"
+    exit 1
+fi
+
 cp package-lock.json "$SCRIPT_DIR/package-lock.json"
 echo "    Updated package-lock.json"
 
@@ -62,10 +77,12 @@ cat > "$SCRIPT_DIR/flake.nix" <<EOF
           };
 
           postPatch = ''
+            rm -f npm-shrinkwrap.json
             cp \${./package-lock.json} package-lock.json
           '';
 
           npmDepsHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+          npmDepsFetcherVersion = 2;
 
           dontNpmBuild = true;
 
