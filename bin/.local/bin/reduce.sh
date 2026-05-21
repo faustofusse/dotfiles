@@ -9,8 +9,28 @@ TARGET="${1:-.}"
 # Function to reduce a single file
 reduce_file() {
     local file="$1"
+    local tmpmkv="${file}.tmp.mkv"
     echo "Reducing file: $file"
-    mv "$file" "$file.bak" && ffpb.sh -y -i "$file.bak" -c:v libx265 -c:a aac -crf 26 "$file" || mv "$file.bak" "$file"
+    
+    if mv "$file" "$file.bak"; then
+        # Encode to MKV first (tolerates bad timestamps), then remux to MP4
+        if ffpb.sh -y -fflags +genpts -i "$file.bak" -c:v libx265 -c:a aac -crf 26 "$tmpmkv"; then
+            if ffmpeg -y -i "$tmpmkv" -c copy -movflags +faststart "$file"; then
+                rm -f "$file.bak" "$tmpmkv"
+                echo "Done: $file"
+            else
+                echo "Remux to MP4 failed, keeping MKV instead"
+                mv "$tmpmkv" "${file%.mp4}.mkv"
+                mv "$file.bak" "$file"
+            fi
+        else
+            echo "Encoding failed, restoring original"
+            mv "$file.bak" "$file"
+            rm -f "$tmpmkv"
+        fi
+    else
+        echo "Error: Could not backup $file"
+    fi
 }
 
 # Function to reduce all video files in a directory
