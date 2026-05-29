@@ -67,7 +67,7 @@ cat > "$SCRIPT_DIR/flake.nix" <<EOF
 
   outputs = { self, nixpkgs }:
     let
-      opencode = { lib, stdenv, fetchurl, makeBinaryWrapper, autoPatchelfHook, ripgrep, sysctl, zlib }:
+      opencode = { lib, stdenv, fetchurl, makeBinaryWrapper, autoPatchelfHook, ripgrep, sysctl, zlib, unzip }:
         let
           isLinux = stdenv.hostPlatform.isLinux;
           isDarwin = stdenv.hostPlatform.isDarwin;
@@ -105,21 +105,17 @@ cat > "$SCRIPT_DIR/flake.nix" <<EOF
           pname = "opencode";
 
           nativeBuildInputs = [ makeBinaryWrapper ]
-            ++ lib.optionals isLinux [ autoPatchelfHook ];
+            ++ lib.optionals isLinux [ autoPatchelfHook ]
+            ++ lib.optionals isDarwin [ unzip ];
 
           buildInputs = lib.optionals isLinux [ stdenv.cc.cc.lib zlib ];
 
           dontStrip = true;
-          dontUnpack = isDarwin;
           sourceRoot = ".";
 
           installPhase = ''
             runHook preInstall
-            \${if isDarwin then ''
-              install -Dm755 \$src \$out/bin/opencode
-            '' else ''
-              install -Dm755 opencode \$out/bin/opencode
-            ''}
+            install -Dm755 opencode \$out/bin/opencode
             wrapProgram \$out/bin/opencode \\
               --prefix PATH : \${lib.makeBinPath (
                 [ ripgrep ]

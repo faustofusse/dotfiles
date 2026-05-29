@@ -5,7 +5,7 @@
 
   outputs = { self, nixpkgs }:
     let
-      opencode = { lib, stdenv, fetchurl, makeBinaryWrapper, autoPatchelfHook, ripgrep, sysctl, zlib }:
+      opencode = { lib, stdenv, fetchurl, makeBinaryWrapper, autoPatchelfHook, ripgrep, sysctl, zlib, unzip }:
         let
           isLinux = stdenv.hostPlatform.isLinux;
           isDarwin = stdenv.hostPlatform.isDarwin;
@@ -13,23 +13,23 @@
           platform = {
             aarch64-darwin = {
               name = "darwin-arm64";
-              hash = "sha256-IPt66aa5h2gyhQt4mTBMOCYaxTdhy3eiBSvkmwL9J+Y=";
+              hash = "sha256-1lTw4/Ur26VgsarAIeH+x+9FbSGw8Cw7qCAoQ+c9vUU=";
             };
             x86_64-darwin = {
               name = "darwin-x64";
-              hash = "sha256-oqyHRZSZYEZymYiUNaA9DeFxnytDHUZDHUpeEGu1yNo=";
+              hash = "sha256-+6CRlRW82p50LdfGR6eYP3hMqUjeyE8pwjWorQvO+YU=";
             };
             x86_64-linux = {
               name = "linux-x64";
-              hash = "sha256-8HNJKNXfNgd39R+AffGLKMHQwAb4Bq0L01okIPq9CDU=";
+              hash = "sha256-7W+Lzg/qH7K+eJv+DPvnpKgZdw6ZjjKDawcIwBUwOmc=";
             };
             aarch64-linux = {
               name = "linux-arm64";
-              hash = "sha256-l48HDigMNupv2aA9ZPgTAo28JDQHetXLauzzdCPhVtc=";
+              hash = "sha256-7VGBuB6Xj6An2fR81n+Prr7GNCI9f4JKoiYSYYjMvuU=";
             };
           }.${stdenv.hostPlatform.system} or (throw "Unsupported system: ${stdenv.hostPlatform.system}");
 
-          version = "1.15.4";
+          version = "1.15.12";
 
           src = fetchurl {
             url = if isDarwin
@@ -43,21 +43,17 @@
           pname = "opencode";
 
           nativeBuildInputs = [ makeBinaryWrapper ]
-            ++ lib.optionals isLinux [ autoPatchelfHook ];
+            ++ lib.optionals isLinux [ autoPatchelfHook ]
+            ++ lib.optionals isDarwin [ unzip ];
 
           buildInputs = lib.optionals isLinux [ stdenv.cc.cc.lib zlib ];
 
           dontStrip = true;
-          dontUnpack = isDarwin;
           sourceRoot = ".";
 
           installPhase = ''
             runHook preInstall
-            ${if isDarwin then ''
-              install -Dm755 $src $out/bin/opencode
-            '' else ''
-              install -Dm755 opencode $out/bin/opencode
-            ''}
+            install -Dm755 opencode $out/bin/opencode
             wrapProgram $out/bin/opencode \
               --prefix PATH : ${lib.makeBinPath (
                 [ ripgrep ]
