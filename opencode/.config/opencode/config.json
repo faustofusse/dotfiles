@@ -15,5 +15,15 @@
         "external_directory": {
             "~/.btca/**": "allow"
         }
+    },
+    "mcp": {
+        "mercadopago": {
+            "type": "remote",
+            "url": "https://mcp.mercadopago.com/mcp",
+            "enabled": true,
+            "headers": {
+                "Authorization": "Bearer APP_USR-3059022051613200-101916-df006863fda55ed1965091cce11ee9e7-262034512"
+            }
+        }
     }
 }
