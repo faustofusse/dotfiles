@@ -1,7 +1,7 @@
 {
-  "lastChangelogVersion": "0.77.0",
-  "defaultProvider": "opencode",
-  "defaultModel": "gemini-3.1-pro",
+  "lastChangelogVersion": "0.78.0",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "kimi-k2.6",
   "defaultThinkingLevel": "high",
   "editorPaddingX": 0,
   "hideThinkingBlock": true,
