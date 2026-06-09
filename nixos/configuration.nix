@@ -150,9 +150,10 @@
      # desktop
      brave
      chromium
+     gimp3
      nautilus
      pcmanfm
-      stremio-linux-shell
+     stremio-linux-shell
      # wayland
      eww
      dunst
@@ -172,12 +173,11 @@
      gnumake
      go
      gopls
+     inputs.neovim-nightly.packages.${pkgs.system}.default
+     inputs.opencode.packages.${pkgs.system}.default
+     inputs.pi-coding-agent.packages.${pkgs.system}.default
      sqlite
      zed-editor
-     inputs.opencode.packages.${pkgs.system}.default
-     inputs.tuify.packages.${pkgs.system}.default
-     inputs.neovim-nightly.packages.${pkgs.system}.default
-     inputs.pi-coding-agent.packages.${pkgs.system}.default
      # development
      tree-sitter
      typescript-language-server
@@ -186,8 +186,7 @@
      bluetui
      htop
      impala
-     neomutt
-     mutt-wizard
+     inputs.tuify.packages.${pkgs.system}.default
      wiremix
      yazi
      # utils
@@ -195,7 +194,6 @@
      dig
      ffmpeg
      fzf
-     gimp3
      imv
      imagemagick
      jq
@@ -204,6 +202,7 @@
      openssl
      libqalculate
      lima
+     pass
      ripgrep
      stow
      tmux
