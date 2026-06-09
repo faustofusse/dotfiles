@@ -27,7 +27,7 @@ vim.o.numberwidth = 3
 vim.o.wrap = false
 vim.o.scrolloff = 8
 vim.o.sidescrolloff = 8
-vim.o.hidden = false
+vim.o.hidden = true
 vim.o.signcolumn = "yes"
 vim.o.laststatus = 0
 vim.o.mouse = "a"
@@ -56,7 +56,79 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     desc = "Highlight when yanking (copying) text",
     group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
     callback = function()
-        vim.hl.on_yank()
+        vim.hl.hl_op()
+    end,
+})
+
+vim.api.nvim_create_autocmd("TextYankPost", {
+    desc = "Strip trailing whitespace when yanking from terminal buffers",
+    group = vim.api.nvim_create_augroup("terminal-strip-yank", { clear = true }),
+    callback = function()
+        if vim.bo.buftype ~= "terminal" then
+            return
+        end
+
+        local event = vim.v.event
+        local reg = event.regname ~= "" and event.regname or '"'
+        local regtype = event.regtype or "v"
+
+        local lines = vim.fn.getreg(reg, 1, true)
+        if type(lines) ~= "table" or #lines == 0 then
+            return
+        end
+
+        local stripped = vim.tbl_map(function(line)
+            return line:gsub("%s+$", "")
+        end, lines)
+
+        vim.fn.setreg(reg, stripped, regtype)
+
+        -- Sync to system clipboard if yanked to the unnamed register and
+        -- clipboard is set to unnamed / unnamedplus
+        if reg == '"' then
+            local cb = vim.o.clipboard
+            if cb:match("unnamedplus") then
+                vim.fn.setreg("+", stripped, regtype)
+            end
+            if cb:match("unnamed") then
+                vim.fn.setreg("*", stripped, regtype)
+            end
+        end
+    end,
+})
+
+vim.api.nvim_create_autocmd("TermOpen", {
+    pattern = "*",
+    callback = function(args)
+        local buf = args.buf
+        local last_count = vim.api.nvim_buf_line_count(buf)
+
+        vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
+            buffer = buf,
+            callback = function()
+                local current_count = vim.api.nvim_buf_line_count(buf)
+
+                -- Output didn’t add lines; just update the tracker
+                if current_count <= last_count then
+                    last_count = current_count
+                    return
+                end
+
+                local cur_win = vim.api.nvim_get_current_win()
+                local mode = vim.api.nvim_get_mode().mode
+
+                for _, win in ipairs(vim.fn.win_findbuf(buf)) do
+                    -- Terminal mode already follows output natively; don’t interfere
+                    local skip = win == cur_win and mode == "t"
+                    if not skip and vim.fn.line("w$", win) >= last_count then
+                        -- Window was at the bottom before this output; keep it there
+                        pcall(vim.api.nvim_win_set_cursor, win, { current_count, 0 })
+                    end
+                end
+
+                last_count = current_count
+            end,
+        })
     end,
 })
 
