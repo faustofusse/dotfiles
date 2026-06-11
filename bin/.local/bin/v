@@ -77,4 +77,40 @@ fi
 
 # outside neovim
 
-nvim "$@"
+# Find the directory to check for a develop flake
+target_dir=""
+for arg in "$@"; do
+    if [[ "$arg" != -* ]]; then
+        if [ -d "$arg" ]; then
+            target_dir="$arg"
+        elif [ -e "$arg" ]; then
+            target_dir=$(dirname "$arg")
+        else
+            target_dir=$(dirname "$arg" 2>/dev/null || echo "$PWD")
+        fi
+        break
+    fi
+done
+[ -z "$target_dir" ] && target_dir="$PWD"
+
+# Resolve to absolute path
+target_dir=$(cd "$target_dir" 2>/dev/null && pwd || echo "$target_dir")
+
+# Walk up the tree looking for flake.nix
+flake_dir="$target_dir"
+while [ -n "$flake_dir" ] && [ "$flake_dir" != "/" ]; do
+    if [ -f "$flake_dir/flake.nix" ]; then
+        break
+    fi
+    flake_dir=$(dirname "$flake_dir")
+done
+
+# Launch nvim inside the flake's devShell if one was found
+if [ -n "$flake_dir" ] && [ -f "$flake_dir/flake.nix" ] && command -v nix &> /dev/null; then
+    # nix develop overrides the SHELL env var to bash; force nvim's shell option
+    # explicitly so :terminal uses the user's preferred shell.
+    user_shell="${SHELL:-$(command -v zsh 2>/dev/null || command -v bash 2>/dev/null || echo /bin/sh)}"
+    nix develop "$flake_dir" -c nvim --cmd "set shell=$user_shell" "$@"
+else
+    nvim "$@"
+fi

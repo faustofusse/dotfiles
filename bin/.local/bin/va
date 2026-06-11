@@ -15,6 +15,9 @@ if [[ -z $selected_dir ]]; then
     exit 0
 fi
 
+# Expand tilde to absolute path
+selected_dir="${selected_dir/#\~/$HOME}"
+
 selected_name=$(basename "$selected_dir" | tr . _)
 
 pipe_path="$HOME/.cache/nvim/${selected_name}.pipe"
@@ -27,7 +30,26 @@ else
     # Remove stale socket if it exists
     [[ -e "$pipe_path" ]] && rm -f "$pipe_path"
 
-    nvim --listen "$pipe_path" --headless --cmd "cd $selected_dir" &
+    # Walk up the tree looking for flake.nix
+    flake_dir="$selected_dir"
+    while [ -n "$flake_dir" ] && [ "$flake_dir" != "/" ]; do
+        if [ -f "$flake_dir/flake.nix" ]; then
+            break
+        fi
+        flake_dir=$(dirname "$flake_dir")
+    done
+
+    # Launch nvim inside the flake's devShell if one was found
+    # Always pass flake_dir to nix develop because the background process
+    # inherits the shell's cwd (~), not the target directory.
+    if [ -n "$flake_dir" ] && [ -f "$flake_dir/flake.nix" ] && command -v nix &> /dev/null; then
+        # nix develop overrides the SHELL env var to bash; force nvim's shell option
+        # explicitly so :terminal uses the user's preferred shell.
+        user_shell="${SHELL:-$(command -v zsh 2>/dev/null || command -v bash 2>/dev/null || echo /bin/sh)}"
+        nix develop "$flake_dir" -c nvim --cmd "set shell=$user_shell" --listen "$pipe_path" --headless --cmd "cd $selected_dir" &
+    else
+        nvim --listen "$pipe_path" --headless --cmd "cd $selected_dir" &
+    fi
 
     # Wait for the socket to be created
     while [[ ! -e "$pipe_path" ]]; do
