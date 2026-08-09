@@ -8,11 +8,11 @@
       pi-coding-agent = { lib, buildNpmPackage, fetchurl }:
         buildNpmPackage rec {
           pname = "pi-coding-agent";
-          version = "0.78.0";
+          version = "0.83.0";
 
           src = fetchurl {
             url = "https://registry.npmjs.org/@earendil-works/pi-coding-agent/-/pi-coding-agent-${version}.tgz";
-            sha256 = "1vnhxlgdwv9ns4pvh6l012vnljyas031swd4d3ikb48xh1sxlix0";
+            sha256 = "1rjm4bil95qhx2zjawvimzxlkj1h0jwyf0c0qxzdlbbn715zx5vh";
           };
 
           postPatch = ''
@@ -20,7 +20,7 @@
             cp ${./package-lock.json} package-lock.json
           '';
 
-          npmDepsHash = "sha256-8g/ZRXmXDzsFZmAQ/51Q84jPf91PA95O/511v1IWskE=";
+          npmDepsHash = "sha256-xYw4xaQ4Zgjc/v5xYpT82aV7RB9jZCkbkRf0Y7xZsYA=";
           npmDepsFetcherVersion = 2;
 
           dontNpmBuild = true;
