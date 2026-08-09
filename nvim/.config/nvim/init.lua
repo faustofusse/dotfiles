@@ -1,6 +1,6 @@
 require("vim._core.ui2").enable()
 
-local servers = { "gopls", "zls", "dartls", "ts_ls", "vue_ls", "svelte", "sqls", "tailwindcss", "kotlin_lsp" }
+local servers = { "gopls", "zls", "dartls", "ts_ls", "vue_ls", "svelte", "sqls", "tailwindcss", "kotlin_lsp", "denols", "pyright" }
 local highlighted = { "go", "gomod", "html", "json", "javascript", "typescript", "tsx", "dockerfile", "markdown", "sql", "lua", "yaml", "bash", "make", "kotlin", "nu", "yuck", "svelte", "dart", "zig", "c", "vue", "php", "prisma" }
 
 vim.o.backup = false
