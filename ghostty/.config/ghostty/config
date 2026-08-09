@@ -7,4 +7,4 @@ macos-titlebar-proxy-icon = hidden
 mouse-hide-while-typing = true
 quit-after-last-window-closed = true
 confirm-close-surface = false
-window-decoration = none
+# window-decoration = none
