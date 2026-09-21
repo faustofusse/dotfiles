@@ -1,0 +1,37 @@
+onboarding = false
+
+[keys]
+prefix = "ctrl+a"
+
+# built-in navigator stays on its default
+goto = "prefix+g"
+
+# navigate the workspace picker (prefix+w) with j/k in addition to arrows
+navigate_workspace_up = ["up", "k"]
+navigate_workspace_down = ["down", "j"]
+
+# search-first goto picker: opens directly in filter mode
+[[keys.command]]
+key = "prefix+f"
+type = "popup"
+command = "exec ~/.config/herdr/scripts/goto-search.sh"
+description = "goto (search)"
+width = "70%"
+height = "60%"
+
+# split a horizontal pane at the top running Neovim + Fugitive for Git management
+[[keys.command]]
+key = "prefix+d"
+type = "shell"
+command = "~/.config/herdr/scripts/git-panel.sh"
+description = "git panel (nvim + fugitive)"
+
+[theme]
+name = "catppuccin"
+auto_switch = false
+
+[ui]
+status_indicators = "symbols"
+
+[ui.toast]
+delivery = "system"

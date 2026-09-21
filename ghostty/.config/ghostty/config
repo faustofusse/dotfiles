@@ -1,4 +1,5 @@
 theme = GitHub Dark
+# theme = Apple System Colors Light
 font-family = Cascadia Mono NF
 font-size = 14
 clipboard-read = allow

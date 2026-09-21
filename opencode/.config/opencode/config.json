@@ -14,7 +14,8 @@
     "permission": {
         "external_directory": {
             "/tmp/**": "allow",
-            "~/.btca/**": "allow"
+            "~/.btca/**": "allow",
+            ".local/share/opencode/repos": "allow"
         }
     },
     "mcp": {

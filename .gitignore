@@ -4,3 +4,16 @@ bin/.local/bin/nvim
 ./mpv/.config/mpv/scripts/*.txt
 .DS_Store
 password.txt
+
+# pi agent local runtime state
+pi/.pi/agent/tmp/
+pi/.pi/agent/trust.json
+pi/.pi/agent/run-history.jsonl
+pi/.pi/agent/missions/
+pi/.pi/agent/npm/node_modules/
+
+# herdr local runtime state
+herdr/.config/herdr/session.json
+herdr/.config/herdr/*.log
+herdr/.config/herdr/.plugins.lock
+herdr/.config/herdr/release-notes.json
