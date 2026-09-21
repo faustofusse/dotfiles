@@ -111,3 +111,6 @@ export PATH="$PATH:$HOME/.rvm/bin"
 # nix
 export PATH="$PATH:/nix/var/nix/profiles/default/bin"
 export PATH="$HOME/.nix-profile/bin:$PATH"
+
+# Turso
+export PATH="$PATH:/Users/fausto/.turso"
