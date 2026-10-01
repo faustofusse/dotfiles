@@ -12,7 +12,7 @@ navigate_workspace_down = ["down", "j"]
 
 # search-first goto picker: opens directly in filter mode
 [[keys.command]]
-key = "prefix+f"
+key = "prefix+u"
 type = "popup"
 command = "exec ~/.config/herdr/scripts/goto-search.sh"
 description = "goto (search)"
@@ -21,10 +21,17 @@ height = "60%"
 
 # split a horizontal pane at the top running Neovim + Fugitive for Git management
 [[keys.command]]
-key = "prefix+d"
+key = "prefix+i"
 type = "shell"
 command = "~/.config/herdr/scripts/git-panel.sh"
 description = "git panel (nvim + fugitive)"
+
+# split a vertical pane to the right running Neovim in the pane's cwd
+[[keys.command]]
+key = "prefix+o"
+type = "shell"
+command = "~/.config/herdr/scripts/nvim-split.sh"
+description = "neovim (vertical split)"
 
 [theme]
 name = "catppuccin"
