@@ -9,3 +9,6 @@ source ~/.config/zsh/history.zsh
 source ~/.config/zsh/options.zsh
 source ~/.config/zsh/keymaps.zsh
 source ~/.config/zsh/aliases.zsh
+
+# Turso
+export PATH="$PATH:/Users/fausto/.turso"
