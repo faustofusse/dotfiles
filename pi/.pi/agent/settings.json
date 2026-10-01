@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.86.1",
+  "lastChangelogVersion": "0.99.2",
   "defaultProvider": "anthropic",
   "defaultModel": "claude-sonnet-5",
   "defaultThinkingLevel": "medium",
@@ -7,13 +7,14 @@
   "hideThinkingBlock": true,
   "quietStartup": true,
   "enabledModels": [
-    "anthropic/claude-opus-5",
-    "anthropic/claude-sonnet-5"
+    "anthropic/claude-sonnet-5",
+    "anthropic/claude-opus-5-5"
   ],
   "warnings": {
     "anthropicExtraUsage": false
   },
   "theme": "dark-nopink",
+  "defaultTools": ["+codemode"],
   "packages": [
     "npm:@gotgenes/pi-anthropic-auth",
     "npm:@plannotator/pi-extension"
