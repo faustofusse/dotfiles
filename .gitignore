@@ -11,6 +11,7 @@ pi/.pi/agent/trust.json
 pi/.pi/agent/run-history.jsonl
 pi/.pi/agent/missions/
 pi/.pi/agent/npm/node_modules/
+pi/.pi/agent/crashes.json
 
 # herdr local runtime state
 herdr/.config/herdr/session.json
