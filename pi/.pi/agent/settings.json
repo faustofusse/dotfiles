@@ -1,7 +1,7 @@
 {
-  "lastChangelogVersion": "0.99.2",
+  "lastChangelogVersion": "1.0.1",
   "defaultProvider": "anthropic",
-  "defaultModel": "claude-sonnet-5",
+  "defaultModel": "claude-opus-5-5",
   "defaultThinkingLevel": "medium",
   "editorPaddingX": 0,
   "hideThinkingBlock": true,
@@ -13,8 +13,11 @@
   "warnings": {
     "anthropicExtraUsage": false
   },
-  "theme": "dark-nopink",
-  "defaultTools": ["+codemode"],
+  "theme": "system",
+  "tuiMode": "regular",
+  "defaultTools": [
+    "+codemode"
+  ],
   "packages": [
     "npm:@gotgenes/pi-anthropic-auth",
     "npm:@plannotator/pi-extension"
