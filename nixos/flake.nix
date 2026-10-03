@@ -8,7 +8,7 @@
     opencode.url = "path:./pkgs/opencode";
     tuify.url = "path:./pkgs/tuify";
     neovim-nightly.url = "path:./pkgs/neovim-nightly";
-    pi-coding-agent.url = "path:./pkgs/pi-coding-agent";
+    pi-coding-agent.url = "github:earendil-works/pi/stable";
   };
 
   outputs = { self, nixpkgs, ... } @ inputs : {
