@@ -114,6 +114,9 @@
     jack.enable = true;
   };
 
+  # vpn
+  services.tailscale.enable = true;
+
   # music
   services.spotifyd.enable = true;
 
@@ -184,6 +187,7 @@
      svelte-language-server
      # tui
      bluetui
+     herdr
      htop
      impala
      inputs.tuify.packages.${pkgs.system}.default
