@@ -183,8 +183,23 @@ Trigger phrases: "start `<TICKET>`", "empezar `<TICKET>`", "arranca `<TICKET>`",
 | Parameter | How it is read | Default |
 |---|---|---|
 | `TICKET` | The Jira key in the user's message, matching `[A-Z][A-Z0-9_]+-[0-9]+` (e.g. `FAU-123`). Required, or created first from a description. | — |
-| `KIND` | Agent kind if the user names one ("with codex", "usa claude"). | `pi` |
-| `MODEL` | Model if the user names one ("con sonnet"). | `anthropic/claude-opus-5` |
+| `KIND` | Agent kind if the user names one ("with codex", "usa claude"). | the caller's own kind (see below) |
+| `MODEL` | Model if the user names one ("con sonnet"). | Opus 5.5 in the form `KIND` expects (see below) |
+
+When the user does not name a kind, the child runs on the same harness as the caller. Detect it from the environment:
+
+| Caller | Signal | `KIND` | Default `MODEL` |
+|---|---|---|---|
+| Claude Code | `CLAUDECODE=1` | `claude` | `claude-opus-5-5` |
+| pi | `PI_CODING_AGENT=true` (or `AI_AGENT=pi`) | `pi` | `anthropic/claude-opus-5-5` |
+
+```bash
+if [ "${CLAUDECODE:-}" = 1 ]; then echo claude
+elif [ "${PI_CODING_AGENT:-}" = true ] || [ "${AI_AGENT:-}" = pi ]; then echo pi
+else echo unknown; fi
+```
+
+If neither signal is present, `herdr pane current` reports the caller pane's `agent`; use that. If it is still unknown, fall back to `pi`.
 | `STATUS` | Target status if the user names one. | `En curso` |
 | `BASE` | Base ref if the user names one ("desde develop"). | repo default (omit `--base`) |
 
@@ -241,36 +256,43 @@ Use `--trust-repository` only if the user has already vouched for the repo; it i
 ## Step 4 — Launch the planning agent
 
 ```bash
-herdr agent start <slug> --kind pi --pane <root_pane_id> -- --model anthropic/claude-opus-5
+# from Claude Code
+herdr agent start <slug> --kind claude --pane <root_pane_id> -- --model claude-opus-5-5
+
+# from pi
+herdr agent start <slug> --kind pi --pane <root_pane_id> -- --model anthropic/claude-opus-5-5
 ```
 
 Native agent args go after `--`.
 
-Always qualify the model with its provider for `pi`. A bare `--model opus` is a fuzzy pattern that matches across every provider and happily lands on `amazon-bedrock`'s `us.anthropic.claude-opus-5`, which fails at startup with `No API key found for amazon-bedrock`. The `provider/id` form pins it. Confirm the id exists first:
+Always qualify the model with its provider for `pi`. A bare `--model opus` is a fuzzy pattern that matches across every provider and happily lands on `amazon-bedrock`'s `us.anthropic.claude-opus-*`, which fails at startup with `No API key found for amazon-bedrock`. The `provider/id` form pins it. Confirm the id exists first:
 
 ```bash
 pi --list-models 'anthropic/claude-opus'
 ```
 
-For `--kind claude`, the alias form `--model opus` is correct; it has no provider ambiguity. Check `<kind> --help` before using any other kind.
+For `--kind claude`, pass the full model name `claude-opus-5-5`. There is no provider ambiguity, and the full name keeps the version fixed where the `opus` alias would follow whatever is latest. Check `<kind> --help` before using any other kind.
 
 Name the agent from the summary slug alone, without the ticket key: `fix-login-redirect`, not `dpit-3104-fix-login-redirect`. The key is already on the workspace label, and dropping it leaves the full 32 chars of `[a-z][a-z0-9_-]{0,31}` for words that describe the work. Trim whole words rather than cutting mid-word.
 
 If `agent start` returns `agent_not_ready`, read the pane and wait for idle before prompting.
 
-Prompt it **without `--wait`**. The child plans on its own schedule and the user reviews it directly in its pane, so there is nothing for you to collect:
+`agent start` can report `interactive_ready: true` while the agent is still printing startup output (pi's skill-collision list, for example). A prompt sent then is accepted with exit 0 and silently dropped. So don't trust the exit code. Wait only until the agent picks the prompt up, and not until it finishes. The child plans on its own schedule and the user reviews it directly in its pane, so there is nothing to collect:
 
 ```bash
-herdr agent prompt <slug> "Read <BRIEF> for the full ticket. You are in a fresh worktree on branch <branch>. Produce an implementation plan only: explore the codebase, identify the files and functions to change, list the steps in order, and call out risks and open questions. Write the plan to docs/plans/<TICKET>.md in this worktree. Do not modify any other file and do not implement the ticket. Stop when the plan is written and wait for the user to review it."
+herdr agent prompt <slug> "Read <BRIEF> for the full ticket. You are in a fresh worktree on branch <branch>. Produce an implementation plan only: explore the codebase, identify the files and functions to change, list the steps in order, and call out risks and open questions. Write the plan to docs/plans/<TICKET>.md in this worktree. Do not modify any other file and do not implement the ticket. Stop when the plan is written and wait for the user to review it." \
+  --wait --until working --until blocked --timeout 20000
 ```
 
-Confirm the prompt landed:
+If that returns `working`, the prompt landed. `blocked` means the user must handle it in the pane. If it returns `agent_prompt_stalled` or `timeout`, the prompt was dropped or is stuck in the input box:
 
-```bash
-herdr agent get <slug>
-```
+1. Read the pane: `herdr pane read <root_pane_id> --source visible`.
+2. If the prompt text is sitting unsubmitted in the input box, submit it with `herdr pane send-keys <root_pane_id> enter` instead of re-sending, which would duplicate it.
+3. If the input box is empty, wait until the startup output has stopped changing (read the pane again), then send the same prompt once more with the same `--wait --until` flags.
 
-The agent should be `working` (or `blocked`, which the user must handle). If it is still `idle`, the prompt did not take: say so plainly and give the user the pane ID, since the worktree exists and the ticket is already transitioned.
+Retry once. If it still isn't `working`, say so plainly and give the user the pane ID, since the worktree exists and the ticket is already transitioned.
+
+When starting several tickets, start all agents first and prompt them afterwards. This gives each agent more time to settle, but every prompt still needs the `--wait --until` check.
 
 ## Step 5 — Report and stop
 
